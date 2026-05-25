@@ -1,4 +1,4 @@
-"""CONCEPT:ERPN-002 Main FastMCP server and tool registration."""
+"""Main FastMCP server and tool registration."""
 import os
 import sys
 from typing import Any
