@@ -1,5 +1,6 @@
 from erpnext_agent.api.api_client_base import ApiClientBase
 
+
 class Api(ApiClientBase):
     def get_document(self, doctype: str, name: str) -> dict:
         """Get a document resource."""
@@ -17,7 +18,9 @@ class Api(ApiClientBase):
         """Delete a document resource."""
         return self.request("DELETE", f"/api/resource/{doctype}/{name}")
 
-    def list_documents(self, doctype: str, filters: list = None, fields: list = None, limit: int = 20) -> list:
+    def list_documents(
+        self, doctype: str, filters: list = None, fields: list = None, limit: int = 20
+    ) -> list:
         """List document resources."""
         params = {"limit_page_length": limit}
         if filters:

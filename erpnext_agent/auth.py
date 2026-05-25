@@ -1,8 +1,12 @@
+"""CONCEPT:ERPN-003 Identity credentials loader and session manager."""
 import os
+
 from agent_utilities.base_utilities import get_logger, to_boolean
+
 from erpnext_agent.api_client import Api
 
 logger = get_logger(__name__)
+
 
 def get_client() -> Api:
     """Get authenticated client for erpnext_agent."""
@@ -16,4 +20,10 @@ def get_client() -> Api:
         # Default fallback for testing
         base_url = "http://localhost"
 
-    return Api(base_url=base_url, token=token, username=username, password=password, verify=verify)
+    return Api(
+        base_url=base_url,
+        token=token,
+        username=username,
+        password=password,
+        verify=verify,
+    )

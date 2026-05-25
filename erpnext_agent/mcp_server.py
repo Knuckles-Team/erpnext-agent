@@ -1,17 +1,14 @@
-import warnings
-import logging
+"""CONCEPT:ERPN-002 Main FastMCP server and tool registration."""
 import os
 import sys
 from typing import Any
-from fastmcp import Context, FastMCP
-from fastmcp.utilities.logging import get_logger
-from pydantic import Field
-from starlette.requests import Request
-from starlette.responses import JSONResponse
 
 from agent_utilities.base_utilities import to_boolean
 from agent_utilities.mcp_utilities import create_mcp_server
 from dotenv import find_dotenv, load_dotenv
+from fastmcp.utilities.logging import get_logger
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 from erpnext_agent.mcp.mcp_resource import register_resource_tools
 
@@ -30,7 +27,6 @@ def get_mcp_instance() -> tuple[Any, ...]:
     async def health_check(request: Request) -> JSONResponse:
         return JSONResponse({"status": "OK"})
 
-    
     DEFAULT_RESOURCETOOL = to_boolean(os.getenv("RESOURCETOOL", "True"))
     if DEFAULT_RESOURCETOOL:
         register_resource_tools(mcp)
