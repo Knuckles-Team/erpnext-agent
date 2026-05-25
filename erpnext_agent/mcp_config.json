@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "erpnext_agent": {
+      "command": "python",
+      "args": [
+        "-m",
+        "erpnext_agent.mcp_server"
+      ],
+      "env": {}
+    }
+  }
+}
