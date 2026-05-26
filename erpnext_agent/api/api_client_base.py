@@ -14,6 +14,9 @@ class ApiClientBase:
         password: str | None = None,
         verify: bool = True,
     ):
+        base_url = base_url.rstrip("/")
+        if base_url.endswith("/api"):
+            base_url = base_url[:-4].rstrip("/")
         self.base_url = base_url
         self.token = token
         self.username = username
@@ -25,7 +28,13 @@ class ApiClientBase:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
         if token:
-            self._session.headers.update({"Authorization": f"Bearer {token}"})
+            if not token.startswith("Bearer ") and not token.startswith("token "):
+                if ":" in token:
+                    self._session.headers.update({"Authorization": f"token {token}"})
+                else:
+                    self._session.headers.update({"Authorization": f"Bearer {token}"})
+            else:
+                self._session.headers.update({"Authorization": token})
         elif username and password:
             self._session.auth = (username, password)
 

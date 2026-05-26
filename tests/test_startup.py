@@ -1,4 +1,6 @@
 import pytest
+
+
 @pytest.mark.concept("ERPN-002")
 def test_startup():
     # Basic import test

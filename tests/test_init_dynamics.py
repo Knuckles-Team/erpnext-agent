@@ -1,4 +1,6 @@
 import pytest
+
+
 @pytest.mark.concept("ERPN-001")
 def test_init_dynamics():
     import erpnext_agent
