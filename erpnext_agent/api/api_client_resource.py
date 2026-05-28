@@ -71,12 +71,12 @@ class Api(ApiClientBase):
             "limit_start": limit_start,
         }
         if filters:
-            if isinstance(filters, (list, dict, tuple)):
+            if isinstance(filters, list | dict | tuple):
                 params["filters"] = json.dumps(filters)
             else:
                 params["filters"] = str(filters)
         if fields:
-            if isinstance(fields, (list, dict, tuple)):
+            if isinstance(fields, list | dict | tuple):
                 params["fields"] = json.dumps(fields)
             else:
                 params["fields"] = str(fields)
