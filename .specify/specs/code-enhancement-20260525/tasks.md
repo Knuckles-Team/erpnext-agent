@@ -1,0 +1,65 @@
+# Tasks: Code Enhancement: erpnext-agent
+
+Generated: 2026-05-25T05:39:16.618549+00:00
+Skipped informational: 4
+
+- [ ] [P] **T001** [Dependency Audit] Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T002** [Test Coverage] Low test-to-source ratio: 0.19
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T003** [Test Coverage] Test suite lacks intent diversity (only one type)
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T004** [Documentation & Governance] README.md missing sections: overview, installation
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T005** [Documentation & Governance] README.md is short (12 lines) — consider expanding
+  - Priority: P1-High | Effort: Medium
+- [ ] [P] **T006** [Documentation & Governance] README missing: MCP tools mapping table with descriptions
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T007** [Documentation & Governance] README missing: Both bare-metal (pip) and container (Docker) deployment docs
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T008** [Documentation & Governance] README missing: Has a Table of Contents
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T009** [Documentation & Governance] README missing: Has installation instructions
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T010** [Documentation & Governance] README missing: Has architecture overview or diagram
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T011** [Documentation & Governance] README missing: References /docs directory material
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T012** [Documentation & Governance] README missing: Has mcp_server.py deployment configurations
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T013** [Documentation & Governance] README missing: Has agent_server.py deployment configurations
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T014** [Documentation & Governance] README missing: Has MCP tools mapping table with descriptions
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T015** [Documentation & Governance] README missing: Has bare-metal and container deployment instructions
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T016** [Documentation & Governance] AGENTS.md missing sections: tech stack, commands, project structure
+  - Priority: P1-High | Effort: Small
+- [ ] [P] **T017** [Documentation & Governance] No LICENSE file found
+  - Priority: P1-High | Effort: Medium
+- [ ] [P] **T018** [Architecture & Design Patterns] No discernible layer architecture (no domain/service/adapter separation)
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T019** [Concept Traceability] Low traceability ratio: 0% concepts fully traced
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T020** [Concept Traceability] 3 test functions missing concept markers
+  - Priority: P4-Enhancement | Effort: Small
+- [ ] [P] **T021** [Linting & Formatting] Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)
+  - Priority: P4-Enhancement | Effort: Medium
+- [ ] [P] **T022** [Pre-Commit Compliance] 1 hook(s) may be outdated: ruff-pre-commit
+  - Priority: P2-Medium | Effort: Small
+- [ ] [P] **T023** [Changelog Audit] CHANGELOG.md exists but could not be parsed — check format compliance
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T024** [Changelog Audit] No changelog entries within the last 30 days
+  - Priority: P3-Low | Effort: Medium
+- [ ] [P] **T025** [Changelog Audit] Missing reference to Keep a Changelog format standard
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T026** [Changelog Audit] keepachangelog not installed — pip install 'universal-skills[code-enhancer]'
+  - Priority: P3-Low | Effort: Small
+- [ ] [P] **T027** [Environment Variables] Only 29% of env vars documented in README.md
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T028** [Environment Variables] Undocumented env vars: ERPNEXT_AGENT_BASE_URL, ERPNEXT_AGENT_PASSWORD, ERPNEXT_A
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T029** [Environment Variables] No .env.example file — create one for developer onboarding
+  - Priority: P2-Medium | Effort: Medium
+- [ ] [P] **T030** [analyze_xdg_kg] Analysis error: No module named 'agent_utilities.knowledge_graph'
+  - Priority: P1-High | Effort: Medium

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "erpnext-agent": {
+      "command": "/home/apps/workspace/.venv/bin/erpnext-mcp",
+      "args": [],
+      "env": {
+        "ERPNEXT_URL": "http://localhost:8000",
+        "ERPNEXT_TOKEN": "",
+        "FASTMCP_CHECK_FOR_UPDATES": "off",
+        "FASTMCP_SHOW_SERVER_BANNER": "false"
+      },
+      "disabled": false
+    }
+  }
+}

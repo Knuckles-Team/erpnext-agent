@@ -1,0 +1,212 @@
+{
+  "feature_id": "code-enhancement-20260525",
+  "title": "Code Enhancement: erpnext-agent",
+  "created": "2026-05-25T05:39:16.618549+00:00",
+  "overview": "Automated code enhancement review for erpnext-agent. Covers 17 analysis domains.",
+  "user_stories": [
+    {
+      "role": "developer",
+      "action": "address Project Analysis findings (grade: D, score: 69)",
+      "value": "improve project project analysis from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Test Coverage findings (grade: D, score: 65)",
+      "value": "improve project test coverage from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Documentation & Governance findings (grade: F, score: 59)",
+      "value": "improve project documentation & governance from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Concept Traceability findings (grade: F, score: 59)",
+      "value": "improve project concept traceability from F to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Changelog Audit findings (grade: C, score: 75)",
+      "value": "improve project changelog audit from C to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address Environment Variables findings (grade: D, score: 60)",
+      "value": "improve project environment variables from D to at least B (80+)"
+    },
+    {
+      "role": "developer",
+      "action": "address analyze_xdg_kg findings (grade: F, score: 0)",
+      "value": "improve project analyze_xdg_kg from F to at least B (80+)"
+    }
+  ],
+  "functional_requirements": [
+    {
+      "id": "FR-001",
+      "description": "Minor update: agent-utilities 0.2.40 (installed) -> 0.16.0",
+      "testable": true
+    },
+    {
+      "id": "FR-002",
+      "description": "Low test-to-source ratio: 0.19",
+      "testable": true
+    },
+    {
+      "id": "FR-003",
+      "description": "Test suite lacks intent diversity (only one type)",
+      "testable": true
+    },
+    {
+      "id": "FR-004",
+      "description": "README.md missing sections: overview, installation",
+      "testable": true
+    },
+    {
+      "id": "FR-005",
+      "description": "README.md is short (12 lines) \u2014 consider expanding",
+      "testable": true
+    },
+    {
+      "id": "FR-006",
+      "description": "README missing: MCP tools mapping table with descriptions",
+      "testable": true
+    },
+    {
+      "id": "FR-007",
+      "description": "README missing: Both bare-metal (pip) and container (Docker) deployment docs",
+      "testable": true
+    },
+    {
+      "id": "FR-008",
+      "description": "README missing: Has a Table of Contents",
+      "testable": true
+    },
+    {
+      "id": "FR-009",
+      "description": "README missing: Has installation instructions",
+      "testable": true
+    },
+    {
+      "id": "FR-010",
+      "description": "README missing: Has architecture overview or diagram",
+      "testable": true
+    },
+    {
+      "id": "FR-011",
+      "description": "README missing: References /docs directory material",
+      "testable": true
+    },
+    {
+      "id": "FR-012",
+      "description": "README missing: Has mcp_server.py deployment configurations",
+      "testable": true
+    },
+    {
+      "id": "FR-013",
+      "description": "README missing: Has agent_server.py deployment configurations",
+      "testable": true
+    },
+    {
+      "id": "FR-014",
+      "description": "README missing: Has MCP tools mapping table with descriptions",
+      "testable": true
+    },
+    {
+      "id": "FR-015",
+      "description": "README missing: Has bare-metal and container deployment instructions",
+      "testable": true
+    },
+    {
+      "id": "FR-016",
+      "description": "AGENTS.md missing sections: tech stack, commands, project structure",
+      "testable": true
+    },
+    {
+      "id": "FR-017",
+      "description": "No LICENSE file found",
+      "testable": true
+    },
+    {
+      "id": "FR-018",
+      "description": "No discernible layer architecture (no domain/service/adapter separation)",
+      "testable": true
+    },
+    {
+      "id": "FR-019",
+      "description": "Low traceability ratio: 0% concepts fully traced",
+      "testable": true
+    },
+    {
+      "id": "FR-020",
+      "description": "3 test functions missing concept markers",
+      "testable": true
+    },
+    {
+      "id": "FR-021",
+      "description": "Total lint findings: 0 (high/error: 0, medium/warning: 0, low: 0)",
+      "testable": true
+    },
+    {
+      "id": "FR-022",
+      "description": "1 hook(s) may be outdated: ruff-pre-commit",
+      "testable": true
+    },
+    {
+      "id": "FR-023",
+      "description": "CHANGELOG.md exists but could not be parsed \u2014 check format compliance",
+      "testable": true
+    },
+    {
+      "id": "FR-024",
+      "description": "No changelog entries within the last 30 days",
+      "testable": true
+    },
+    {
+      "id": "FR-025",
+      "description": "Missing reference to Keep a Changelog format standard",
+      "testable": true
+    },
+    {
+      "id": "FR-026",
+      "description": "keepachangelog not installed \u2014 pip install 'universal-skills[code-enhancer]'",
+      "testable": true
+    },
+    {
+      "id": "FR-027",
+      "description": "Only 29% of env vars documented in README.md",
+      "testable": true
+    },
+    {
+      "id": "FR-028",
+      "description": "Undocumented env vars: ERPNEXT_AGENT_BASE_URL, ERPNEXT_AGENT_PASSWORD, ERPNEXT_AGENT_SSL_VERIFY, ERPNEXT_AGENT_USERNAME, RESOURCETOOL",
+      "testable": true
+    },
+    {
+      "id": "FR-029",
+      "description": "No .env.example file \u2014 create one for developer onboarding",
+      "testable": true
+    },
+    {
+      "id": "FR-030",
+      "description": "Analysis error: No module named 'agent_utilities.knowledge_graph'",
+      "testable": true
+    }
+  ],
+  "success_criteria": [
+    {
+      "metric": "Overall GPA",
+      "current": 2.59,
+      "target": 3.0
+    },
+    {
+      "metric": "Domains at B or above",
+      "current": 10,
+      "target": 17
+    },
+    {
+      "metric": "Actionable findings",
+      "current": 30,
+      "target": 0
+    }
+  ]
+}
