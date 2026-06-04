@@ -28,7 +28,7 @@ for module_name in CORE_MODULES:
     module = importlib.import_module(module_name)
     _expose_members(module)
 
-_loaded_optional_modules = {}
+_loaded_optional_modules: dict[str, Any] = {}
 
 
 def _import_module_safely(module_name: str):
