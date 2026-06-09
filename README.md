@@ -6,6 +6,10 @@
 
 ERPNext and Frappe Framework enterprise resources planner. Built with the highest architectural standards, incorporating dynamic facades, custom API routing, and FastMCP tool decoration.
 
+> **Documentation** — Installation, deployment, usage across the MCP, API, and CLI
+> interfaces, and guidance for provisioning the ERPNext / Frappe platform are
+> maintained in the [official documentation](https://knuckles-team.github.io/erpnext-agent/).
+
 ## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
@@ -15,6 +19,7 @@ ERPNext and Frappe Framework enterprise resources planner. Built with the highes
 - [MCP Tools](#mcp-tools)
 - [Architecture](#architecture)
 - [Deployment](#deployment)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -157,6 +162,25 @@ A standard compose structure is provided inside the `docker/` folder. Build and 
 ```bash
 docker compose -f docker/compose.yml up --build -d
 ```
+
+---
+
+## Documentation
+
+The complete documentation is published as the
+[official documentation site](https://knuckles-team.github.io/erpnext-agent/) and is
+the recommended reference for installation, deployment, and day-to-day operation.
+
+| Page | Contents |
+|---|---|
+| [Installation](https://knuckles-team.github.io/erpnext-agent/installation/) | pip, source, extras, prebuilt Docker image |
+| [Deployment](https://knuckles-team.github.io/erpnext-agent/deployment/) | run the MCP and agent servers, Compose, Caddy + Technitium, env config |
+| [Usage](https://knuckles-team.github.io/erpnext-agent/usage/) | the MCP tools, the `Api` client, the CLI |
+| [Backing Platform](https://knuckles-team.github.io/erpnext-agent/platform/) | deploy ERPNext / Frappe with Docker |
+| [Overview](https://knuckles-team.github.io/erpnext-agent/overview/) | the dynamic facade and FastMCP tool layer |
+| [Concepts](https://knuckles-team.github.io/erpnext-agent/concepts/) | concept registry (`CONCEPT:ERPN-*`) |
+
+`AGENTS.md` is the canonical contributor/agent guidance.
 
 ---
 
