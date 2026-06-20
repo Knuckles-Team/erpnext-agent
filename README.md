@@ -124,7 +124,7 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
-| `erpnext_agent_authentication` | `AUTHENTICATIONTOOL` | Manage ERPNext Agent authentication operations. |
+| `erpnext_agent_authentication` | `AUTHTOOL` | Manage ERPNext Agent authentication operations. |
 | `erpnext_agent_resource` | `RESOURCETOOL` | Manage ERPNext Agent resource operations. |
 
 _2 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
