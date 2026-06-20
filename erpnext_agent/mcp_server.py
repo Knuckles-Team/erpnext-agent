@@ -5,8 +5,7 @@ import sys
 from typing import Any
 
 from agent_utilities.base_utilities import to_boolean
-from agent_utilities.mcp_utilities import create_mcp_server
-from dotenv import find_dotenv, load_dotenv
+from agent_utilities.mcp_utilities import create_mcp_server, load_config
 from fastmcp.utilities.logging import get_logger
 from starlette.requests import Request
 from starlette.responses import JSONResponse
@@ -19,7 +18,7 @@ logger = get_logger(name="erpnext_agent")
 
 
 def get_mcp_instance() -> tuple[Any, ...]:
-    load_dotenv(find_dotenv())
+    load_config()
     args, mcp, middlewares = create_mcp_server(
         name="ERPNext Agent MCP",
         version=__version__,
