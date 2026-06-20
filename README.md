@@ -118,13 +118,17 @@ A local template is supplied inside [.env.example](.env.example). Copy this file
 
 ## MCP Tools
 
-The following declarative FastMCP tools are registered and available to upstream AI agents:
+_Auto-generated from the live MCP server — do not edit by hand._
 
-| Tool Name | Description | Parameters |
-|-----------|-------------|------------|
-| `get_document` | Get specific Frappe/ERPNext document by doctype and name | `doctype: str, name: str` |
-| `create_document` | Create new Frappe/ERPNext document | `doctype: str, data: dict` |
-| `call_method` | Call a whitelisted ERPNext RPC method | `method: str, params: dict = None` |
+<!-- MCP-TOOLS-TABLE:START -->
+
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `erpnext_agent_authentication` | `AUTHENTICATIONTOOL` | Manage ERPNext Agent authentication operations. |
+| `erpnext_agent_resource` | `RESOURCETOOL` | Manage ERPNext Agent resource operations. |
+
+_2 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+<!-- MCP-TOOLS-TABLE:END -->
 
 See [docs/overview.md](docs/overview.md) or [docs/concepts.md](docs/concepts.md) for deeper operational examples.
 
