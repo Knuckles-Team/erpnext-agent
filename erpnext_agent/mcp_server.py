@@ -1,20 +1,31 @@
 """Main FastMCP server and tool registration."""
 
-import os
 import sys
 from typing import Any
 
-from agent_utilities.base_utilities import to_boolean
-from agent_utilities.mcp_utilities import create_mcp_server, load_config
+from agent_utilities.mcp_utilities import (
+    create_mcp_server,
+    load_config,
+    register_tool_surface,
+)
 from fastmcp.utilities.logging import get_logger
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from erpnext_agent.api_client import Api
+from erpnext_agent.auth import get_client
 from erpnext_agent.mcp.mcp_authentication import register_authentication_tools
 from erpnext_agent.mcp.mcp_resource import register_resource_tools
 
 __version__ = "0.15.0"
 logger = get_logger(name="erpnext_agent")
+
+# (tag, env-toggle, registrar) — explicit so the historical AUTHTOOL env name is
+# preserved rather than auto-derived to AUTHENTICATIONTOOL.
+TOOL_REGISTRY = [
+    ("authentication", "AUTHTOOL", register_authentication_tools),
+    ("resource", "RESOURCETOOL", register_resource_tools),
+]
 
 
 def get_mcp_instance() -> tuple[Any, ...]:
@@ -29,13 +40,13 @@ def get_mcp_instance() -> tuple[Any, ...]:
     async def health_check(request: Request) -> JSONResponse:
         return JSONResponse({"status": "OK"})
 
-    DEFAULT_AUTHTOOL = to_boolean(os.getenv("AUTHTOOL", "True"))
-    if DEFAULT_AUTHTOOL:
-        register_authentication_tools(mcp)
-
-    DEFAULT_RESOURCETOOL = to_boolean(os.getenv("RESOURCETOOL", "True"))
-    if DEFAULT_RESOURCETOOL:
-        register_resource_tools(mcp)
+    register_tool_surface(
+        mcp,
+        client_cls=Api,
+        get_client=get_client,
+        service="erpnext-agent",
+        tool_registry=TOOL_REGISTRY,
+    )
 
     for mw in middlewares:
         mcp.add_middleware(mw)
