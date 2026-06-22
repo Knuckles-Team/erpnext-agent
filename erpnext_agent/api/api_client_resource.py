@@ -30,8 +30,15 @@ class Api(ApiClientBase):
         return self.get_logged_user()
 
     def get_version(self) -> dict:
-        """Get the version of the app."""
-        return self.request("GET", "/api/method/version")
+        """Get installed app versions.
+
+        Frappe has no ``/api/method/version`` command — calling it returns a
+        417 ValidationError ("Failed to get method for command version"). The
+        canonical whitelisted endpoint is
+        ``frappe.utils.change_log.get_versions`` (requires an authenticated
+        session/token).
+        """
+        return self.request("GET", "/api/method/frappe.utils.change_log.get_versions")
 
     def version(self) -> dict:
         """Alias for get_version."""
