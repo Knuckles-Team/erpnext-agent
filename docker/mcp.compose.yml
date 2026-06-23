@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   erpnext-agent-mcp:
-    image: knucklessg1/erpnext-agent:latest
+    image: knucklessg1/erpnext-agent:mcp
     container_name: erpnext-agent-mcp
     hostname: erpnext-agent-mcp
     restart: always
