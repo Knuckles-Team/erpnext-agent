@@ -64,17 +64,48 @@ When query strings or parameters are supplied, an LLM-free **Knowledge Graph res
 
 ## Installation
 
-Install in editable mode directly inside your active workspace:
+Pick the extra that matches what you want to run:
+
+| Extra | Installs | Use when |
+|-------|----------|----------|
+| `erpnext-agent[mcp]` | Slim MCP server only (`agent-utilities[mcp]` — FastMCP/FastAPI) | You only run the **MCP server** (smallest install / image) |
+| `erpnext-agent[agent]` | Full agent runtime (`agent-utilities[agent,logfire]` — Pydantic AI + the epistemic-graph engine) | You run the **integrated agent** |
+| `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
-pip install -e .[all]
+# MCP server only (recommended for tool hosting — slim deps)
+uv pip install "erpnext-agent[mcp]"
+
+# Full agent runtime (Pydantic AI + epistemic-graph engine)
+uv pip install "erpnext-agent[agent]"
+
+# Everything (development)
+uv pip install "erpnext-agent[all]"      # or: python -m pip install "erpnext-agent[all]"
 ```
 
-Or via the `uv` tool:
+### Container images (`:mcp` vs `:agent`)
+
+One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+
+| Image tag | Build target | Contents | Entrypoint |
+|-----------|--------------|----------|------------|
+| `knucklessg1/erpnext-agent:mcp` | `--target mcp` | `erpnext-agent[mcp]` — **slim**, no engine/`pydantic-ai`/`dspy`/`llama-index`/`tree-sitter` | `erpnext-mcp` |
+| `knucklessg1/erpnext-agent:latest` | `--target agent` (default) | `erpnext-agent[agent]` — **full** agent runtime + epistemic-graph engine | `erpnext-agent` |
 
 ```bash
-uv pip install -e .
+docker build --target mcp   -t knucklessg1/erpnext-agent:mcp    docker/   # slim MCP server
+docker build --target agent -t knucklessg1/erpnext-agent:latest docker/   # full agent
 ```
+
+### Knowledge-graph database (`epistemic-graph`)
+
+The **full agent** (`[agent]` / `:latest`) embeds the **epistemic-graph** engine (pulled in
+transitively via `agent-utilities[agent]`). For production — or to share one knowledge graph
+across multiple agents — run **epistemic-graph as its own database container** and point the
+agent at it instead of embedding it. Deployment recipes (single-node + Raft HA), connection
+config, and the full database architecture (with diagrams) are documented in the
+[epistemic-graph deployment guide](https://knuckles-team.github.io/epistemic-graph/deployment/).
+The slim `[mcp]` server does **not** require the database.
 
 ---
 
@@ -105,12 +136,29 @@ python -m erpnext_agent.mcp_server
 
 ## Configuration
 
-The package is fully configurable via the environment variables listed below:
+The package is fully configurable via the environment variables listed below.
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL | `http://localhost:8000` | Yes |
-| `ERPNEXT_TOKEN` | API authentication token (api_key:api_secret) | `your_api_key:your_api_secret` | Yes |
+### Connection & Credentials
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL (falls back to `ERPNEXT_AGENT_BASE_URL`) | `http://localhost:8000` |
+| `ERPNEXT_TOKEN` | API token authentication (`api_key:api_secret`) | — |
+| `ERPNEXT_AGENT_BASE_URL` | Endpoint URL fallback when `ERPNEXT_URL` is unset | — |
+| `ERPNEXT_AGENT_USERNAME` | Username for password-based login | — |
+| `ERPNEXT_AGENT_PASSWORD` | Password for password-based login | — |
+| `ERPNEXT_AGENT_SSL_VERIFY` | TLS certificate verification | `True` |
+
+### MCP server / transport
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `TRANSPORT` | `stdio`, `streamable-http`, or `sse` | `stdio` |
+| `HOST` | Bind host (HTTP transports) | `0.0.0.0` |
+| `PORT` | Bind port (HTTP transports) | `8000` |
+| `MCP_TOOL_MODE` | Tool surface: `condensed`, `verbose`, or `both` | `condensed` |
+
+### Tool toggles
+Each action-routed tool can be disabled individually via its toggle env var (set to `false`):
+`AUTHTOOL`, `RESOURCETOOL` (see the [MCP Tools](#mcp-tools) table above).
 
 A local template is supplied inside [.env.example](.env.example). Copy this file as `.env` and fill out your specific service endpoint parameters before starting execution.
 
@@ -129,6 +177,37 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 _2 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
+
+### MCP Configuration Examples
+
+> **Install the slim `[mcp]` extra.** All examples below install
+> `erpnext-agent[mcp]` — the MCP-server extra that pulls only the FastMCP /
+> FastAPI tooling (`agent-utilities[mcp]`). It deliberately **excludes** the heavy
+> agent runtime (the epistemic-graph engine, `pydantic-ai`, `dspy`, `llama-index`,
+> `tree-sitter`), so `uvx`/container installs are dramatically smaller and faster.
+> Use the full `[agent]` extra only when you need the integrated Pydantic AI agent
+> (see [Installation](#installation)).
+
+Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
+
+```json
+{
+  "mcpServers": {
+    "erpnext-agent": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "erpnext-agent[mcp]",
+        "erpnext-mcp"
+      ],
+      "env": {
+        "ERPNEXT_URL": "your_erpnext_url_here",
+        "ERPNEXT_TOKEN": "your_api_key:your_api_secret"
+      }
+    }
+  }
+}
+```
 
 See [docs/overview.md](docs/overview.md) or [docs/concepts.md](docs/concepts.md) for deeper operational examples.
 
@@ -161,10 +240,11 @@ graph TD
 4. Run: `python -m erpnext_agent.mcp_server`
 
 ### Container (Docker Compose)
-A standard compose structure is provided inside the `docker/` folder. Build and deploy:
+A standard compose structure is provided inside the `docker/` folder.
+`docker/mcp.compose.yml` runs the slim `knucklessg1/erpnext-agent:mcp` server. Deploy with:
 
 ```bash
-docker compose -f docker/compose.yml up --build -d
+docker compose -f docker/mcp.compose.yml up -d
 ```
 
 ---
