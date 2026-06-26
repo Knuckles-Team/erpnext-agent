@@ -20,10 +20,9 @@ from erpnext_agent.mcp.mcp_resource import register_resource_tools
 __version__ = "0.15.0"
 logger = get_logger(name="erpnext_agent")
 
-# (tag, env-toggle, registrar) — explicit so the historical AUTHTOOL env name is
-# preserved rather than auto-derived to AUTHENTICATIONTOOL.
+# (tag, env-toggle, registrar) — env names are the framework-derived <TAG>TOOL form.
 TOOL_REGISTRY = [
-    ("authentication", "AUTHTOOL", register_authentication_tools),
+    ("authentication", "AUTHENTICATIONTOOL", register_authentication_tools),
     ("resource", "RESOURCETOOL", register_resource_tools),
 ]
 

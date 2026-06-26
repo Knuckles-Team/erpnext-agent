@@ -158,7 +158,7 @@ The package is fully configurable via the environment variables listed below.
 
 ### Tool toggles
 Each action-routed tool can be disabled individually via its toggle env var (set to `false`):
-`AUTHTOOL`, `RESOURCETOOL` (see the [MCP Tools](#mcp-tools) table above).
+`AUTHENTICATIONTOOL`, `RESOURCETOOL` (see the [MCP Tools](#mcp-tools) table above).
 
 A local template is supplied inside [.env.example](.env.example). Copy this file as `.env` and fill out your specific service endpoint parameters before starting execution.
 
@@ -170,12 +170,37 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 <!-- MCP-TOOLS-TABLE:START -->
 
+#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+
 | MCP Tool | Toggle Env Var | Description |
 |----------|----------------|-------------|
-| `erpnext_agent_authentication` | `AUTHTOOL` | Manage ERPNext Agent authentication operations. |
+| `erpnext_agent_authentication` | `AUTHENTICATIONTOOL` | Manage ERPNext Agent authentication operations. |
 | `erpnext_agent_resource` | `RESOURCETOOL` | Manage ERPNext Agent resource operations. |
 
-_2 action-routed tools (default `MCP_TOOL_MODE=condensed`). Each is enabled unless its toggle is set false; set `MCP_TOOL_MODE=verbose` (or `both`) for the 1:1 per-operation surface. Auto-generated — do not edit._
+#### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
+
+<details>
+<summary>13 per-operation tools — one per public API method (click to expand)</summary>
+
+| MCP Tool | Toggle Env Var | Description |
+|----------|----------------|-------------|
+| `erpnext_authGetLoggedUser` | `APITOOL` | Alias for get_logged_user matching OpenAPI operationId. |
+| `erpnext_auth_get_logged_user` | `APITOOL` | Snake-case alias for get_logged_user. |
+| `erpnext_call_method` | `APITOOL` | Execute dotted path whitelisted RPC methods (covers 100% of custom functions). |
+| `erpnext_create_document` | `APITOOL` | Create a new document resource. |
+| `erpnext_delete_document` | `APITOOL` | Delete a specific document resource. |
+| `erpnext_get_document` | `APITOOL` | Get a document resource by name. |
+| `erpnext_get_logged_user` | `APITOOL` | Get the user that is logged in. |
+| `erpnext_get_version` | `APITOOL` | Get installed app versions. |
+| `erpnext_list_documents` | `APITOOL` | List document resources with pagination, filters, and selected fields. |
+| `erpnext_login` | `APITOOL` | Authenticate yourself. |
+| `erpnext_logout` | `APITOOL` | Logout from current session. |
+| `erpnext_update_document` | `APITOOL` | Update a specific document resource. |
+| `erpnext_version` | `APITOOL` | Alias for get_version. |
+
+</details>
+
+_2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### MCP Configuration Examples
@@ -336,7 +361,7 @@ Secrets are read-existing + seeded via `vault_sync` — you are only prompted fo
 | `ERPNEXT_AGENT_USERNAME` | `your_username` | Username / password login (alternative to token auth) |
 | `ERPNEXT_AGENT_PASSWORD` | `your_password` |  |
 | `ERPNEXT_AGENT_SSL_VERIFY` | `True` |  |
-| `AUTHTOOL` | `True` |  |
+| `AUTHENTICATIONTOOL` | `True` |  |
 | `RESOURCETOOL` | `True` |  |
 
 #### Inherited agent-utilities variables (apply to every connector)

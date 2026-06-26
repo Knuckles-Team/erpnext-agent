@@ -198,7 +198,7 @@ Optional connection and runtime settings:
 | `ERPNEXT_AGENT_USERNAME` | _(empty)_ | Username for session login (alternative to a token) |
 | `ERPNEXT_AGENT_PASSWORD` | _(empty)_ | Password for session login |
 | `ERPNEXT_AGENT_SSL_VERIFY` | `True` | Verify TLS (set `False` for self-signed homelab certs) |
-| `AUTHTOOL` | `True` | Register the authentication tool set |
+| `AUTHENTICATIONTOOL` | `True` | Register the authentication tool set |
 | `RESOURCETOOL` | `True` | Register the resource (document/method) tool set |
 | `HOST` / `PORT` / `TRANSPORT` | `0.0.0.0` / `8000` / `stdio` | HTTP transport binding |
 

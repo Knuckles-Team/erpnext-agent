@@ -4,10 +4,9 @@
       "command": "/home/apps/workspace/.venv/bin/erpnext-mcp",
       "args": [],
       "env": {
+        "MCP_TOOL_MODE": "condensed",
         "ERPNEXT_URL": "http://localhost:8000",
-        "ERPNEXT_TOKEN": "",
-        "FASTMCP_CHECK_FOR_UPDATES": "off",
-        "FASTMCP_SHOW_SERVER_BANNER": "false"
+        "ERPNEXT_TOKEN": ""
       },
       "disabled": false
     }
