@@ -5,8 +5,13 @@
       "args": [],
       "env": {
         "MCP_TOOL_MODE": "condensed",
+        "AUTHENTICATIONTOOL": "True",
+        "ERPNEXT_AGENT_BASE_URL": "http://localhost:8000",
+        "ERPNEXT_AGENT_PASSWORD": "your_password",
+        "ERPNEXT_AGENT_USERNAME": "your_username",
+        "ERPNEXT_TOKEN": "your_api_key:your_api_secret",
         "ERPNEXT_URL": "http://localhost:8000",
-        "ERPNEXT_TOKEN": ""
+        "RESOURCETOOL": "True"
       },
       "disabled": false
     }

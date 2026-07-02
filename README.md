@@ -205,20 +205,20 @@ _2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled un
 
 ### MCP Configuration Examples
 
-> **Install the slim `[mcp]` extra.** All examples below install
-> `erpnext-agent[mcp]` — the MCP-server extra that pulls only the FastMCP /
-> FastAPI tooling (`agent-utilities[mcp]`). It deliberately **excludes** the heavy
-> agent runtime (the epistemic-graph engine, `pydantic-ai`, `dspy`, `llama-index`,
-> `tree-sitter`), so `uvx`/container installs are dramatically smaller and faster.
-> Use the full `[agent]` extra only when you need the integrated Pydantic AI agent
-> (see [Installation](#installation)).
+<!-- MCP-CONFIG-EXAMPLES:START -->
 
-Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
+> **Install the slim `[mcp]` extra.** All examples install `erpnext-agent[mcp]` — the
+> MCP-server extra that pulls only the FastMCP / FastAPI tooling (`agent-utilities[mcp]`).
+> It deliberately **excludes** the heavy agent runtime (`pydantic-ai`, the epistemic-graph
+> engine, `dspy`, `llama-index`), so `uvx` / container installs are far smaller. Use the
+> full `[agent]` extra only when you need the integrated Pydantic AI agent.
+
+#### stdio Transport (local IDEs — Cursor, Claude Desktop, VS Code)
 
 ```json
 {
   "mcpServers": {
-    "erpnext-agent": {
+    "erpnext-mcp": {
       "command": "uvx",
       "args": [
         "--from",
@@ -226,53 +226,88 @@ Configure your IDE's `mcp.json` to launch the MCP server via `uvx`:
         "erpnext-mcp"
       ],
       "env": {
-        "ERPNEXT_URL": "your_erpnext_url_here",
-        "ERPNEXT_TOKEN": "your_api_key:your_api_secret"
+        "MCP_TOOL_MODE": "condensed",
+        "AUTHENTICATIONTOOL": "True",
+        "ERPNEXT_AGENT_BASE_URL": "http://localhost:8000",
+        "ERPNEXT_AGENT_PASSWORD": "your_password",
+        "ERPNEXT_AGENT_USERNAME": "your_username",
+        "ERPNEXT_TOKEN": "your_api_key:your_api_secret",
+        "ERPNEXT_URL": "http://localhost:8000",
+        "RESOURCETOOL": "True"
       }
     }
   }
 }
 ```
 
-See [docs/overview.md](docs/overview.md) or [docs/concepts.md](docs/concepts.md) for deeper operational examples.
+#### Streamable-HTTP Transport (networked / production)
 
----
-
-## Architecture
-
-This package uses the standardized Agent-Utilities dynamic facade architecture:
-
-```mermaid
-graph TD
-    User([User Agent]) --> Server[FastMCP Server]
-    Server --> Facade[Api Dynamic Facade]
-    Facade --> ClientBase[ApiClientBase]
-    Facade --> Auth[Credentials Auth Handler]
-    ClientBase --> Service([External Service API])
+```json
+{
+  "mcpServers": {
+    "erpnext-mcp": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "erpnext-agent[mcp]",
+        "erpnext-mcp",
+        "--transport",
+        "streamable-http",
+        "--port",
+        "8000"
+      ],
+      "env": {
+        "TRANSPORT": "streamable-http",
+        "HOST": "0.0.0.0",
+        "PORT": "8000",
+        "MCP_TOOL_MODE": "condensed",
+        "AUTHENTICATIONTOOL": "True",
+        "ERPNEXT_AGENT_BASE_URL": "http://localhost:8000",
+        "ERPNEXT_AGENT_PASSWORD": "your_password",
+        "ERPNEXT_AGENT_USERNAME": "your_username",
+        "ERPNEXT_TOKEN": "your_api_key:your_api_secret",
+        "ERPNEXT_URL": "http://localhost:8000",
+        "RESOURCETOOL": "True"
+      }
+    }
+  }
+}
 ```
 
----
+Alternatively, connect to a pre-deployed Streamable-HTTP instance by `url`:
 
-## Deployment
+```json
+{
+  "mcpServers": {
+    "erpnext-mcp": {
+      "url": "http://localhost:8000/erpnext-mcp/mcp"
+    }
+  }
+}
+```
 
-### Bare-Metal (Standard pip)
-1. Set up your Python virtual environment (>= 3.10).
-2. Install the package: `pip install .[all]`
-3. Export credentials:
-   ```bash
-   export ERPNEXT_URL="http://localhost:8000"
-   ```
-4. Run: `python -m erpnext_agent.mcp_server`
-
-### Container (Docker Compose)
-A standard compose structure is provided inside the `docker/` folder.
-`docker/mcp.compose.yml` runs the slim `knucklessg1/erpnext-agent:mcp` server. Deploy with:
+Deploying the Streamable-HTTP server via Docker:
 
 ```bash
-docker compose -f docker/mcp.compose.yml up -d
+docker run -d \
+  --name erpnext-mcp-mcp \
+  -p 8000:8000 \
+  -e TRANSPORT=streamable-http \
+  -e HOST=0.0.0.0 \
+  -e PORT=8000 \
+  -e MCP_TOOL_MODE=condensed \
+  -e AUTHENTICATIONTOOL=True \
+  -e ERPNEXT_AGENT_BASE_URL=http://localhost:8000 \
+  -e ERPNEXT_AGENT_PASSWORD=your_password \
+  -e ERPNEXT_AGENT_USERNAME=your_username \
+  -e ERPNEXT_TOKEN=your_api_key:your_api_secret \
+  -e ERPNEXT_URL=http://localhost:8000 \
+  -e RESOURCETOOL=True \
+  knucklessg1/erpnext-agent:mcp
 ```
 
----
+_Auto-generated from the code-read env surface (`MCP_TOOL_MODE` + package vars) — do not edit._
+<!-- MCP-CONFIG-EXAMPLES:END -->
 
 <!-- BEGIN GENERATED: additional-deployment-options -->
 ### Additional Deployment Options
