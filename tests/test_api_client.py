@@ -5,16 +5,16 @@ import pytest
 from erpnext_agent.api_client import Api
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_api_client_basic_mock(mock_ctx):
-    """CONCEPT:ERPN-001 Test basic mock initialization of client facade."""
+    """CONCEPT:EN-OS.governance.erpn Test basic mock initialization of client facade."""
     assert mock_ctx is not None
     assert hasattr(mock_ctx, "info")
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_api_client_endpoints(mock_ctx):
-    """CONCEPT:ERPN-001 Verify endpoint configuration on dynamic client."""
+    """CONCEPT:EN-OS.governance.erpn Verify endpoint configuration on dynamic client."""
     from erpnext_agent.auth import get_client
 
     client = get_client()
@@ -22,7 +22,7 @@ def test_api_client_endpoints(mock_ctx):
     assert hasattr(client, "request")
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_base_url_normalization():
     """Verify that trailing slashes and /api prefix are stripped from base_url."""
     c1 = Api(base_url="https://demo.erpnext.com/api")
@@ -35,7 +35,7 @@ def test_base_url_normalization():
     assert c3.base_url == "https://demo.erpnext.com"
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_token_authorization_formats():
     """Verify that different token formats are correctly formatted in authorization headers."""
     # Colon key:secret should format as 'token key:secret'
@@ -55,7 +55,7 @@ def test_token_authorization_formats():
     assert c4._session.headers.get("Authorization") == "Bearer simpletoken"
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_list_documents_parameter_serialization():
     """Verify list_documents properly serializes fields, filters, and pagination."""
     client = Api(base_url="http://localhost")
@@ -80,7 +80,7 @@ def test_list_documents_parameter_serialization():
         )
 
 
-@pytest.mark.concept("ERPN-001")
+@pytest.mark.concept("EN-OS.governance.erpn")
 def test_auth_and_version_methods():
     """Verify all Naive Authentication endpoints are mapped correctly."""
     client = Api(base_url="http://localhost")

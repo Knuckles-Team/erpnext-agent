@@ -3,9 +3,9 @@
 > Claude Code loads this file via `CLAUDE.md` (`@AGENTS.md` import) — the two stay
 > in sync. Edit **this** file, not `CLAUDE.md`.
 
-<!-- CONCEPT:ERPN-001 -->
-<!-- CONCEPT:ERPN-002 -->
-<!-- CONCEPT:ERPN-003 -->
+<!-- CONCEPT:EN-OS.governance.erpn -->
+<!-- CONCEPT:EN-OS.governance.erpn-2 -->
+<!-- CONCEPT:EN-OS.identity.erpn -->
 
 This file acts as a machine-readable README for AI coding agents collaborating on this repository.
 
@@ -84,10 +84,10 @@ pytest -v
 
 | Concept ID | Name | Description |
 |------------|------|-------------|
-| `CONCEPT:ERPN-001` | Core API Client Operations | Dynamic API facade client integration |
-| `CONCEPT:ERPN-002` | FastMCP Tools Execution | FastMCP tool registration and stdio handling |
-| `CONCEPT:ERPN-003` | Identity & Gateway Security | Credential validation and SSL verification |
-| `CONCEPT:ECO-4.0` | Ecosystem Compliance | Multi-package integration compliance standard |
+| `CONCEPT:EN-OS.governance.erpn` | Core API Client Operations | Dynamic API facade client integration |
+| `CONCEPT:EN-OS.governance.erpn-2` | FastMCP Tools Execution | FastMCP tool registration and stdio handling |
+| `CONCEPT:EN-OS.identity.erpn` | Identity & Gateway Security | Credential validation and SSL verification |
+| `CONCEPT:AU-ECO.messaging.native-backend-abstraction` | Ecosystem Compliance | Multi-package integration compliance standard |
 
 ---
 
@@ -218,7 +218,7 @@ alone).
 Working in parallel with other sessions/worktrees? **Reserve a concept id before you write its `CONCEPT:` marker** so two sessions never collide:
 
 ```bash
-agent-utilities --json concept reserve --ns KG-2   # or a package prefix, e.g. KEY
+agent-utilities --json concept reserve --ns EG-KG.compute.backend   # or a package prefix, e.g. KEY
 ```
 
 Full protocol (ledger, merge=union, reconcile, MCP/REST): <https://knuckles-team.github.io/agent-utilities/concept_coordination/>

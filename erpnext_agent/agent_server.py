@@ -18,7 +18,7 @@ DEFAULT_AGENT_SYSTEM_PROMPT = None
 
 def agent_server():
     """Start graph-based Pydantic AI agent server.
-    CONCEPT:ERPN-007
+    CONCEPT:EN-OS.config.erpn
     """
     from agent_utilities import (
         build_system_prompt_from_workspace,

@@ -5,10 +5,10 @@ import pytest
 from erpnext_agent.mcp_server import get_mcp_instance
 
 
-@pytest.mark.concept("ERPN-002")
+@pytest.mark.concept("EN-OS.governance.erpn-2")
 @pytest.mark.asyncio
 async def test_mcp_server_registration():
-    """CONCEPT:ERPN-002 Test that tools register successfully."""
+    """CONCEPT:EN-OS.governance.erpn-2 Test that tools register successfully."""
     res = get_mcp_instance()
     mcp = res[0] if isinstance(res, tuple) else res
     assert mcp is not None
@@ -22,16 +22,16 @@ async def test_mcp_server_registration():
     assert "erpnext_agent_resource" in tool_names
 
 
-@pytest.mark.concept("ERPN-003")
+@pytest.mark.concept("EN-OS.identity.erpn")
 def test_mcp_server_security_context():
-    """CONCEPT:ERPN-003 Verify that the server registers with correct security credentials."""
+    """CONCEPT:EN-OS.identity.erpn Verify that the server registers with correct security credentials."""
     from erpnext_agent.auth import get_client
 
     client = get_client()
     assert client is not None
 
 
-@pytest.mark.concept("ERPN-002")
+@pytest.mark.concept("EN-OS.governance.erpn-2")
 @pytest.mark.asyncio
 async def test_mcp_server_authentication_dispatch():
     """Verify erpnext_agent_authentication routes calls dynamically."""
@@ -58,7 +58,7 @@ async def test_mcp_server_authentication_dispatch():
     assert result == {"status": "Logged in"}
 
 
-@pytest.mark.concept("ERPN-002")
+@pytest.mark.concept("EN-OS.governance.erpn-2")
 @pytest.mark.asyncio
 async def test_mcp_server_resource_dispatch():
     """Verify erpnext_agent_resource routes calls dynamically."""

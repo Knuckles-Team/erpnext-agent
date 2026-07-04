@@ -123,7 +123,7 @@ xychart-beta
 
 | Criterion | Points | Evidence | Reasoning |
 |-----------|--------|----------|-----------|
-| Concept IDs tagging | 95 | `ERPN-001, ERPN-002, ERPN-003 found in tests and code` | Bidirectional concept ID tagging matches specification |
+| Concept IDs tagging | 95 | `EN-OS.governance.erpn, EN-OS.governance.erpn-2, EN-OS.identity.erpn found in tests and code` | Bidirectional concept ID tagging matches specification |
 
 ---
 

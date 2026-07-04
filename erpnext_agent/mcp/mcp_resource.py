@@ -9,7 +9,7 @@ from erpnext_agent.auth import get_client
 
 def register_resource_tools(mcp: FastMCP):
     """Register ERPNext Agent resource tools.
-    CONCEPT:ERPN-001
+    CONCEPT:EN-OS.governance.erpn
     """
 
     @mcp.tool(tags={"resource"})
