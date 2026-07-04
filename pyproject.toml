@@ -33,6 +33,12 @@ erpnext-agent = "erpnext_agent.skills"
 [project.entry-points."agent_utilities.prompt_providers"]
 erpnext-agent = "erpnext_agent.prompts"
 
+# CONCEPT:KG-2.325 — federate this package's OWL/RDF ontology module into the
+# agent-utilities hub (DocTypes, customers, sales orders). Resolved via
+# iter_provider_dirs like the skill/prompt providers.
+[project.entry-points."agent_utilities.ontology_providers"]
+erpnext-agent = "erpnext_agent.ontology"
+
 [tool.setuptools]
 include-package-data = true
 
@@ -49,7 +55,7 @@ check_untyped_defs = true
 dev = [ "pytest-timeout>=2.4.0",]
 
 [tool.setuptools.package-data]
-erpnext_agent = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**",]
+erpnext_agent = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**", "ontology/**",]
 
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]
