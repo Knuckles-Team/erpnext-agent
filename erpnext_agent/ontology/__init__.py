@@ -1,4 +1,4 @@
-"""ERPNext / Frappe ontology contribution (CONCEPT:KG-2.325).
+"""ERPNext / Frappe ontology contribution (CONCEPT:AU-KG.ontology.package-federation-migration).
 
 Data-only subpackage: it carries ``erpnext.ttl`` (the ``owl:Ontology``
 ``http://knuckles.team/kg/erpnext`` module — DocTypes, customers, sales orders

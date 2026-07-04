@@ -33,7 +33,7 @@ erpnext-agent = "erpnext_agent.skills"
 [project.entry-points."agent_utilities.prompt_providers"]
 erpnext-agent = "erpnext_agent.prompts"
 
-# CONCEPT:KG-2.325 — federate this package's OWL/RDF ontology module into the
+# CONCEPT:AU-KG.ontology.package-federation-migration — federate this package's OWL/RDF ontology module into the
 # agent-utilities hub (DocTypes, customers, sales orders). Resolved via
 # iter_provider_dirs like the skill/prompt providers.
 [project.entry-points."agent_utilities.ontology_providers"]
