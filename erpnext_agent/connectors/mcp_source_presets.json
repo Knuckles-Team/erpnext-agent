@@ -1,0 +1,29 @@
+{
+  "_comment": "Tier-1 mcp_tool source presets for erpnext-agent (AU-KG.ingest.mcp-tool-connector). Sync Frappe DocTypes into the KG as documents via the erpnext-agent MCP server's condensed resource tool. Each preset pins a doctype through params; records come back under the response 'data' key. For typed-node ingestion prefer the native erpnext_ingest tool / erpnext_agent.kg_ingest. Contributed presets win over the central MCP_TOOL_PRESETS.",
+  "erpnext-sales-orders": {
+    "server": "erpnext-agent",
+    "tool": "erpnext_agent_resource",
+    "action": "list_documents",
+    "params": {"doctype": "Sales Order", "fields": ["name", "customer", "grand_total", "docstatus", "transaction_date", "status"]},
+    "records_path": "data",
+    "id_field": "name",
+    "title_field": "name",
+    "text_field": "status",
+    "updated_field": "transaction_date",
+    "pagination": "offset",
+    "page_param": "limit_start",
+    "page_size_param": "limit_page_length",
+    "doc_type": "erpnext_sales_order"
+  },
+  "erpnext-items": {
+    "server": "erpnext-agent",
+    "tool": "erpnext_agent_resource",
+    "action": "list_documents",
+    "params": {"doctype": "Item", "fields": ["name", "item_code", "item_name", "item_group", "description"]},
+    "records_path": "data",
+    "id_field": "name",
+    "title_field": "item_name",
+    "text_field": "description",
+    "doc_type": "erpnext_item"
+  }
+}

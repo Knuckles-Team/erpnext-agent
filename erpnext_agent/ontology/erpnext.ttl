@@ -10,6 +10,46 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+# ERPNext / Frappe ERP ontology — parties, catalog, sales/purchase orders, invoices and HR.
+# All classes and properties live in the shared `:` (kg#) namespace; only the owl:Ontology
+# node gets the per-package IRI. Backs the erpnext-agent MCP tool surface (Frappe DocType
+# CRUD + the native `erpnext_ingest` KG tool). ERPNext docstatus is 0=Draft, 1=Submitted,
+# 2=Cancelled; monetary DocTypes carry grand_total; postings carry posting_date.
+
+# --- classes (owl:Class) ---
+
+:Customer a owl:Class ;
+    rdfs:label "Customer" ;
+    rdfs:comment "A party that places sales orders (Frappe Customer doctype)." .
+
+:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment "A party that goods/services are purchased from (Frappe Supplier doctype)." .
+
+:Item a owl:Class ;
+    rdfs:label "Item" ;
+    rdfs:comment "A sellable/stockable product or service (Frappe Item doctype)." .
+
+:SalesOrder a owl:Class ;
+    rdfs:label "Sales Order" ;
+    rdfs:comment "A confirmed customer order (Frappe Sales Order doctype)." .
+
+:PurchaseOrder a owl:Class ;
+    rdfs:label "Purchase Order" ;
+    rdfs:comment "A confirmed order placed on a supplier (Frappe Purchase Order doctype)." .
+
+:Invoice a owl:Class ;
+    rdfs:label "Invoice" ;
+    rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." .
+
+:Employee a owl:Class ;
+    rdfs:label "Employee" ;
+    rdfs:comment "A person employed by the organization (Frappe Employee doctype)." .
+
+:OrgUnit a owl:Class ;
+    rdfs:label "Organizational Unit" ;
+    rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." .
+
 :ErpNextIssue a owl:Class ;
     rdfs:label "ERPNext Issue" ;
     rdfs:comment """A Frappe/ERPNext Issue doctype record — the ERPNext analogue
@@ -17,19 +57,35 @@
     canonical :ApplicationEvent in ontology_archimate.ttl, so it is
     interchangeable with ServiceNow incidents in cross-vendor queries.""" .
 
-:Item a owl:Class ;
-    rdfs:label "Item" ;
-    rdfs:comment "A sellable/stockable product or service (Frappe Item doctype)." .
+# --- links (owl:ObjectProperty) ---
 
-:employeeName a owl:DatatypeProperty ;
-    rdfs:label "employee name" ;
-    rdfs:domain :Employee ;
-    rdfs:range xsd:string .
-
-:grandTotal a owl:DatatypeProperty ;
-    rdfs:label "grand total" ;
+:orderedBy a owl:ObjectProperty ;
+    rdfs:label "ordered by" ;
+    rdfs:comment "Links a SalesOrder or sales Invoice to the Customer that placed it." ;
     rdfs:domain :SalesOrder ;
-    rdfs:range xsd:float .
+    rdfs:range :Customer .
+
+:suppliedBy a owl:ObjectProperty ;
+    rdfs:label "supplied by" ;
+    rdfs:comment "Links a PurchaseOrder or purchase Invoice to the Supplier fulfilling it." ;
+    rdfs:domain :PurchaseOrder ;
+    rdfs:range :Supplier .
+
+:contains a owl:ObjectProperty ;
+    rdfs:label "contains" ;
+    rdfs:comment "Links a SalesOrder, PurchaseOrder, or Invoice to a line Item it includes." ;
+    rdfs:range :Item .
+
+:billedOn a owl:ObjectProperty ;
+    rdfs:label "billed on" ;
+    rdfs:comment "Links an Invoice to the SalesOrder or PurchaseOrder it bills." ;
+    rdfs:domain :Invoice .
+
+:placedBy a owl:ObjectProperty ;
+    rdfs:label "placed by" ;
+    rdfs:comment "Links a sales order to the customer that placed it (alias of :orderedBy)." ;
+    rdfs:domain :SalesOrder ;
+    rdfs:range :Customer .
 
 :memberOf a owl:ObjectProperty ;
     rdfs:label "member of" ;
@@ -37,31 +93,32 @@
     rdfs:domain :Employee ;
     rdfs:range :OrgUnit .
 
-:placedBy a owl:ObjectProperty ;
-    rdfs:label "placed by" ;
-    rdfs:comment "Links a sales order to the customer that placed it." ;
-    rdfs:domain :SalesOrder ;
-    rdfs:range :Customer .
+# --- fields (owl:DatatypeProperty) ---
+
+:grandTotal a owl:DatatypeProperty ;
+    rdfs:label "grand total" ;
+    rdfs:comment "Rounded document total (grand_total) of a SalesOrder, PurchaseOrder, or Invoice." ;
+    rdfs:range xsd:float .
+
+:docStatus a owl:DatatypeProperty ;
+    rdfs:label "doc status" ;
+    rdfs:comment "Frappe submission state: 0=Draft, 1=Submitted, 2=Cancelled (docstatus)." ;
+    rdfs:range xsd:integer .
+
+:postingDate a owl:DatatypeProperty ;
+    rdfs:label "posting date" ;
+    rdfs:comment "Accounting posting/transaction date of an Invoice or order (posting_date / transaction_date)." ;
+    rdfs:range xsd:date .
+
+:employeeName a owl:DatatypeProperty ;
+    rdfs:label "employee name" ;
+    rdfs:domain :Employee ;
+    rdfs:range xsd:string .
 
 <http://knuckles.team/kg/erpnext> a owl:Ontology ;
-    rdfs:label "ERPNext/Frappe Source Ontology" ;
-    rdfs:comment """HR/sales entities sourced from an ERPNext (Frappe) instance:
-employees, customers, sales orders, items, and organizational units.""" ;
-    owl:imports <http://knuckles.team/kg> .
-
-:Customer a owl:Class ;
-    rdfs:label "Customer" ;
-    rdfs:comment "A party that places sales orders (Frappe Customer doctype)." .
-
-:OrgUnit a owl:Class ;
-    rdfs:label "Organizational Unit" ;
-    rdfs:comment "A department or organizational unit an employee belongs to." .
-
-:Employee a owl:Class ;
-    rdfs:label "Employee" ;
-    rdfs:comment "A person employed by the organization (Frappe Employee doctype)." .
-
-:SalesOrder a owl:Class ;
-    rdfs:label "Sales Order" ;
-    rdfs:comment "A confirmed customer order (Frappe Sales Order doctype)." .
-
+    rdfs:label "ERPNext/Frappe ERP Ontology" ;
+    rdfs:comment """ERP entities sourced from an ERPNext (Frappe) instance — customers,
+suppliers, items, sales and purchase orders, invoices, employees and org units — with
+their ordering, supply, line-item and billing relationships, federated into the
+agent-utilities knowledge-graph hub over the enterprise layer.""" ;
+    owl:imports <http://knuckles.team/kg/enterprise> .

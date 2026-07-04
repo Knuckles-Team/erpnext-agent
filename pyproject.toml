@@ -39,6 +39,11 @@ erpnext-agent = "erpnext_agent.prompts"
 [project.entry-points."agent_utilities.ontology_providers"]
 erpnext-agent = "erpnext_agent.ontology"
 
+# CONCEPT:AU-KG.ingest.mcp-tool-connector — in-repo Tier-1 mcp_tool source preset so the
+# package syncs Frappe DocTypes into the KG via source_sync with no agent-utilities code.
+[project.entry-points."agent_utilities.source_connector_providers"]
+erpnext-agent = "erpnext_agent.connectors"
+
 [tool.setuptools]
 include-package-data = true
 
@@ -55,7 +60,7 @@ check_untyped_defs = true
 dev = [ "pytest-timeout>=2.4.0",]
 
 [tool.setuptools.package-data]
-erpnext_agent = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**", "ontology/**",]
+erpnext_agent = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**", "ontology/**", "connectors/**",]
 
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]
