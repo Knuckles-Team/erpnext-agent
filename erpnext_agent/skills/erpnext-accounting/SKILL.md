@@ -1,5 +1,6 @@
 ---
 name: erpnext-accounting
+skill_type: skill
 description: >-
   Accounts-receivable/payable operations on ERPNext (Frappe) via the erpnext-agent
   MCP server — list, read, and create Sales Order, Purchase Order, Sales Invoice and

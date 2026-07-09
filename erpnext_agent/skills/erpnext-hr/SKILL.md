@@ -1,5 +1,6 @@
 ---
 name: erpnext-hr
+skill_type: skill
 description: >-
   Human-resources operations on ERPNext (Frappe) via the erpnext-agent MCP server —
   list, read, and create Employee (and Department) DocTypes, and natively ingest them

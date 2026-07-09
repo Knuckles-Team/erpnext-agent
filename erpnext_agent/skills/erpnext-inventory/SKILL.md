@@ -1,5 +1,6 @@
 ---
 name: erpnext-inventory
+skill_type: skill
 description: >-
   Item-catalog and stock operations on ERPNext (Frappe) via the erpnext-agent MCP
   server — list, read, and create Item, Customer and Supplier DocTypes, and natively
