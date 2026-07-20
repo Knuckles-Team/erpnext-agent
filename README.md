@@ -68,15 +68,15 @@ Pick the extra that matches what you want to run:
 
 | Extra | Installs | Use when |
 |-------|----------|----------|
-| `erpnext-agent[mcp]` | Slim MCP server only (`agent-utilities[mcp]` — FastMCP/FastAPI) | You only run the **MCP server** (smallest install / image) |
-| `erpnext-agent[agent]` | Full agent runtime (`agent-utilities[agent,logfire]` — Pydantic AI + the epistemic-graph engine) | You run the **integrated agent** |
+| `erpnext-agent[mcp]` | Connector-focused MCP server (`agent-utilities[mcp]` — FastMCP/FastAPI + `epistemic-graph[full]`) | You only run the **MCP server** (smallest install / image) |
+| `erpnext-agent[agent]` | Agent runtime (`agent-utilities[agent-runtime,logfire]` — model orchestration + `epistemic-graph[full]`) | You run the **integrated agent** |
 | `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
-# MCP server only (recommended for tool hosting — slim deps)
+# Connector-focused MCP server (includes the shared graph engine)
 uv pip install "erpnext-agent[mcp]"
 
-# Full agent runtime (Pydantic AI + epistemic-graph engine)
+# Agent runtime (adds model orchestration to the shared graph engine)
 uv pip install "erpnext-agent[agent]"
 
 # Everything (development)
@@ -89,23 +89,24 @@ One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `
 
 | Image tag | Build target | Contents | Entrypoint |
 |-----------|--------------|----------|------------|
-| `knucklessg1/erpnext-agent:mcp` | `--target mcp` | `erpnext-agent[mcp]` — **slim**, no engine/`pydantic-ai`/`dspy`/`llama-index`/`tree-sitter` | `erpnext-mcp` |
-| `knucklessg1/erpnext-agent:latest` | `--target agent` (default) | `erpnext-agent[agent]` — **full** agent runtime + epistemic-graph engine | `erpnext-agent` |
+| `example/erpnext-agent:mcp` | `--target mcp` | `erpnext-agent[mcp]` — **connector-focused**, includes `epistemic-graph[full]`; no model-orchestration stack | `erpnext-mcp` |
+| `example/erpnext-agent@sha256:<digest>` | `--target agent` (default) | `erpnext-agent[agent]` — **agent runtime**, model orchestration + `epistemic-graph[full]` | `erpnext-agent` |
 
 ```bash
-docker build --target mcp   -t knucklessg1/erpnext-agent:mcp    docker/   # slim MCP server
-docker build --target agent -t knucklessg1/erpnext-agent:latest docker/   # full agent
+docker build --target mcp   -t example/erpnext-agent:mcp    docker/   # connector-focused MCP server
+docker build --target agent -t example/erpnext-agent:agent-local docker/   # agent runtime
 ```
 
 ### Knowledge-graph database (`epistemic-graph`)
 
-The **full agent** (`[agent]` / `:latest`) embeds the **epistemic-graph** engine (pulled in
-transitively via `agent-utilities[agent]`). For production — or to share one knowledge graph
-across multiple agents — run **epistemic-graph as its own database container** and point the
-agent at it instead of embedding it. Deployment recipes (single-node + Raft HA), connection
-config, and the full database architecture (with diagrams) are documented in the
+Both `[mcp]` and `[agent]` carry the **epistemic-graph** engine through the required
+Agent Utilities core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
+the server connector-focused; `[agent]` additionally enables model orchestration. Local
+deployments can use the bundled engine. For production or shared state, run
+**epistemic-graph as a dedicated database service** and configure the runtime to use it.
+Deployment recipes (single-node + Raft HA), connection configuration, and architecture
+diagrams are documented in the
 [epistemic-graph deployment guide](https://knuckles-team.github.io/epistemic-graph/deployment/).
-The slim `[mcp]` server does **not** require the database.
 
 ---
 
@@ -141,12 +142,12 @@ The package is fully configurable via the environment variables listed below.
 ### Connection & Credentials
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL (falls back to `ERPNEXT_AGENT_BASE_URL`) | `http://localhost:8000` |
+| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL | Required |
 | `ERPNEXT_TOKEN` | API token authentication (`api_key:api_secret`) | — |
-| `ERPNEXT_AGENT_BASE_URL` | Endpoint URL fallback when `ERPNEXT_URL` is unset | — |
 | `ERPNEXT_AGENT_USERNAME` | Username for password-based login | — |
 | `ERPNEXT_AGENT_PASSWORD` | Password for password-based login | — |
-| `ERPNEXT_AGENT_SSL_VERIFY` | TLS certificate verification | `True` |
+| `TLS_PROFILE` | Named `AgentConfig` transport-security profile; verification is mandatory | — |
+| `TLS_PROFILES_REF` | Runtime secret reference for the TLS profile catalog | — |
 
 ### MCP server / transport
 | Variable | Description | Default |
@@ -207,11 +208,10 @@ _2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled un
 
 <!-- MCP-CONFIG-EXAMPLES:START -->
 
-> **Install the slim `[mcp]` extra.** All examples install `erpnext-agent[mcp]` — the
-> MCP-server extra that pulls only the FastMCP / FastAPI tooling (`agent-utilities[mcp]`).
-> It deliberately **excludes** the heavy agent runtime (`pydantic-ai`, the epistemic-graph
-> engine, `dspy`, `llama-index`), so `uvx` / container installs are far smaller. Use the
-> full `[agent]` extra only when you need the integrated Pydantic AI agent.
+> **Install the connector-focused `[mcp]` extra.** Examples use `erpnext-agent[mcp]` to add
+> FastMCP / FastAPI through `agent-utilities[mcp]`; the required Agent Utilities core
+> still carries `epistemic-graph[full]`. The `[agent-runtime]` extra additionally
+> enables model orchestration.
 
 #### stdio Transport (local IDEs — Cursor, Claude Desktop, VS Code)
 
@@ -226,19 +226,18 @@ _2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled un
         "erpnext-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "condensed",
+        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
-        "ERPNEXT_AGENT_BASE_URL": "http://localhost:8000",
-        "ERPNEXT_AGENT_PASSWORD": "your_password",
-        "ERPNEXT_AGENT_USERNAME": "your_username",
-        "ERPNEXT_TOKEN": "your_api_key:your_api_secret",
-        "ERPNEXT_URL": "http://localhost:8000",
         "RESOURCETOOL": "True"
       }
     }
   }
 }
 ```
+
+Runtime references require an alias-aware launcher such as GraphOS. Other
+launchers must omit those entries and inject the resolved values through their
+own runtime secret boundary.
 
 #### Streamable-HTTP Transport (networked / production)
 
@@ -258,15 +257,10 @@ _2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled un
       ],
       "env": {
         "TRANSPORT": "streamable-http",
-        "HOST": "0.0.0.0",
+        "HOST": "127.0.0.1",
         "PORT": "8000",
-        "MCP_TOOL_MODE": "condensed",
+        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
-        "ERPNEXT_AGENT_BASE_URL": "http://localhost:8000",
-        "ERPNEXT_AGENT_PASSWORD": "your_password",
-        "ERPNEXT_AGENT_USERNAME": "your_username",
-        "ERPNEXT_TOKEN": "your_api_key:your_api_secret",
-        "ERPNEXT_URL": "http://localhost:8000",
         "RESOURCETOOL": "True"
       }
     }
@@ -286,25 +280,27 @@ Alternatively, connect to a pre-deployed Streamable-HTTP instance by `url`:
 }
 ```
 
-Deploying the Streamable-HTTP server via Docker:
+Run a reviewed container image as a least-privilege stdio child (no
+listener or published port):
 
 ```bash
-docker run -d \
-  --name erpnext-mcp-mcp \
-  -p 8000:8000 \
-  -e TRANSPORT=streamable-http \
-  -e HOST=0.0.0.0 \
-  -e PORT=8000 \
-  -e MCP_TOOL_MODE=condensed \
+docker run -i --rm \
+  --read-only \
+  --cap-drop=ALL \
+  --security-opt=no-new-privileges \
+  --pids-limit=256 \
+  --tmpfs /tmp:rw,noexec,nosuid,nodev,size=64m \
+  -e TRANSPORT=stdio \
+  -e MCP_TOOL_MODE=intent \
   -e AUTHENTICATIONTOOL=True \
-  -e ERPNEXT_AGENT_BASE_URL=http://localhost:8000 \
-  -e ERPNEXT_AGENT_PASSWORD=your_password \
-  -e ERPNEXT_AGENT_USERNAME=your_username \
-  -e ERPNEXT_TOKEN=your_api_key:your_api_secret \
-  -e ERPNEXT_URL=http://localhost:8000 \
   -e RESOURCETOOL=True \
-  knucklessg1/erpnext-agent:mcp
+  registry.example.invalid/erpnext-agent@sha256:<digest> erpnext-mcp
 ```
+
+For containerized network HTTP, supply an authenticated TLS ingress (or
+direct server TLS), exact `MCP_ALLOWED_HOSTS`, and an exact trusted-proxy
+CIDR policy through the operator-owned deployment profile. The generator
+does not emit an unauthenticated non-loopback listener.
 
 _Auto-generated from the code-read env surface (`MCP_TOOL_MODE` + package vars) — do not edit._
 <!-- MCP-CONFIG-EXAMPLES:END -->
@@ -312,16 +308,16 @@ _Auto-generated from the code-read env surface (`MCP_TOOL_MODE` + package vars) 
 <!-- BEGIN GENERATED: additional-deployment-options -->
 ### Additional Deployment Options
 
-`erpnext-agent` can also run as a **local container** (Docker / Podman / `uv`) or be
-consumed from a **remote deployment**. The
-[Deployment guide](https://knuckles-team.github.io/erpnext-agent/deployment/) has full, copy-paste
-`mcp_config.json` for all four transports — **stdio**, **streamable-http**,
-**local container / uv**, and **remote URL**:
+`erpnext-agent` can run as a local stdio process or container, or behind a remote
+network boundary. The
+[Deployment guide](https://knuckles-team.github.io/erpnext-agent/deployment/) carries
+the detailed transport contract.
 
-- **Local container / uv** — launch the server from `mcp_config.json` via `uvx`,
-  `docker run`, or `podman run`, or point at a local streamable-http container by `url`.
-- **Remote URL** — connect to a server deployed behind Caddy at
-  `http://erpnext-mcp.arpa/mcp` using the `"url"` key.
+- **Local container** — launch a reviewed immutable image as a least-privilege
+  stdio child with no listener or published port.
+- **Remote URL** — connect through an operator-supplied authenticated HTTPS
+  ingress. Keep its URL, outbound identity references, trust profile, and exact
+  `MCP_ALLOWED_HOSTS` in `AgentConfig`.
 <!-- END GENERATED: additional-deployment-options -->
 
 ## Documentation
@@ -345,7 +341,7 @@ the recommended reference for installation, deployment, and day-to-day operation
 
 ## Contributing
 
-Please audit all code changes against ecosystem guidelines in [CONTRIBUTING.md](CONTRIBUTING.md) if available, and run:
+Please audit all code changes against the repository's contribution and review requirements, and run:
 
 ```bash
 pre-commit run --all-files
@@ -358,26 +354,27 @@ pre-commit run --all-files
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
 
 
-<!-- BEGIN agent-os-genesis-deploy (generated; do not edit between markers) -->
+<!-- BEGIN agent-utilities-deployment (generated; do not edit between markers) -->
 
-## Deploy with `agent-os-genesis`
+## Deploy with `agent-utilities-deployment`
 
-This package can be provisioned for you — skill-guided — by the **`agent-os-genesis`**
-universal skill (its *single-package deploy mode*): it picks your install method, seeds
-secrets to OpenBao/Vault (or `.env`), trusts your enterprise CA, registers the MCP
-server, and verifies it — the same machinery that stands up the whole Agent OS, narrowed
-to just this package. Ask your agent to **"deploy `erpnext-agent` with agent-os-genesis"**.
+Provision this package with the consolidated **`agent-utilities-deployment`**
+workflow. It selects an installed-package, editable-source, or immutable-container
+path; records only runtime secret and TLS-profile references in `AgentConfig`; and
+runs doctor, registration, policy, observability, and rollback gates. Ask your agent
+to **"deploy `erpnext-agent` with agent-utilities-deployment"**.
 
 | Install mode | Command |
 |------|---------|
-| Bare-metal, prod (PyPI) | `uvx erpnext-mcp` · or `uv tool install erpnext-agent` |
-| Bare-metal, dev (editable) | `uv pip install -e ".[all]"` · or `pip install -e ".[all]"` |
-| Container, prod | deploy `knucklessg1/erpnext-agent:latest` via docker-compose / swarm / podman / podman-compose / kubernetes |
-| Container, dev (editable) | deploy `docker/compose.dev.yml` (source-mounted at `/src`; edits live on restart) |
+| Installed package | `uv tool install "erpnext-agent[mcp]"`, then run `erpnext-mcp` |
+| Editable source | `uv pip install -e ".[agent]"`, then run `erpnext-mcp` |
+| Immutable container | deploy `registry.example.invalid/erpnext-agent@sha256:<digest>` through the operator-selected orchestrator |
 
-Secrets are read-existing + seeded via `vault_sync` — you are only prompted for what's missing.
+The repository embeds no deployment profile, credential value, certificate path, or
+environment-specific endpoint. Supply those at runtime through `AgentConfig` and the
+configured secret provider.
 
-<!-- END agent-os-genesis-deploy -->
+<!-- END agent-utilities-deployment -->
 
 ## Environment Variables
 
@@ -390,12 +387,12 @@ Secrets are read-existing + seeded via `vault_sync` — you are only prompted fo
 | `HOST` | `0.0.0.0` |  |
 | `PORT` | `8000` |  |
 | `TRANSPORT` | `stdio` | options: stdio, streamable-http, sse |
-| `ERPNEXT_URL` | `http://localhost:8000` | ERPNext / Frappe server endpoint URL (falls back to ERPNEXT_AGENT_BASE_URL) |
-| `ERPNEXT_TOKEN` | `your_api_key:your_api_secret` | API token authentication (api_key:api_secret) |
-| `ERPNEXT_AGENT_BASE_URL` | `http://localhost:8000` | Endpoint URL fallback when ERPNEXT_URL is unset |
+| `ERPNEXT_URL` | Required | ERPNext / Frappe server endpoint URL |
+| `ERPNEXT_TOKEN` | — | API token authentication (`api_key:api_secret`) |
 | `ERPNEXT_AGENT_USERNAME` | `your_username` | Username / password login (alternative to token auth) |
 | `ERPNEXT_AGENT_PASSWORD` | `your_password` |  |
-| `ERPNEXT_AGENT_SSL_VERIFY` | `True` |  |
+| `TLS_PROFILE` | — | Named `AgentConfig` transport-security profile; verification is mandatory |
+| `TLS_PROFILES_REF` | — | Runtime secret reference for the TLS profile catalog |
 | `AUTHENTICATIONTOOL` | `True` |  |
 | `RESOURCETOOL` | `True` |  |
 
@@ -425,3 +422,19 @@ Secrets are read-existing + seeded via `vault_sync` — you are only prompted fo
 
 _11 package + 19 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
+
+<!-- GOVERNED-CAPABILITY:START -->
+## Governed capability contract
+
+This package ships a compact canonical skill surface with specialist procedures
+kept as referenced workflows. The current MCP tools, skill metadata,
+`connector_manifest.yml`, ontology, mappings, shapes, fixtures, migrations,
+tool-schema fingerprints, and certification metadata form one versioned
+capability contract. Validate them together; do not rely on stale tool names or
+historical per-task skill wrappers.
+
+Runtime endpoints, credentials, certificate trust, tenant identity, retention,
+and observability policy are deployment inputs and are never packaged values.
+See [Configuration, trust, and privacy](docs/configuration.md) before enabling a
+network transport, connector ingestion, GraphOS delegation, or trace export.
+<!-- GOVERNED-CAPABILITY:END -->

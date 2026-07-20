@@ -72,9 +72,10 @@ as `api_key:api_secret`.
 ## Connect erpnext-agent
 
 ```bash
-export ERPNEXT_URL=http://localhost:8000
-export ERPNEXT_TOKEN=your_api_key:your_api_secret
-export ERPNEXT_AGENT_SSL_VERIFY=False          # if the site uses a self-signed cert
+export ERPNEXT_URL=<configured-endpoint>
+export ERPNEXT_TOKEN=<runtime-secret>
+export TLS_PROFILE=private-pki
+export TLS_PROFILES_REF=secret://runtime/tls-profiles
 
 erpnext-mcp --transport streamable-http --host 0.0.0.0 --port 8000
 ```
@@ -112,11 +113,11 @@ services:
     image: redis:7-alpine
 
   erpnext-agent-mcp:
-    image: knucklessg1/erpnext-agent:latest
+    image: example/erpnext-agent@sha256:<digest>
     depends_on: [erpnext]
     environment:
       - ERPNEXT_URL=http://erpnext:8000
-      - ERPNEXT_TOKEN=your_api_key:your_api_secret
+      - ERPNEXT_TOKEN=${ERPNEXT_TOKEN:?required}
       - TRANSPORT=streamable-http
       - HOST=0.0.0.0
       - PORT=8000

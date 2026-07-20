@@ -155,6 +155,7 @@ sync:
   updated_field: null
   pagination: null
   doc_type: erpnext_item
+  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
   raw:
     server: erpnext-agent
     tool: erpnext_agent_resource
@@ -183,6 +184,7 @@ sync:
   updated_field: transaction_date
   pagination: offset
   doc_type: erpnext_sales_order
+  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
   raw:
     server: erpnext-agent
     tool: erpnext_agent_resource
@@ -207,16 +209,19 @@ sync:
     doc_type: erpnext_sales_order
 provenance:
   generated_by: scripts/generate_connector_manifests.py
-  generated_at: '2026-07-09T00:00:00Z'
+  generated_at: '2026-07-18T00:00:00Z'
   source_artifacts:
   - erpnext_agent/connectors/mcp_source_presets.json
+  - erpnext_agent/connectors/tool_schema_fingerprints.json
   - erpnext_agent/ontology/erpnext.ttl
   integrity:
     algorithm: urdna2015-sha256
     hash: e1db5bd3e80f09ed556b5ed40ec468baa01c855cd9f0f9e211c90298751a7929
     triple_count: 66
   signer: ontology-manifest-generator
-  signature: 362d7d0c36789bbb4db2c12b21e3854c79d422d42238019797b139df32687f6d
+  signature_algorithm: ed25519
+  signing_public_key: q0Cp7bmQMqJhbofGKKw8xXC6KbFzukBDDke0UYVi8y4
+  signature: Xa1Tw_AIQ2KRIPGQJTnlD20p0iHvBeE4NqAyDcFgIq5XMDAygylxpGO8CDklzuSIOghX12d2-iXwcvma7TfvDg
 policy:
   pii_fields: {}
   tenant_boundary: null

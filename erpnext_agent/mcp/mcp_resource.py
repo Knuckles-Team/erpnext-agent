@@ -31,7 +31,7 @@ def register_resource_tools(mcp: FastMCP):
         try:
             kwargs = json.loads(params_json)
         except Exception as e:
-            return {"error": f"Invalid params_json: {e}"}
+            return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
@@ -48,4 +48,4 @@ def register_resource_tools(mcp: FastMCP):
             res = method(**kwargs)
             return res if isinstance(res, dict) else {"result": res}
         except Exception as e:
-            return {"error": f"Failed to execute resource operation {action}: {e}"}
+            return {"error": "Operation failed"}

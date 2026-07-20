@@ -52,8 +52,8 @@ erpnext-mcp                       # stdio MCP server (default transport)
 Connect it to an ERPNext / Frappe site:
 
 ```bash
-export ERPNEXT_URL=https://your-erpnext:8000
-export ERPNEXT_TOKEN=your_api_key:your_api_secret
+export ERPNEXT_URL=<configured-endpoint>
+export ERPNEXT_TOKEN=<runtime-secret>
 erpnext-mcp --transport streamable-http --host 0.0.0.0 --port 8000
 ```
 

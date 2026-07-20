@@ -1,0 +1,8 @@
+{
+  "algorithm": "agent-utilities:mcp-tool-schema-compat:v1",
+  "connector": "erpnext-agent",
+  "schema_version": "1",
+  "tools": {
+    "erpnext_agent_resource": "5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf"
+  }
+}

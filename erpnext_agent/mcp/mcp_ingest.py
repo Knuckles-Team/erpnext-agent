@@ -3,7 +3,7 @@
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. Wire-First: lists a Frappe DocType
 via the existing client and natively pushes the records into the knowledge graph as
 typed OWL nodes (:Customer/:Supplier/:Item/:SalesOrder/:PurchaseOrder/:Invoice/:Employee).
-Best-effort — returns ``{"ingested": None}`` when no engine is reachable.
+Native-ingest failures propagate to the caller.
 """
 
 from fastmcp import Context, FastMCP
@@ -49,14 +49,14 @@ def register_ingest_tools(mcp: FastMCP):
             await ctx.info(f"Ingesting ERPNext {doctype} into the knowledge graph...")
         try:
             kwargs = _json.loads(params_json) if params_json else {}
-        except Exception as e:  # noqa: BLE001
-            return {"error": f"Invalid params_json: {e}"}
+        except Exception:  # noqa: BLE001
+            return {"error": "Operation failed"}
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         try:
             resp = client.list_documents(doctype, **kwargs)
-        except Exception as e:  # noqa: BLE001
-            return {"error": f"Failed to list {doctype}: {e}"}
+        except Exception:  # noqa: BLE001
+            return {"error": "Failed to list configured records"}
 
         if isinstance(resp, dict):
             records = resp.get("data", resp.get("result", []))

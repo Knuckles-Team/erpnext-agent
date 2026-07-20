@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "erpnext-agent": {
-      "command": "/home/apps/workspace/.venv/bin/erpnext-mcp",
+      "command": "${WORKSPACE_ROOT}/.venv/bin/erpnext-mcp",
       "args": [],
       "env": {
         "MCP_TOOL_MODE": "condensed",

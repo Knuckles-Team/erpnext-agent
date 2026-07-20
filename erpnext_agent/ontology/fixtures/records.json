@@ -1,0 +1,34 @@
+{
+  "connector": "erpnext-agent",
+  "fixtures": [
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "erpnext-items",
+      "record": {
+        "acl_public": false,
+        "description": "Synthetic content used only for contract validation.",
+        "item_name": "Synthetic certification record",
+        "name": "fixture-record"
+      }
+    },
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "erpnext-sales-orders",
+      "record": {
+        "acl_public": false,
+        "name": "Synthetic certification record",
+        "status": "Synthetic content used only for contract validation.",
+        "transaction_date": "2000-01-01T00:00:00Z"
+      }
+    }
+  ],
+  "schema_version": "1"
+}

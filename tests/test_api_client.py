@@ -13,10 +13,11 @@ def test_api_client_basic_mock(mock_ctx):
 
 
 @pytest.mark.concept("EN-OS.governance.erpn")
-def test_api_client_endpoints(mock_ctx):
+def test_api_client_endpoints(mock_ctx, monkeypatch):
     """CONCEPT:EN-OS.governance.erpn Verify endpoint configuration on dynamic client."""
     from erpnext_agent.auth import get_client
 
+    monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     client = get_client()
     assert client is not None
     assert hasattr(client, "request")

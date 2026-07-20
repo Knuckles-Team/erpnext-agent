@@ -1,0 +1,6 @@
+{
+  "connector": "erpnext-agent",
+  "current_ontology_source": "erpnext",
+  "migrations": [],
+  "schema_version": "1"
+}

@@ -2,7 +2,19 @@ version: '3.8'
 
 services:
   erpnext-agent-mcp:
-    image: knucklessg1/erpnext-agent:mcp
+    init: true
+    user: "10001:10001"
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: ${AGENT_CONTAINER_MEMORY_LIMIT:-4g}
+    cpus: ${AGENT_CONTAINER_CPU_LIMIT:-2.0}
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m
+    image: ${ERPNEXT_AGENT_MCP_IMAGE:?set-ERPNEXT_AGENT_MCP_IMAGE-to-image@sha256-digest}
     container_name: erpnext-agent-mcp
     hostname: erpnext-agent-mcp
     restart: always
@@ -16,7 +28,7 @@ services:
       - ERPNEXT_URL
       - ERPNEXT_TOKEN
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s

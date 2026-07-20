@@ -1,0 +1,4 @@
+interface:
+  display_name: "Erpnext Agent Operations"
+  short_description: "Help with Erpnext Agent Operations tasks"
+  default_prompt: "Use $erpnext-agent-operations to complete a governed provider workflow."

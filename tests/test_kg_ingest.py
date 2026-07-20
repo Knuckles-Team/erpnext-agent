@@ -7,12 +7,16 @@ Frappe DocType → typed-node mappings. CONCEPT:AU-KG.ingest.enterprise-source-e
 
 from __future__ import annotations
 
+import pytest
+from agent_utilities.knowledge_graph.memory.native_ingest import NativeIngestError
+
 from erpnext_agent.kg_ingest import ingest_doctype, ingest_entities
 
 
 class _FakeTxn:
     def __init__(self):
         self.nodes = {}
+        self.edges = []
         self.committed = False
 
     def begin(self, graph=None):
@@ -22,33 +26,27 @@ class _FakeTxn:
     def add_node(self, txn, node_id, props):
         self.nodes[node_id] = props
 
+    def add_edge(self, txn, source, target, props):
+        self.edges.append((source, target, props))
+
     def commit(self, txn):
         self.committed = True
         return True
 
 
-class _FakeEdges:
-    def __init__(self):
-        self.edges = []
-
-    def add(self, src, dst, props):
-        self.edges.append((src, dst, props))
-
-
 class _FakeClient:
     def __init__(self):
         self.txn = _FakeTxn()
-        self.edges = _FakeEdges()
 
 
 def test_ingest_entities_writes_nodes_and_edges():
     c = _FakeClient()
     res = ingest_entities(
         [
-            {"id": "erpnext:customer:acme", "type": "Customer", "name": "Acme"},
-            {"id": "erpnext:salesorder:SO-1", "type": "SalesOrder"},
+            {"id": "erpnext:customer:acme", "node_type": "Customer", "name": "Acme"},
+            {"id": "erpnext:salesorder:SO-1", "node_type": "SalesOrder"},
         ],
-        [{"source": "erpnext:salesorder:SO-1", "target": "erpnext:customer:acme", "type": "orderedBy"}],
+        [{"source": "erpnext:salesorder:SO-1", "target": "erpnext:customer:acme", "relationship": "orderedBy"}],
         client=c,
         graph="__commons__",
     )
@@ -57,8 +55,8 @@ def test_ingest_entities_writes_nodes_and_edges():
     # provenance is stamped by the shared primitive
     assert c.txn.nodes["erpnext:customer:acme"]["source"] == "erpnext-agent"
     assert c.txn.nodes["erpnext:customer:acme"]["domain"] == "erpnext"
-    assert c.edges.edges == [
-        ("erpnext:salesorder:SO-1", "erpnext:customer:acme", {"type": "orderedBy"})
+    assert c.txn.edges == [
+        ("erpnext:salesorder:SO-1", "erpnext:customer:acme", {"relationship": "orderedBy"})
     ]
 
 
@@ -85,22 +83,22 @@ def test_ingest_sales_order_maps_customer_and_items():
     # SalesOrder + Customer + 2 Items = 4 nodes; orderedBy + 2 contains = 3 edges
     assert res == {"nodes": 4, "edges": 3}
     so = c.txn.nodes["erpnext:salesorder:SO-2026-0001"]
-    assert so["type"] == "SalesOrder"
+    assert so["node_type"] == "SalesOrder"
     assert so["grandTotal"] == 1250.5
     assert so["docStatus"] == 1
     assert so["postingDate"] == "2026-07-04"
-    assert c.txn.nodes["erpnext:customer:Acme_Corp"]["type"] == "Customer"
-    assert c.txn.nodes["erpnext:item:WIDGET-1"]["type"] == "Item"
+    assert c.txn.nodes["erpnext:customer:Acme_Corp"]["node_type"] == "Customer"
+    assert c.txn.nodes["erpnext:item:WIDGET-1"]["node_type"] == "Item"
     assert (
         "erpnext:salesorder:SO-2026-0001",
         "erpnext:customer:Acme_Corp",
-        {"type": "orderedBy"},
-    ) in c.edges.edges
+        {"relationship": "orderedBy"},
+    ) in c.txn.edges
     assert (
         "erpnext:salesorder:SO-2026-0001",
         "erpnext:item:WIDGET-1",
-        {"type": "contains"},
-    ) in c.edges.edges
+        {"relationship": "contains"},
+    ) in c.txn.edges
 
 
 def test_ingest_purchase_order_maps_supplier():
@@ -112,10 +110,10 @@ def test_ingest_purchase_order_maps_supplier():
         graph="__commons__",
     )
     assert res == {"nodes": 2, "edges": 1}
-    assert c.txn.nodes["erpnext:purchaseorder:PO-1"]["type"] == "PurchaseOrder"
-    assert c.txn.nodes["erpnext:supplier:Globex"]["type"] == "Supplier"
-    assert c.edges.edges == [
-        ("erpnext:purchaseorder:PO-1", "erpnext:supplier:Globex", {"type": "suppliedBy"})
+    assert c.txn.nodes["erpnext:purchaseorder:PO-1"]["node_type"] == "PurchaseOrder"
+    assert c.txn.nodes["erpnext:supplier:Globex"]["node_type"] == "Supplier"
+    assert c.txn.edges == [
+        ("erpnext:purchaseorder:PO-1", "erpnext:supplier:Globex", {"relationship": "suppliedBy"})
     ]
 
 
@@ -128,11 +126,11 @@ def test_ingest_employee_maps_department_link():
         graph="__commons__",
     )
     assert res == {"nodes": 2, "edges": 1}
-    assert c.txn.nodes["erpnext:employee:HR-EMP-1"]["type"] == "Employee"
+    assert c.txn.nodes["erpnext:employee:HR-EMP-1"]["node_type"] == "Employee"
     assert c.txn.nodes["erpnext:employee:HR-EMP-1"]["employeeName"] == "Jane Doe"
-    assert c.txn.nodes["erpnext:orgunit:Sales"]["type"] == "OrgUnit"
-    assert c.edges.edges == [
-        ("erpnext:employee:HR-EMP-1", "erpnext:orgunit:Sales", {"type": "memberOf"})
+    assert c.txn.nodes["erpnext:orgunit:Sales"]["node_type"] == "OrgUnit"
+    assert c.txn.edges == [
+        ("erpnext:employee:HR-EMP-1", "erpnext:orgunit:Sales", {"relationship": "memberOf"})
     ]
 
 
@@ -144,19 +142,27 @@ def test_ingest_item_catalog():
         client=c,
     )
     assert res == {"nodes": 1, "edges": 0}
-    assert c.txn.nodes["erpnext:item:WIDGET-1"]["type"] == "Item"
+    assert c.txn.nodes["erpnext:item:WIDGET-1"]["node_type"] == "Item"
     assert c.txn.nodes["erpnext:item:WIDGET-1"]["item_group"] == "Products"
 
 
-def test_unsupported_doctype_is_noop():
-    assert ingest_doctype("Journal Entry", [{"name": "JV-1"}], client=_FakeClient()) is None
+def test_unsupported_doctype_is_rejected():
+    with pytest.raises(NativeIngestError, match="unsupported ERPNext document type"):
+        ingest_doctype(
+            "Journal Entry",
+            [{"name": "JV-1"}],
+            client=_FakeClient(),
+        )
 
 
-def test_ingest_noops_without_engine():
-    # No injected client + no reachable engine -> clean no-op.
-    assert ingest_entities([{"id": "erpnext:item:x", "type": "Item"}]) is None
+def test_retired_node_type_alias_is_rejected():
+    with pytest.raises(NativeIngestError, match="canonical node_type"):
+        ingest_entities(
+            [{"id": "retired", "type": "RetiredAlias"}],
+            client=_FakeClient(),
+        )
 
 
-def test_ingest_empty_is_noop():
-    assert ingest_entities([], client=_FakeClient()) is None
-    assert ingest_doctype("Sales Order", [], client=_FakeClient()) is None
+def test_empty_native_ingest_is_rejected():
+    with pytest.raises(NativeIngestError, match="at least one entity"):
+        ingest_entities([], client=_FakeClient())

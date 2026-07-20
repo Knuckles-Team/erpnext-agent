@@ -48,16 +48,16 @@ uv run erpnext-mcp
 
 ## Prebuilt Docker image
 
-A multi-stage, slim image is published on every release (installs
+A multi-stage runtime image is published on every release (installs
 `erpnext-agent[all]`, entrypoint `erpnext-mcp`):
 
 ```bash
-docker pull knucklessg1/erpnext-agent:latest
+docker pull example/erpnext-agent@sha256:<digest>
 
 docker run --rm -i \
-  -e ERPNEXT_URL=https://your-erpnext:8000 \
-  -e ERPNEXT_TOKEN=your_api_key:your_api_secret \
-  knucklessg1/erpnext-agent:latest        # stdio transport (default)
+  -e ERPNEXT_URL=<configured-endpoint> \
+  -e ERPNEXT_TOKEN=<runtime-secret> \
+  example/erpnext-agent@sha256:<digest>        # stdio transport (default)
 ```
 
 For an HTTP server with a published port, see [Deployment](deployment.md).

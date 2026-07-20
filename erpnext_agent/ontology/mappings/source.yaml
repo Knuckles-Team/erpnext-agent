@@ -1,0 +1,31 @@
+schema_version: '1'
+connector: erpnext-agent
+ontology_source: erpnext
+sync:
+- preset: erpnext-items
+  server: erpnext-agent
+  tool: erpnext_agent_resource
+  action: list_documents
+  records_path: data
+  id_field: name
+  title_field: item_name
+  text_field: description
+  updated_field: null
+  doc_type: erpnext_item
+  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+- preset: erpnext-sales-orders
+  server: erpnext-agent
+  tool: erpnext_agent_resource
+  action: list_documents
+  records_path: data
+  id_field: name
+  title_field: name
+  text_field: status
+  updated_field: transaction_date
+  doc_type: erpnext_sales_order
+  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+governance:
+  default_acl: quarantine
+  identity: opaque-reference
+  tenant: required-at-materialization
+  provenance: required-at-materialization

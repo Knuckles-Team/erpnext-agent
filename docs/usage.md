@@ -52,7 +52,6 @@ from erpnext_agent.api_client import Api
 api = Api(
     base_url="https://your-erpnext:8000",
     token="your_api_key:your_api_secret",
-    verify=False,                  # self-signed homelab certificate
 )
 ```
 
