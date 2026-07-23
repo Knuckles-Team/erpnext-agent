@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://knuckles-team.github.io/erpnext-agent/platform/">
+        <link rel="canonical" href="https://knuckles-team.github.io/erpnext-agent/configuration/">
       
       
-        <link rel="prev" href="../usage/">
+        <link rel="prev" href="../installation/">
       
       
-        <link rel="next" href="../concepts/">
+        <link rel="next" href="../deployment/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Backing Platform (ERPNext) - erpnext-agent</title>
+        <title>Configuration, trust, and privacy - erpnext-agent</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#backing-platform-erpnext-frappe" class="md-skip">
+        <a href="#configuration-trust-and-privacy" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Backing Platform (ERPNext)
+              Configuration, trust, and privacy
             
           </span>
         </div>
@@ -291,9 +291,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../configuration/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
   
@@ -348,11 +350,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../platform/" class="md-tabs__link">
         
   
   
@@ -520,10 +520,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration, trust, and privacy
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -539,6 +566,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#capability-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#runtime-values-and-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Runtime values and secrets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tls-trust" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS trust
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privacy-and-data-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privacy and data governance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment verification
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -601,37 +703,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Backing Platform (ERPNext)
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../platform/" class="md-nav__link">
         
   
   
@@ -647,59 +722,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#single-node-deployment-compose" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Single-node deployment (Compose)
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#connect-erpnext-agent" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Connect erpnext-agent
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#combined-deployment" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Combined deployment
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -758,10 +780,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#single-node-deployment-compose" class="md-nav__link">
+  <a href="#capability-configuration" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Single-node deployment (Compose)
+        Capability configuration
       
     </span>
   </a>
@@ -769,10 +791,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#connect-erpnext-agent" class="md-nav__link">
+  <a href="#runtime-values-and-secrets" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Connect erpnext-agent
+        Runtime values and secrets
       
     </span>
   </a>
@@ -780,10 +802,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#combined-deployment" class="md-nav__link">
+  <a href="#tls-trust" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Combined deployment
+        TLS trust
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privacy-and-data-governance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privacy and data governance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment verification
       
     </span>
   </a>
@@ -810,126 +854,73 @@
   
 
 
-<h1 id="backing-platform-erpnext-frappe">Backing Platform — ERPNext / Frappe<a class="headerlink" href="#backing-platform-erpnext-frappe" title="Permanent link">&para;</a></h1>
-<p><code>erpnext-agent</code> is a <strong>client</strong> of an ERPNext / Frappe site. This page provides a
-Docker recipe for deploying one locally to serve as the target of <code>ERPNEXT_URL</code>. For
-production topologies, follow the upstream
-<a href="https://github.com/frappe/frappe_docker">Frappe Docker documentation</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Backing-system recipe</p>
-<p>Each connector in the ecosystem follows the same convention — a
-<code>docs/platform.md</code> recipe for the system it integrates with, accompanied by a
-sample Compose stack that mirrors the ecosystem
-<a href="https://github.com/Knuckles-Team"><code>services/</code></a> deployment declarations. Systems
-offered only as a managed service have no local recipe.</p>
-</div>
-<h2 id="single-node-deployment-compose">Single-node deployment (Compose)<a class="headerlink" href="#single-node-deployment-compose" title="Permanent link">&para;</a></h2>
-<p>ERPNext publishes the <code>frappe/erpnext</code> image, backed by MariaDB and Redis. The
-following stack runs one site on <code>:8000</code>:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># docker/erpnext-platform.compose.yml</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">erpnext</span><span class="p">:</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frappe/erpnext:v15.20.0</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MARIADB_HOST=erpnext-db</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_CACHE=redis://erpnext-redis:6379/0</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_QUEUE=redis://erpnext-redis:6379/1</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_SOCKETIO=redis://erpnext-redis:6379/2</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8000:8000&quot;</span><span class="w">            </span><span class="c1"># Frappe site (HTTP)</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext_sites:/home/frappe/frappe-bench/sites</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext-db</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext-redis</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">  </span><span class="nt">erpnext-db</span><span class="p">:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mariadb:10.6</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_ROOT_PASSWORD=change-me-root</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_DATABASE=erpnext</span>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_USER=erpnext</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_PASSWORD=change-me</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext_db:/var/lib/mysql</span>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span><span class="nt">erpnext-redis</span><span class="p">:</span>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis:7-alpine</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">  </span><span class="nt">erpnext_sites</span><span class="p">:</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">  </span><span class="nt">erpnext_db</span><span class="p">:</span>
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/erpnext-platform.compose.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Wait for the site to answer (the version endpoint is unauthenticated)</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/api/method/version
-</span></code></pre></div>
-<p>After the site is created, generate an API key/secret pair from
-<strong>Settings → My Settings → API Access</strong> in the ERPNext UI; the connector consumes it
-as <code>api_key:api_secret</code>.</p>
-<h2 id="connect-erpnext-agent">Connect erpnext-agent<a class="headerlink" href="#connect-erpnext-agent" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ERPNEXT_URL</span><span class="o">=</span>&lt;configured-endpoint&gt;
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">ERPNEXT_TOKEN</span><span class="o">=</span>&lt;runtime-secret&gt;
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TLS_PROFILE</span><span class="o">=</span>private-pki
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nb">export</span><span class="w"> </span><span class="nv">TLS_PROFILES_REF</span><span class="o">=</span>secret://runtime/tls-profiles
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>erpnext-mcp<span class="w"> </span>--transport<span class="w"> </span>streamable-http<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
-</span></code></pre></div>
-<h2 id="combined-deployment">Combined deployment<a class="headerlink" href="#combined-deployment" title="Permanent link">&para;</a></h2>
-<p>A combined stack places the ERPNext site and the MCP server on one Docker network, so
-the server reaches ERPNext by container name:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># docker/stack.compose.yml</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">services</span><span class="p">:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">erpnext</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frappe/erpnext:v15.20.0</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">erpnext</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MARIADB_HOST=erpnext-db</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_CACHE=redis://erpnext-redis:6379/0</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_QUEUE=redis://erpnext-redis:6379/1</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">REDIS_SOCKETIO=redis://erpnext-redis:6379/2</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;erpnext_sites:/home/frappe/frappe-bench/sites&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">erpnext-db</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">erpnext-redis</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="nt">erpnext-db</span><span class="p">:</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mariadb:10.6</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci</span>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_ROOT_PASSWORD=change-me-root</span>
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_DATABASE=erpnext</span>
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_USER=erpnext</span>
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MYSQL_PASSWORD=change-me</span>
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;erpnext_db:/var/lib/mysql&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
-</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="nt">erpnext-redis</span><span class="p">:</span>
-</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">redis:7-alpine</span>
-</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
-</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">  </span><span class="nt">erpnext-agent-mcp</span><span class="p">:</span>
-</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example/erpnext-agent@sha256:&lt;digest&gt;</span>
-</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">erpnext</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ERPNEXT_URL=http://erpnext:8000</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ERPNEXT_TOKEN=${ERPNEXT_TOKEN:?required}</span>
-</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TRANSPORT=streamable-http</span>
-</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST=0.0.0.0</span>
-</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PORT=8000</span>
-</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;8000:8000&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>
-</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="nt">volumes</span><span class="p">:</span>
-</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">  </span><span class="nt">erpnext_sites</span><span class="p">:</span>
-</span><span id="__span-3-40"><a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="w">  </span><span class="nt">erpnext_db</span><span class="p">:</span>
-</span></code></pre></div>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/stack.compose.yml<span class="w"> </span>up<span class="w"> </span>-d
-</span></code></pre></div>
-<p>Once the site is reachable, the <a href="../usage/#as-an-mcp-server">MCP tools</a> and the
-<a href="../usage/#as-a-python-api"><code>Api</code> client</a> operate against any ERPNext DocType and
-whitelisted RPC method.</p>
+<h1 id="configuration-trust-and-privacy">Configuration, trust, and privacy<a class="headerlink" href="#configuration-trust-and-privacy" title="Permanent link">&para;</a></h1>
+<p>This page is the operator contract for <code>erpnext-agent</code>. Package-specific endpoint,
+authentication, tool-toggle, and model settings remain documented in the
+repository README and the installed command's <code>--help</code> output. Runtime values
+must be injected by the launcher; they do not belong in source, packaged skill
+content, traces, or generated reports.</p>
+<h2 id="capability-configuration">Capability configuration<a class="headerlink" href="#capability-configuration" title="Permanent link">&para;</a></h2>
+<p>The current capability surface is defined by three versioned artifacts:</p>
+<ul>
+<li>the action-routed MCP tools described in the README and <code>docs/usage.md</code>;</li>
+<li>the compact canonical skill plus any specialist <code>WORKFLOW.md</code> procedures;</li>
+<li><code>connector_manifest.yml</code> and its ontology, mappings, shapes, fixtures,
+  migrations, tool-schema fingerprints, and certification metadata.</li>
+</ul>
+<p>Treat those artifacts as a unit during release and deployment. Do not enable a
+skill whose certification or tool-schema fingerprint does not match the
+installed package. Use the compact/intent-oriented tool surface for delegated
+agents; expose verbose per-operation tools only for explicit operator diagnostics.</p>
+<h2 id="runtime-values-and-secrets">Runtime values and secrets<a class="headerlink" href="#runtime-values-and-secrets" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Supply service endpoints, tenant identifiers, credentials, and model keys
+  through environment variables or a mounted secret provider.</li>
+<li>Use non-personal agent aliases and opaque tenant/correlation identifiers.</li>
+<li>Keep developer directories, workstation names, and deployment hostnames out
+  of checked-in configuration.</li>
+<li>Bind network transports to an explicitly chosen interface and require the
+  deployment's MCP authentication policy before accepting remote traffic.</li>
+<li>Enable optional agent, embedding, evolution, or observability features only
+  when their dependencies and backends are configured and healthy.</li>
+</ul>
+<p>The checked-in examples use <code>localhost</code> for loopback-only development and
+<code>example.invalid</code> for replaceable network endpoints. Neither value is a
+production default.</p>
+<h2 id="tls-trust">TLS trust<a class="headerlink" href="#tls-trust" title="Permanent link">&para;</a></h2>
+<p>Certificate and hostname verification are required. Outbound clients resolve a
+named transport-security profile through <code>AgentConfig</code>. Select it with
+<code>TLS_PROFILE</code>; provide the runtime-only profile catalog through
+<code>TLS_PROFILES_REF</code> (preferred) or <code>TLS_PROFILES</code>. A profile may use platform
+trust, a complete-chain PEM bundle, mTLS material, and a proxy without reducing
+the policy to a Boolean. <code>SSL_CERT_FILE</code> and <code>REQUESTS_CA_BUNDLE</code> remain standard
+runtime inputs when no named profile is selected. Set <code>UV_NATIVE_TLS=true</code> only
+for the separate <code>uvx</code> package-fetch transport when platform trust is required.</p>
+<p>Do not disable verification to work around an incomplete server chain. Keep CA
+bundle locations environment-configured and stable for the runtime; never embed
+a workstation path or certificate material in MCP configuration.</p>
+<h2 id="privacy-and-data-governance">Privacy and data governance<a class="headerlink" href="#privacy-and-data-governance" title="Permanent link">&para;</a></h2>
+<p>The default observability posture is metadata-only. Do not persist prompts,
+message bodies, tool inputs/results, document content, raw traces, credentials,
+local paths, hostnames, or personal identity unless an approved data contract
+explicitly requires it. Keep Langfuse or OTLP content capture disabled unless a
+reviewed retention and access policy authorizes it.</p>
+<p>When connector ingestion is enabled, each change must carry tenant, ACL,
+classification, retention, provenance, and checkpoint/delta metadata. Reject or
+quarantine records that cannot satisfy that contract; never silently widen a
+tenant scope. Logs and reports should contain counts, status, and opaque
+references only.</p>
+<h2 id="deployment-verification">Deployment verification<a class="headerlink" href="#deployment-verification" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Validate the capability bundle and skill metadata against the installed tool
+   schemas.</li>
+<li>Confirm required secrets are present without printing their values.</li>
+<li>Verify the complete TLS chain with certificate verification enabled.</li>
+<li>Exercise health/readiness and one least-privilege read operation.</li>
+<li>Confirm traces arrive under the expected opaque tenant/run identifiers and
+   contain no captured content.</li>
+<li>Record only sanitized pass/fail evidence and version identifiers.</li>
+</ol>
 
 
 
@@ -967,7 +958,7 @@ whitelisted RPC method.</p>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../usage/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Usage (MCP / API / CLI)">
+          <a href="../installation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Installation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -977,20 +968,20 @@ whitelisted RPC method.</p>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Usage (MCP / API / CLI)
+                Installation
               </div>
             </div>
           </a>
         
         
           
-          <a href="../concepts/" class="md-footer__link md-footer__link--next" aria-label="Next: Concepts">
+          <a href="../deployment/" class="md-footer__link md-footer__link--next" aria-label="Next: Deployment">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Concepts
+                Deployment
               </div>
             </div>
             <div class="md-footer__button md-icon">
