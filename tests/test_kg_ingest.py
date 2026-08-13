@@ -46,7 +46,13 @@ def test_ingest_entities_writes_nodes_and_edges():
             {"id": "erpnext:customer:acme", "node_type": "Customer", "name": "Acme"},
             {"id": "erpnext:salesorder:SO-1", "node_type": "SalesOrder"},
         ],
-        [{"source": "erpnext:salesorder:SO-1", "target": "erpnext:customer:acme", "relationship": "orderedBy"}],
+        [
+            {
+                "source": "erpnext:salesorder:SO-1",
+                "target": "erpnext:customer:acme",
+                "relationship": "orderedBy",
+            }
+        ],
         client=c,
         graph="__commons__",
     )
@@ -56,7 +62,11 @@ def test_ingest_entities_writes_nodes_and_edges():
     assert c.txn.nodes["erpnext:customer:acme"]["source"] == "erpnext-agent"
     assert c.txn.nodes["erpnext:customer:acme"]["domain"] == "erpnext"
     assert c.txn.edges == [
-        ("erpnext:salesorder:SO-1", "erpnext:customer:acme", {"relationship": "orderedBy"})
+        (
+            "erpnext:salesorder:SO-1",
+            "erpnext:customer:acme",
+            {"relationship": "orderedBy"},
+        )
     ]
 
 
@@ -113,7 +123,11 @@ def test_ingest_purchase_order_maps_supplier():
     assert c.txn.nodes["erpnext:purchaseorder:PO-1"]["node_type"] == "PurchaseOrder"
     assert c.txn.nodes["erpnext:supplier:Globex"]["node_type"] == "Supplier"
     assert c.txn.edges == [
-        ("erpnext:purchaseorder:PO-1", "erpnext:supplier:Globex", {"relationship": "suppliedBy"})
+        (
+            "erpnext:purchaseorder:PO-1",
+            "erpnext:supplier:Globex",
+            {"relationship": "suppliedBy"},
+        )
     ]
 
 
@@ -130,7 +144,11 @@ def test_ingest_employee_maps_department_link():
     assert c.txn.nodes["erpnext:employee:HR-EMP-1"]["employeeName"] == "Jane Doe"
     assert c.txn.nodes["erpnext:orgunit:Sales"]["node_type"] == "OrgUnit"
     assert c.txn.edges == [
-        ("erpnext:employee:HR-EMP-1", "erpnext:orgunit:Sales", {"relationship": "memberOf"})
+        (
+            "erpnext:employee:HR-EMP-1",
+            "erpnext:orgunit:Sales",
+            {"relationship": "memberOf"},
+        )
     ]
 
 
@@ -138,7 +156,14 @@ def test_ingest_item_catalog():
     c = _FakeClient()
     res = ingest_doctype(
         "Item",
-        [{"name": "WIDGET-1", "item_code": "WIDGET-1", "item_name": "Widget", "item_group": "Products"}],
+        [
+            {
+                "name": "WIDGET-1",
+                "item_code": "WIDGET-1",
+                "item_name": "Widget",
+                "item_group": "Products",
+            }
+        ],
         client=c,
     )
     assert res == {"nodes": 1, "edges": 0}
