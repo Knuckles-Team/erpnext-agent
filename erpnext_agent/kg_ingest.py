@@ -101,7 +101,9 @@ def ingest_attachment(
 # --- per-DocType mappers (records -> typed entity/relationship dicts) ---
 
 
-def _party(record: dict[str, Any], cls: str, name_field: str, group_field: str) -> dict[str, Any]:
+def _party(
+    record: dict[str, Any], cls: str, name_field: str, group_field: str
+) -> dict[str, Any]:
     name = record.get("name")
     return {
         "id": f"erpnext:{cls.lower()}:{_slug(name)}",
@@ -163,7 +165,14 @@ def _order(
     party = record.get(party_key)
     if party:
         pid = f"erpnext:{party_cls.lower()}:{_slug(party)}"
-        entities.append({"id": pid, "node_type": party_cls, "name": party, "externalToolId": str(party)})
+        entities.append(
+            {
+                "id": pid,
+                "node_type": party_cls,
+                "name": party,
+                "externalToolId": str(party),
+            }
+        )
         rels.append({"source": oid, "target": pid, "relationship": party_rel})
     line_items, line_rels = _line_items(oid, record)
     entities.extend(line_items)

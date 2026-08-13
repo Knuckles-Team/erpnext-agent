@@ -7,12 +7,8 @@
         "erpnext_agent.mcp_server"
       ],
       "env": {
-        "MCP_TOOL_MODE": "condensed",
+        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
-        "ERPNEXT_AGENT_PASSWORD": "",
-        "ERPNEXT_AGENT_USERNAME": "",
-        "ERPNEXT_TOKEN": "",
-        "ERPNEXT_URL": "",
         "RESOURCETOOL": "True"
       }
     }

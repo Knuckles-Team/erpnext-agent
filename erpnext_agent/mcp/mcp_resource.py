@@ -30,7 +30,7 @@ def register_resource_tools(mcp: FastMCP):
 
         try:
             kwargs = json.loads(params_json)
-        except Exception as e:
+        except Exception:
             return {"error": "Operation failed"}
 
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
@@ -47,5 +47,5 @@ def register_resource_tools(mcp: FastMCP):
         try:
             res = method(**kwargs)
             return res if isinstance(res, dict) else {"result": res}
-        except Exception as e:
+        except Exception:
             return {"error": "Operation failed"}
