@@ -68,3 +68,11 @@ ignore = [ "E402", "E501", "B008",]
 
 [tool.setuptools.packages.find]
 where = [ ".",]
+
+[tool.uv]
+override-dependencies = [
+    "fastmcp-slim[client,server]>=4.0.0b1",
+]
+
+[tool.uv.sources]
+agent-utilities = { path = ".uv-workspace-siblings/agent-utilities", editable = true }
