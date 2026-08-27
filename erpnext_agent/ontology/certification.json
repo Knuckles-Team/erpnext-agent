@@ -1,7 +1,7 @@
 {
   "api_version": "graphos.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "d83b9baab46c3384a59f9a710a7d6e0a916d4e697f9e61759c2c90a65704a8e7",
+    "connector_manifest.yml": "52aa9bb9a22ca1ee5d7b968d44ebf413c2a48235561c355da5cb8317242e5ec8",
     "erpnext_agent/connectors/mcp_source_presets.json": "c7ccf724596567d423abc76aaad0431d23e80e359762afd91563dd204ec197c0",
     "erpnext_agent/connectors/tool_schema_fingerprints.json": "c7990fee4a99b61c2202445ce848abf1bc219062767e4e9df8b11bffa4a4a52a",
     "erpnext_agent/ontology/erpnext.ttl": "a0358fb9371646207a3edc1c8b978cffc2684272fc7ca9ca6b1847cb6dd63f94",
@@ -18,9 +18,9 @@
     "synthetic_fixture_contract": "passed"
   },
   "compatibility": {
-    "agent_utilities": ">=2.4.0,<3",
+    "agent_utilities": ">=2.5.0,<3",
     "bundle_schema": "2",
-    "epistemic_graph": ">=2.26.0,<3"
+    "epistemic_graph": ">=2.27.0,<3"
   },
   "connector": "erpnext-agent",
   "kind": "ConnectorSourceAttestation",
@@ -32,5 +32,5 @@
   "signer": "UNSIGNED-PREVIEW",
   "signing_public_key": "",
   "status": "source-validated",
-  "validated_at": "2026-08-21T04:30:39Z"
+  "validated_at": "2026-08-26T13:42:55Z"
 }
