@@ -1,3 +1,5 @@
+from typing import Literal
+
 """MCP tools for resource operations."""
 
 from fastmcp import Context, FastMCP
@@ -14,7 +16,14 @@ def register_resource_tools(mcp: FastMCP):
 
     @mcp.tool(tags={"resource"})
     async def erpnext_agent_resource(
-        action: str = Field(
+        action: Literal[
+            "call_method",
+            "create_document",
+            "delete_document",
+            "get_document",
+            "list_documents",
+            "update_document",
+        ] = Field(
             description="Action to perform. Must be one of: 'get_document', 'create_document', 'update_document', 'delete_document', 'list_documents', 'call_method'"
         ),
         params_json: str = Field(

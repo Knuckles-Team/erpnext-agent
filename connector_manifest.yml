@@ -163,7 +163,7 @@ sync:
   updated_field: null
   pagination: null
   doc_type: erpnext_item
-  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+  tool_schema_sha256: 22b61558e88102528b7f1fb7f7b6828c195583672672df8d80d47ed1054f25ef
   raw:
     server: erpnext-mcp
     tool: erpnext_agent_resource
@@ -192,7 +192,7 @@ sync:
   updated_field: transaction_date
   pagination: offset
   doc_type: erpnext_sales_order
-  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+  tool_schema_sha256: 22b61558e88102528b7f1fb7f7b6828c195583672672df8d80d47ed1054f25ef
   raw:
     server: erpnext-mcp
     tool: erpnext_agent_resource
