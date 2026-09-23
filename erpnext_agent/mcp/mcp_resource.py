@@ -14,7 +14,18 @@ def register_resource_tools(mcp: FastMCP):
     CONCEPT:EN-OS.governance.erpn
     """
 
-    @mcp.tool(tags={"resource"})
+    @mcp.tool(
+        tags={"resource"},
+        annotations={
+            "readOnlyHint": False,
+            "destructiveHint": True,
+            "idempotentHint": False,
+            "openWorldHint": True,
+        },
+        meta={
+            "eg.annotations": {"modalities_in": ["text"], "modalities_out": ["text"]}
+        },
+    )
     async def erpnext_agent_resource(
         action: Literal[
             "call_method",
