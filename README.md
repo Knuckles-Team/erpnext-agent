@@ -69,40 +69,29 @@ Pick the extra that matches what you want to run:
 | Extra | Installs | Use when |
 |-------|----------|----------|
 | `erpnext-agent[mcp]` | Connector-focused MCP server (`agent-utilities[mcp]` — FastMCP/FastAPI + `epistemic-graph[full]`) | You only run the **MCP server** (smallest install / image) |
-| `erpnext-agent[agent]` | Agent runtime (`agent-utilities[agent-runtime,logfire]` — model orchestration + `epistemic-graph[full]`) | You run the **integrated agent** |
-| `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
 # Connector-focused MCP server (includes the shared graph engine)
 uv pip install "erpnext-agent[mcp]"
-
-# Agent runtime (adds model orchestration to the shared graph engine)
-uv pip install "erpnext-agent[agent]"
-
-# Everything (development)
-uv pip install "erpnext-agent[all]"      # or: python -m pip install "erpnext-agent[all]"
 ```
 
-### Container images (`:mcp` vs `:agent`)
+### Container images (`:mcp`)
 
-One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+One `docker/Dockerfile` builds a single slim MCP-server image:
 
-| Image tag | Build target | Contents | Entrypoint |
-|-----------|--------------|----------|------------|
-| `example/erpnext-agent:mcp` | `--target mcp` | `erpnext-agent[mcp]` — **connector-focused**, includes `epistemic-graph[full]`; no model-orchestration stack | `erpnext-mcp` |
-| `example/erpnext-agent@sha256:<digest>` | `--target agent` (default) | `erpnext-agent[agent]` — **agent runtime**, model orchestration + `epistemic-graph[full]` | `erpnext-agent` |
+| Image tag | Contents | Entrypoint |
+|-----------|----------|------------|
+| `example/erpnext-agent:mcp` | `erpnext-agent[mcp]` — connector-focused, includes `epistemic-graph[full]` | `erpnext-mcp` |
 
 ```bash
-docker build --target mcp   -t example/erpnext-agent:mcp    docker/   # connector-focused MCP server
-docker build --target agent -t example/erpnext-agent:agent-local docker/   # agent runtime
+docker build -t example/erpnext-agent:mcp docker/   # connector-focused MCP server
 ```
 
 ### Knowledge-graph database (`epistemic-graph`)
 
-Both `[mcp]` and `[agent]` carry the **epistemic-graph** engine through the required
-Agent Utilities core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
-the server connector-focused; `[agent]` additionally enables model orchestration. Local
-deployments can use the bundled engine. For production or shared state, run
+The `[mcp]` extra carries the **epistemic-graph** engine through the required
+Agent Utilities core dependency (`epistemic-graph[full]`); the server stays
+connector-focused. Local deployments can use the bundled engine. For production or shared state, run
 **epistemic-graph as a dedicated database service** and configure the runtime to use it.
 Deployment recipes (single-node + Raft HA), connection configuration, and architecture
 diagrams are documented in the
@@ -367,7 +356,7 @@ to **"deploy `erpnext-agent` with agent-utilities-deployment"**.
 | Install mode | Command |
 |------|---------|
 | Installed package | `uv tool install "erpnext-agent[mcp]"`, then run `erpnext-mcp` |
-| Editable source | `uv pip install -e ".[agent]"`, then run `erpnext-mcp` |
+| Editable source | `uv pip install -e ".[mcp]"`, then run `erpnext-mcp` |
 | Immutable container | deploy `registry.example.invalid/erpnext-agent@sha256:<digest>` through the operator-selected orchestrator |
 
 The repository embeds no deployment profile, credential value, certificate path, or
