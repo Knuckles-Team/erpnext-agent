@@ -1,11 +1,9 @@
 """CONCEPT:EN-OS.identity.erpn Identity credentials loader and session manager."""
 
-from agent_utilities.base_utilities import get_logger
-from agent_utilities.core.config import setting
-from agent_utilities.core.transport_security import (
-    ResolvedTLSProfile,
-    resolve_configured_tls_profile,
-)
+from agent_connector_sdk.config import setting
+from agent_connector_sdk.tls.profile import ResolvedTLSProfile
+from agent_connector_sdk.tls.resolve import resolve_tls_profile
+from agent_connector_sdk.utilities import get_logger
 
 from erpnext_agent.api_client import Api
 
@@ -26,5 +24,5 @@ def get_client(tls_profile: ResolvedTLSProfile | None = None) -> Api:
         token=token,
         username=username,
         password=password,
-        tls_profile=tls_profile or resolve_configured_tls_profile("erpnext_agent"),
+        tls_profile=tls_profile or resolve_tls_profile("erpnext_agent"),
     )
