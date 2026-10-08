@@ -127,7 +127,7 @@ Optional connection and runtime settings:
 The connector remains inactive when no `ERPNEXT_URL` / credentials are supplied.
 A template lives in
 [`.env.example`](https://github.com/Knuckles-Team/erpnext-agent/blob/main/.env.example)
-— copy it to `.env` and fill in your site endpoint and token.
+— copy it to `.env` and fill in the operator's site endpoint and token.
 
 ## Docker Compose
 
@@ -168,7 +168,7 @@ docker compose -f docker/mcp.compose.yml logs -f
 
 ## Behind a Caddy reverse proxy
 
-Expose the HTTP server on a hostname with automatic TLS. Add to your `Caddyfile`:
+Expose the HTTP server on a hostname with automatic TLS. Add to the operator's `Caddyfile`:
 
 ```caddy
 # Internal (self-signed) — homelab .example.invalid zone
@@ -212,7 +212,7 @@ this as a tool.
 
 ## Register with an MCP client
 
-Add to your client's `mcp_config.json`:
+Add to the operator's client's `mcp_config.json`:
 
 ```json
 {

@@ -1,7 +1,7 @@
 # Usage — MCP / API / CLI
 
 `erpnext-agent` exposes the same capability three ways: as **MCP tools** an agent
-calls, as a **Python API** (`Api`) you import, and as a **command-line** entry point
+calls, as a **Python API** (`Api`) the operator import, and as a **command-line** entry point
 for the MCP and agent servers. The full DocType / RPC surface is summarized in
 [Overview](overview.md).
 
@@ -44,7 +44,7 @@ invoices = api.list_documents(
 customer = api.get_document("Customer", "ACME Corp")
 ```
 
-Construct the client explicitly when you want to pass credentials inline:
+Build the client explicitly when the operator want to pass credentials inline:
 
 ```python
 from erpnext_agent.api_client import Api
