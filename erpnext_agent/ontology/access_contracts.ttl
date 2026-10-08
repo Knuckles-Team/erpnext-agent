@@ -1,0 +1,66 @@
+@prefix ac: <https://knuckles-team.github.io/agent-connector-sdk/access#> .
+@prefix erp: <http://knuckles.team/kg#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Access contracts (SDK-CONNECTOR-CONTROL-R021 / G24): how Supplier, Item
+# and PurchaseOrder are answered live through the erpnext_agent_resource
+# MCP tool (action list_documents / get_document), not a copied snapshot.
+# Kept apart from erpnext.ttl so the flat access-contract parser only reads
+# this file.
+
+erp:supplierAccess a ac:AccessContract ;
+    ac:classIri erp:Supplier ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Supplier" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_agent_resource" ;
+    ac:parameter "action", "params_json" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:supplierNameBinding a ac:PropertyBinding ;
+    ac:contract erp:supplierAccess ; ac:property rdfs:label ; ac:field "supplier_name" .
+
+erp:itemAccess a ac:AccessContract ;
+    ac:classIri erp:Item ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Item" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_agent_resource" ;
+    ac:parameter "action", "params_json" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:itemNameBinding a ac:PropertyBinding ;
+    ac:contract erp:itemAccess ; ac:property rdfs:label ; ac:field "item_name" .
+
+erp:purchaseOrderAccess a ac:AccessContract ;
+    ac:classIri erp:PurchaseOrder ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Purchase Order" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_agent_resource" ;
+    ac:parameter "action", "params_json" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:purchaseOrderTotalBinding a ac:PropertyBinding ;
+    ac:contract erp:purchaseOrderAccess ; ac:property erp:grandTotal ; ac:field "grand_total" .
+
+erp:purchaseOrderStatusBinding a ac:PropertyBinding ;
+    ac:contract erp:purchaseOrderAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
