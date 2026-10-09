@@ -1,68 +1,109 @@
-"""Native epistemic-graph ingestion for ERPNext / Frappe records.
+"""Epistemic-graph ingestion for ERPNext / Frappe records.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. Connector-specific mappers emit
-canonical node_type nodes and relationship edges. The required agent-utilities
-native-ingest primitive owns the transaction and raises NativeIngestError when the
-authoritative engine cannot commit.
+canonical node_type nodes and relationship edges. ``agent_connector_sdk.ingest`` --
+the generated ``SourceIngest`` client, not a local ingestion helper -- owns the
+transaction and raises ``IngestError`` when the authoritative engine cannot commit.
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    NativeIngestError,
-)
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    ingest_documents as _native_ingest_documents,
-)
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    ingest_entities as _native_ingest_entities,
-)
-from agent_utilities.knowledge_graph.memory.native_ingest import (
-    media_store as _native_media_store,
+from agent_connector_sdk.ingest import (
+    ChangeSet,
+    Document,
+    Entity,
+    IngestBinding,
+    IngestError,
+    KnowledgeIngest,
+    MediaAsset,
+    Relationship,
+    current_ingest,
 )
 
 _SOURCE = "erpnext-agent"
 _DOMAIN = "erpnext"
 
+_BINDING = IngestBinding(connector=_SOURCE, stream=_DOMAIN)
 
-def ingest_entities(
+_ENTITY_RESERVED_KEYS = frozenset({"id", "node_type"})
+_RELATIONSHIP_RESERVED_KEYS = frozenset({"source", "target", "relationship"})
+
+
+def _to_entity(record: dict[str, Any]) -> Entity:
+    return Entity(
+        id=record.get("id"),
+        node_type=record.get("node_type"),
+        properties={
+            key: value
+            for key, value in record.items()
+            if key not in _ENTITY_RESERVED_KEYS
+        },
+    )
+
+
+def _to_relationship(record: dict[str, Any]) -> Relationship:
+    properties = {
+        key: value
+        for key, value in record.items()
+        if key not in _RELATIONSHIP_RESERVED_KEYS
+    }
+    return Relationship(
+        source=record["source"],
+        target=record["target"],
+        relationship=record["relationship"],
+        properties=properties or None,
+    )
+
+
+async def ingest_entities(
     entities: list[dict[str, Any]],
     relationships: list[dict[str, Any]] | None = None,
     *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
-    """Write canonical typed nodes and relationships through agent-utilities."""
-    return _native_ingest_entities(
-        entities,
-        relationships,
-        source=source,
-        domain=domain,
-        client=client,
-        graph=graph,
+    """Write canonical typed nodes and relationships through the SDK ingest facade."""
+    if not entities:
+        raise IngestError("ingest_entities needs at least one entity")
+    change_set = ChangeSet(
+        entities=tuple(_to_entity(entity) for entity in entities),
+        relationships=tuple(
+            _to_relationship(relationship) for relationship in relationships or ()
+        ),
     )
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    return {"nodes": receipt.affected_count, "edges": receipt.relationship_count}
 
 
-def ingest_documents(
+async def ingest_documents(
     documents: list[dict[str, Any]],
     *,
-    source: str = _SOURCE,
-    domain: str = _DOMAIN,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
-    """Write searchable documents through the authoritative native-ingest path."""
-    return _native_ingest_documents(
-        documents,
-        source=source,
-        domain=domain,
-        client=client,
-        graph=graph,
+    """Write searchable documents through the SDK ingest facade."""
+    if not documents:
+        raise IngestError("ingest_documents needs at least one document")
+    change_set = ChangeSet(
+        documents=tuple(
+            Document(
+                id=doc["id"],
+                text=doc["text"],
+                title=doc.get("title"),
+                source_uri=doc.get("source_uri"),
+                properties={
+                    key: value
+                    for key, value in doc.items()
+                    if key not in {"id", "text", "title", "source_uri"}
+                },
+            )
+            for doc in documents
+        )
     )
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    return {"nodes": receipt.affected_count, "edges": receipt.relationship_count}
 
 
 def _slug(name: Any) -> str:
@@ -70,32 +111,28 @@ def _slug(name: Any) -> str:
     return str(name).strip().replace(" ", "_").replace("/", "-").replace(":", "-")
 
 
-def media_store() -> Any:
-    """Return the authoritative native media store."""
-    return _native_media_store()
-
-
-def ingest_attachment(
+async def ingest_attachment(
     name: Any,
     content: bytes,
     *,
     filename: str | None = None,
     content_type: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> str:
     """Store an ERPNext attachment, failing closed when content cannot be committed."""
     if not content:
-        raise NativeIngestError("native ingest attachment requires content")
-    stored = media_store().store_media(
-        content,
-        media_type="document",
+        raise IngestError("ingest attachment requires content")
+    asset = MediaAsset(
+        data=content,
         mime_type=content_type or "application/octet-stream",
         name=filename or f"erpnext-{_slug(name)}",
-        source=_SOURCE,
-        extra={"domain": _DOMAIN},
     )
-    if stored is None:
-        raise NativeIngestError("native attachment transaction failed")
-    return stored.occurrence_id
+    change_set = ChangeSet(media=(asset,))
+    service = ingest or current_ingest()
+    receipt = await service.submit(_BINDING, change_set)
+    if not receipt.affected_count:
+        raise IngestError("media attachment transaction failed")
+    return asset.id or f"erpnext-{_slug(name)}"
 
 
 # --- per-DocType mappers (records -> typed entity/relationship dicts) ---
@@ -277,12 +314,11 @@ _DOCTYPE_MAPPERS = {
 SUPPORTED_DOCTYPES = tuple(_DOCTYPE_MAPPERS)
 
 
-def ingest_doctype(
+async def ingest_doctype(
     doctype: str,
     records: list[dict[str, Any]],
     *,
-    client: Any | None = None,
-    graph: str | None = None,
+    ingest: KnowledgeIngest | None = None,
 ) -> dict[str, int]:
     """Map a list of Frappe ``doctype`` records → typed nodes+links and ingest them.
 
@@ -290,6 +326,6 @@ def ingest_doctype(
     """
     mapper = _DOCTYPE_MAPPERS.get(doctype)
     if mapper is None:
-        raise NativeIngestError("unsupported ERPNext document type")
+        raise IngestError("unsupported ERPNext document type")
     entities, relationships = mapper(records or [])
-    return ingest_entities(entities, relationships, client=client, graph=graph)
+    return await ingest_entities(entities, relationships, ingest=ingest)
