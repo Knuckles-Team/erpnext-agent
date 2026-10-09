@@ -2,10 +2,8 @@ from typing import Any
 from urllib.parse import urljoin
 
 import requests
-from agent_utilities.core.transport_security import (
-    ResolvedTLSProfile,
-    resolve_configured_tls_profile,
-)
+from agent_connector_sdk.tls.profile import ResolvedTLSProfile
+from agent_connector_sdk.tls.resolve import resolve_tls_profile
 
 
 class ApiClientBase:
@@ -24,9 +22,7 @@ class ApiClientBase:
         self.token = token
         self.username = username
         self.password = password
-        self.tls_profile = tls_profile or resolve_configured_tls_profile(
-            "erpnext_agent"
-        )
+        self.tls_profile = tls_profile or resolve_tls_profile("erpnext_agent")
         self._session = self.tls_profile.configure_requests_session(requests.Session())
 
         if token:

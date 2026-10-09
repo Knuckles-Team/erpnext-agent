@@ -65,7 +65,7 @@ def register_ingest_tools(mcp: FastMCP):
         if not isinstance(records, list):
             records = [records] if records else []
 
-        result = ingest_doctype(doctype, records)
+        result = await ingest_doctype(doctype, records)
         return {"doctype": doctype, "listed": len(records), "ingested": result}
 
     return None
