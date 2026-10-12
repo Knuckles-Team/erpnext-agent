@@ -111,7 +111,11 @@ def test_auth_and_version_methods():
         )
 
         client.get_version()
-        mock_request.assert_called_with("GET", "/api/method/version")
+        mock_request.assert_called_with(
+            "GET", "/api/method/frappe.utils.change_log.get_versions"
+        )
 
         client.version()
-        mock_request.assert_called_with("GET", "/api/method/version")
+        mock_request.assert_called_with(
+            "GET", "/api/method/frappe.utils.change_log.get_versions"
+        )

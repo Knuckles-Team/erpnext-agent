@@ -38,7 +38,10 @@ def _import_module_safely(module_name: str):
         return None
 
 
-_AVAILABILITY_FLAG_MARKERS = {"_MCP_AVAILABLE": "mcp_server", "_AGENT_AVAILABLE": "agent_server"}
+_AVAILABILITY_FLAG_MARKERS = {
+    "_MCP_AVAILABLE": "mcp_server",
+    "_AGENT_AVAILABLE": "agent_server",
+}
 
 
 def _resolve_availability_flag(name: str) -> bool | None:

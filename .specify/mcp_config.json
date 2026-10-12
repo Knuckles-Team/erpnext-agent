@@ -4,8 +4,8 @@
       "command": "${WORKSPACE_ROOT}/.venv/bin/erpnext-mcp",
       "args": [],
       "env": {
-        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
+        "INGESTTOOL": "True",
         "RESOURCETOOL": "True"
       },
       "disabled": false

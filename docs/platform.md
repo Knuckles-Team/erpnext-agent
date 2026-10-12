@@ -61,8 +61,9 @@ volumes:
 ```bash
 docker compose -f docker/erpnext-platform.compose.yml up -d
 
-# Wait for the site to answer (the version endpoint is unauthenticated)
-curl -s http://localhost:8000/api/method/version
+# Once the site and API token are configured, verify authenticated app versions.
+curl -s -H "Authorization: token $ERPNEXT_TOKEN" \
+  http://localhost:8000/api/method/frappe.utils.change_log.get_versions
 ```
 
 After the site is created, generate an API key/secret pair from
