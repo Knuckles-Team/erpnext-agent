@@ -171,37 +171,15 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 <!-- MCP-TOOLS-TABLE:START -->
 
-#### Condensed action-routed tools (default — `MCP_TOOL_MODE=condensed`)
+#### Intent tools
 
-| MCP Tool | Toggle Env Var | Description |
-|----------|----------------|-------------|
-| `erpnext_agent_authentication` | `AUTHENTICATIONTOOL` | Manage ERPNext Agent authentication operations. |
-| `erpnext_agent_resource` | `RESOURCETOOL` | Manage ERPNext Agent resource operations. |
+| MCP Tool | Kind | Description |
+|----------|------|-------------|
+| `erpnext_agent_authentication` | intent | Manage ERPNext Agent authentication operations. |
+| `erpnext_agent_resource` | intent | Manage ERPNext Agent resource operations. |
+| `erpnext_ingest` | intent | Natively ingest an ERPNext DocType into epistemic-graph as typed nodes. |
 
-#### Verbose 1:1 API-mapped tools (`MCP_TOOL_MODE=verbose` or `both`)
-
-<details>
-<summary>13 per-operation tools — one per public API method (click to expand)</summary>
-
-| MCP Tool | Toggle Env Var | Description |
-|----------|----------------|-------------|
-| `erpnext_authGetLoggedUser` | `APITOOL` | Alias for get_logged_user matching OpenAPI operationId. |
-| `erpnext_auth_get_logged_user` | `APITOOL` | Snake-case alias for get_logged_user. |
-| `erpnext_call_method` | `APITOOL` | Execute dotted path whitelisted RPC methods (covers 100% of custom functions). |
-| `erpnext_create_document` | `APITOOL` | Create a new document resource. |
-| `erpnext_delete_document` | `APITOOL` | Delete a specific document resource. |
-| `erpnext_get_document` | `APITOOL` | Get a document resource by name. |
-| `erpnext_get_logged_user` | `APITOOL` | Get the user that is logged in. |
-| `erpnext_get_version` | `APITOOL` | Get installed app versions. |
-| `erpnext_list_documents` | `APITOOL` | List document resources with pagination, filters, and selected fields. |
-| `erpnext_login` | `APITOOL` | Authenticate yourself. |
-| `erpnext_logout` | `APITOOL` | Logout from current session. |
-| `erpnext_update_document` | `APITOOL` | Update a specific document resource. |
-| `erpnext_version` | `APITOOL` | Alias for get_version. |
-
-</details>
-
-_2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled unless its `<DOMAIN>TOOL` toggle is set false; `MCP_TOOL_MODE` selects the surface (`condensed` default · `verbose` 1:1 · `both`). Auto-generated — do not edit._
+_3 intent tool(s) · 0 operation(s). Call an operation as `act(action='<operation>', params={...})` (`ask` for reads); `find(action='describe', params={'action': '<operation>'})` returns its arguments. An operation is enabled unless its `<DOMAIN>TOOL` toggle is set false. Auto-generated — do not edit._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### MCP Configuration Examples
@@ -226,8 +204,8 @@ _2 action-routed tool(s) (default) · 13 verbose 1:1 tool(s). Each is enabled un
         "erpnext-mcp"
       ],
       "env": {
-        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
+        "INGESTTOOL": "True",
         "RESOURCETOOL": "True"
       }
     }
@@ -259,8 +237,8 @@ own runtime secret boundary.
         "TRANSPORT": "streamable-http",
         "HOST": "127.0.0.1",
         "PORT": "8000",
-        "MCP_TOOL_MODE": "intent",
         "AUTHENTICATIONTOOL": "True",
+        "INGESTTOOL": "True",
         "RESOURCETOOL": "True"
       }
     }
@@ -291,8 +269,8 @@ docker run -i --rm \
   --pids-limit=256 \
   --tmpfs /tmp:rw,noexec,nosuid,nodev,size=64m \
   -e TRANSPORT=stdio \
-  -e MCP_TOOL_MODE=intent \
   -e AUTHENTICATIONTOOL=True \
+  -e INGESTTOOL=True \
   -e RESOURCETOOL=True \
   registry.example.invalid/erpnext-agent@sha256:<digest> erpnext-mcp
 ```
@@ -302,7 +280,7 @@ direct server TLS), exact `MCP_ALLOWED_HOSTS`, and an exact trusted-proxy
 CIDR policy through the operator-owned deployment profile. The generator
 does not emit an unauthenticated non-loopback listener.
 
-_Auto-generated from the code-read env surface (`MCP_TOOL_MODE` + package vars) — do not edit._
+_Auto-generated from the code-read env surface (package vars) — do not edit._
 <!-- MCP-CONFIG-EXAMPLES:END -->
 
 <!-- BEGIN GENERATED: additional-deployment-options -->
@@ -395,12 +373,15 @@ configured secret provider.
 | `TLS_PROFILES_REF` | `secret://runtime/tls-profiles` |  |
 | `AUTHENTICATIONTOOL` | `True` |  |
 | `RESOURCETOOL` | `True` |  |
+| `ERPNEXT_AGENT_TLS_PROFILE` | — |  |
+| `ERPNEXT_AGENT_TLS_PROFILE_REF` | — |  |
+| `INGESTTOOL` | `True` |  |
+| `ERPNEXT_AGENT_MCP_IMAGE` | — | Required for that Compose deployment; supply image@sha256:digest. |
 
 #### Inherited agent-utilities variables (apply to every connector)
 
 | Variable | Example | Description |
 |----------|---------|-------------|
-| `MCP_TOOL_MODE` | `intent` | Tool surface: `intent` \| `condensed` \| `verbose` \| `both` |
 | `MCP_ENABLED_TOOLS` | — | Comma-separated tool allow-list |
 | `MCP_DISABLED_TOOLS` | — | Comma-separated tool deny-list |
 | `MCP_ENABLED_TAGS` | — | Comma-separated tag allow-list |
@@ -418,11 +399,11 @@ configured secret provider.
 | `DEBUG` | `False` | Verbose logging |
 | `PYTHONUNBUFFERED` | `1` | Unbuffered stdout (recommended in containers) |
 | `MCP_URL` | `http://localhost:8000/mcp` | URL of the MCP server the agent connects to |
-| `PROVIDER` | `openai` | LLM provider for the agent |
-| `MODEL_ID` | `gpt-4o` | Model id for the agent |
+| `PROVIDER` | — | Operator-configured LLM provider for the agent |
+| `MODEL_ID` | — | Operator-configured model id for the agent |
 | `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
 
-_11 package + 21 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
+_15 package + 20 inherited variable(s). Auto-generated from `.env.example` + the shared agent-utilities set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
 
 <!-- GOVERNED-CAPABILITY:START -->

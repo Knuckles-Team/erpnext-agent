@@ -106,7 +106,11 @@ async def test_ingest_sales_order_maps_customer_and_items(ingest):
     assert "erpnext:customer:Acme_Corp" in records
     assert "erpnext:item:WIDGET-1" in records
     relation_pairs = {
-        (rel.source.record_id, rel.target.record_id, rel.relation_reference.rsplit("/", 1)[-1])
+        (
+            rel.source.record_id,
+            rel.target.record_id,
+            rel.relation_reference.rsplit("/", 1)[-1],
+        )
         for rel in request.relationships
     }
     assert (
@@ -135,7 +139,11 @@ async def test_ingest_purchase_order_maps_supplier(ingest):
     assert "erpnext:purchaseorder:PO-1" in records
     assert "erpnext:supplier:Globex" in records
     relation_pairs = {
-        (rel.source.record_id, rel.target.record_id, rel.relation_reference.rsplit("/", 1)[-1])
+        (
+            rel.source.record_id,
+            rel.target.record_id,
+            rel.relation_reference.rsplit("/", 1)[-1],
+        )
         for rel in request.relationships
     }
     assert (
@@ -159,7 +167,11 @@ async def test_ingest_employee_maps_department_link(ingest):
     assert records["erpnext:employee:HR-EMP-1"]["employeeName"] == "Jane Doe"
     assert "erpnext:orgunit:Sales" in records
     relation_pairs = {
-        (rel.source.record_id, rel.target.record_id, rel.relation_reference.rsplit("/", 1)[-1])
+        (
+            rel.source.record_id,
+            rel.target.record_id,
+            rel.relation_reference.rsplit("/", 1)[-1],
+        )
         for rel in request.relationships
     }
     assert (
