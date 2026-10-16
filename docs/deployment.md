@@ -268,5 +268,5 @@ services:
       - erpnext-agent-mcp
 ```
 
-Provision an LLM provider for the agent through the standard `agent-utilities`
+Provision an LLM provider for the agent through the standard `agent-connector-sdk`
 environment variables (provider/model selection via `--provider` / `--model-id`).

@@ -9,7 +9,6 @@ __all__: list[str] = []
 
 CORE_MODULES = ["erpnext_agent.api_client"]
 OPTIONAL_MODULES = {
-    "erpnext_agent.agent_server": "agent",
     "erpnext_agent.mcp_server": "mcp",
 }
 

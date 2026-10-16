@@ -4,7 +4,7 @@
   "schema_version": "1.0",
   "prompt_version": "0.1.0",
   "source": "erpnext-agent",
-  "extends": "agent-utilities:base",
+  "extends": "agent-connector-sdk:base",
   "compose": "append",
   "description": "ERPNext ERP operator: order-to-cash, procure-to-pay, inventory and HR over the erpnext-agent (Frappe) MCP server, with native knowledge-graph ingestion.",
   "metadata": {

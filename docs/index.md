@@ -1,6 +1,6 @@
 # erpnext-agent
 
-ERPNext and Frappe **REST/RPC API + MCP Server** for the agent-utilities ecosystem
+ERPNext and Frappe **REST/RPC API + MCP Server** for the agent-connector-sdk ecosystem
 — a typed, deterministic tool surface over the ERPNext / Frappe business platform.
 
 !!! info "Official documentation"
