@@ -41,44 +41,6 @@ pytest -v
 ## Project Structure
 
 ### File Tree
-```text
-.
-├── .bumpversion.cfg
-├── .gitignore
-├── .pre-commit-config.yaml
-├── AGENTS.md
-├── CHANGELOG.md
-├── LICENSE
-├── README.md
-├── pyproject.toml
-├── requirements.txt
-├── docs
-│   ├── concepts.md
-│   ├── index.md
-│   └── overview.md
-├── docker
-│   └── compose.yml
-├── prompts
-│   └── main_agent.md
-├── tests
-│   ├── conftest.py
-│   ├── test_api_client.py
-│   ├── test_concept_parity.py
-│   ├── test_init_dynamics.py
-│   ├── test_mcp_server.py
-│   └── test_startup.py
-└── erpnext_agent
-    ├── __init__.py
-    ├── agent_server.py
-    ├── api
-    │   ├── api_client_base.py
-    │   └── api_client_core.py
-    ├── api_client.py
-    ├── auth.py
-    ├── mcp
-    │   └── mcp_core.py
-    └── mcp_server.py
-```
 
 ## Concept Registry
 

@@ -22,14 +22,8 @@ The base install is intentionally minimal. Install the extra for what the operat
 | Extra | Install | Pulls in |
 |---|---|---|
 | `mcp` | `pip install "erpnext-agent[mcp]"` | FastMCP MCP-server runtime (`agent-connector-sdk`) |
-| `agent` | `pip install "erpnext-agent[agent]"` | Pydantic-AI agent server + Logfire tracing |
 | `all` | `pip install "erpnext-agent[all]"` | Everything above |
 | `test` | `pip install "erpnext-agent[test]"` | `pytest`, `pytest-asyncio`, `pytest-cov`, `pytest-xdist` |
-
-```bash
-# Typical: run the MCP server and the agent server
-pip install "erpnext-agent[all]"
-```
 
 ## From source
 

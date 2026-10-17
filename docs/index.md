@@ -16,14 +16,12 @@ ERPNext and Frappe **REST/RPC API + MCP Server** for the agent-connector-sdk eco
 
 `erpnext-agent` wraps the ERPNext / Frappe Framework REST and whitelisted-RPC
 surface with typed, deterministic MCP tools, and ships an optional Pydantic-AI
-agent server for conversational workflows. It provides:
 
 - **`Api`** — a tolerant `requests`-based REST/RPC facade over the Frappe site
   (token or username/password authentication, configurable TLS verification).
 - **Document and method tools** — read, create, update, delete, and list any
   ERPNext DocType, plus `call_method` to invoke any whitelisted RPC endpoint
   (covering custom server functions).
-- **An MCP server** (`erpnext-mcp`) and a companion **agent server**
   (`erpnext-agent`) that calls those tools through a policy router.
 
 The connector remains inactive when credentials are absent, so it is safe to load
@@ -34,7 +32,6 @@ in any environment.
 <div class="grid cards" markdown>
 
 - :material-rocket-start: **[Installation](installation.md)** — pip, source, extras, and the prebuilt Docker image.
-- :material-server-network: **[Deployment](deployment.md)** — run the MCP and agent servers, Docker Compose, Caddy + Technitium.
 - :material-console: **[Usage](usage.md)** — the MCP tools, the `Api` client, and example prompts.
 - :material-database-cog: **[Backing Platform](platform.md)** — deploy ERPNext / Frappe with Docker.
 - :material-sitemap: **[Overview](overview.md)** — the dynamic facade and FastMCP tool layer.

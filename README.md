@@ -59,7 +59,6 @@ The operator can configure tool filtering via multiple input channels:
 
 When query strings or parameters are provided, an LLM-free **Knowledge Graph resolution layer** (using `DynamicToolOrchestrator`) matches query intents against known tool tags, names, or descriptions, with safe fallback and automated 24-hour background cache refreshing.
 
-
 ---
 
 ## Installation
@@ -69,7 +68,6 @@ Pick the extra that matches what the operator want to run:
 | Extra | Installs | Use when |
 |-------|----------|----------|
 | `erpnext-agent[mcp]` | Connector-focused MCP server (`agent-connector-sdk` — FastMCP/FastAPI + `epistemic-graph[full]`) | The operator only run the **MCP server** (smallest install / image) |
-| `erpnext-agent[agent]` | Agent runtime (`agent-connector-sdk` — model orchestration + `epistemic-graph[full]`) | The operator run the **integrated agent** |
 | `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
@@ -77,31 +75,24 @@ Pick the extra that matches what the operator want to run:
 uv pip install "erpnext-agent[mcp]"
 
 # Agent runtime (adds model orchestration to the shared graph engine)
-uv pip install "erpnext-agent[agent]"
 
 # Everything (development)
 uv pip install "erpnext-agent[all]"      # or: python -m pip install "erpnext-agent[all]"
 ```
 
-### Container images (`:mcp` vs `:agent`)
+### Container images (`:mcp`)
 
-One multi-stage `docker/Dockerfile` builds two right-sized images, selected by `--target`:
+One multi-stage `docker/Dockerfile` builds the MCP-only image (`--target mcp`):
 
 | Image tag | Build target | Contents | Entrypoint |
 |-----------|--------------|----------|------------|
-| `example/erpnext-agent:mcp` | `--target mcp` | `erpnext-agent[mcp]` — **connector-focused**, includes `epistemic-graph[full]`; no model-orchestration stack | `erpnext-mcp` |
-| `example/erpnext-agent@sha256:<digest>` | `--target agent` (default) | `erpnext-agent[agent]` — **agent runtime**, model orchestration + `epistemic-graph[full]` | `erpnext-agent` |
 
 ```bash
-docker build --target mcp   -t example/erpnext-agent:mcp    docker/   # connector-focused MCP server
-docker build --target agent -t example/erpnext-agent:agent-local docker/   # agent runtime
 ```
 
 ### Knowledge-graph database (`epistemic-graph`)
 
-Both `[mcp]` and `[agent]` carry the **epistemic-graph** engine through the required
 Agent Connector SDK core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
-the server connector-focused; `[agent]` also enables model orchestration. Local
 deployments can use the bundled engine. For production or shared state, run
 **epistemic-graph as a dedicated database service** and configure the runtime to use it.
 Deployment recipes (single-node + Raft HA), connection configuration, and architecture
@@ -307,7 +298,6 @@ the recommended reference for installation, deployment, and day-to-day operation
 | Page | Contents |
 |---|---|
 | [Installation](https://knuckles-team.github.io/erpnext-agent/installation/) | pip, source, extras, prebuilt Docker image |
-| [Deployment](https://knuckles-team.github.io/erpnext-agent/deployment/) | run the MCP and agent servers, Compose, Caddy + Technitium, env config |
 | [Usage](https://knuckles-team.github.io/erpnext-agent/usage/) | the MCP tools, the `Api` client, the CLI |
 | [Backing Platform](https://knuckles-team.github.io/erpnext-agent/platform/) | deploy ERPNext / Frappe with Docker |
 | [Overview](https://knuckles-team.github.io/erpnext-agent/overview/) | the dynamic facade and FastMCP tool layer |
@@ -331,7 +321,6 @@ pre-commit run --all-files
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
 
-
 <!-- BEGIN agent-connector-sdk-deployment (generated; do not edit between markers) -->
 
 ## Deploy with `agent-connector-sdk-deployment`
@@ -345,7 +334,6 @@ to **"deploy `erpnext-agent` with agent-connector-sdk-deployment"**.
 | Install mode | Command |
 |------|---------|
 | Installed package | `uv tool install "erpnext-agent[mcp]"`, then run `erpnext-mcp` |
-| Editable source | `uv pip install -e ".[agent]"`, then run `erpnext-mcp` |
 | Immutable container | deploy `registry.example.invalid/erpnext-agent@sha256:<digest>` through the operator-selected orchestrator |
 
 The repository embeds no deployment profile, credential value, certificate path, or
@@ -401,7 +389,6 @@ configured secret provider.
 | `MCP_URL` | `http://localhost:8000/mcp` | URL of the MCP server the agent connects to |
 | `PROVIDER` | — | Operator-configured LLM provider for the agent |
 | `MODEL_ID` | — | Operator-configured model id for the agent |
-| `ENABLE_WEB_UI` | `True` | Serve the AG-UI web interface |
 
 _15 package + 20 inherited variable(s). Auto-generated from `.env.example` + the shared agent-connector-sdk set — do not edit._
 <!-- ENV-VARS-TABLE:END -->

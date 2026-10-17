@@ -2,7 +2,6 @@
 
 `erpnext-agent` exposes the same capability three ways: as **MCP tools** an agent
 calls, as a **Python API** (`Api`) the operator import, and as a **command-line** entry point
-for the MCP and agent servers. The full DocType / RPC surface is summarized in
 [Overview](overview.md).
 
 ## As an MCP server
@@ -71,16 +70,6 @@ api.call_method("frappe.client.get_count", {"doctype": "Customer"})
 ## As a CLI
 
 Two console scripts are installed:
-
-```bash
-# MCP server (stdio by default; --transport streamable-http for a network server)
-erpnext-mcp --help
-erpnext-mcp --transport streamable-http --host 0.0.0.0 --port 8000
-
-# Pydantic-AI agent server (wraps the MCP tools in a conversational agent)
-erpnext-agent --help
-erpnext-agent --host 0.0.0.0 --port 8001 --mcp-url http://localhost:8000/mcp
-```
 
 See [Deployment](deployment.md) for the full transport, reverse-proxy, and agent
 server configuration.
