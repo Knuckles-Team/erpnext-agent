@@ -3,6 +3,6 @@
   "connector": "erpnext-agent",
   "schema_version": "1",
   "tools": {
-    "erpnext_agent_resource": "63911c84302dfacb3166b76f10a782083b7ce1b558ae19f36bd9e441cea34322"
+    "erpnext_list_documents": "f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494"
   }
 }
