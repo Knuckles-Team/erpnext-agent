@@ -1,5 +1,3 @@
-from unittest.mock import MagicMock
-
 import pytest
 
 from erpnext_agent.mcp_server import get_mcp_instance
@@ -8,18 +6,20 @@ from erpnext_agent.mcp_server import get_mcp_instance
 @pytest.mark.concept("EN-OS.governance.erpn-2")
 @pytest.mark.asyncio
 async def test_mcp_server_registration():
-    """CONCEPT:EN-OS.governance.erpn-2 Test that tools register successfully."""
+    """CONCEPT:EN-OS.governance.erpn-2 Test that one tool per operation registers."""
     res = get_mcp_instance()
     mcp = res[0] if isinstance(res, tuple) else res
     assert mcp is not None
 
-    # Verify tool registry count is greater than zero
     assert len(mcp._local_provider._components) > 0
 
-    # Verify both tool names are registered
-    tool_names = [t.name for t in await mcp.list_tools()]
-    assert "erpnext_agent_authentication" in tool_names
-    assert "erpnext_agent_resource" in tool_names
+    tools = {t.name: t for t in await mcp.list_tools()}
+    for name in ("erpnext_login", "erpnext_list_documents", "erpnext_create_document"):
+        assert name in tools
+        assert "action" not in tools[name].parameters.get("properties", {})
+    assert "erpnext_agent_authentication" not in tools
+    assert tools["erpnext_list_documents"].annotations.readOnlyHint is True
+    assert tools["erpnext_delete_document"].annotations.destructiveHint is True
 
 
 @pytest.mark.concept("EN-OS.identity.erpn")
@@ -30,56 +30,3 @@ def test_mcp_server_security_context(monkeypatch):
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     client = get_client()
     assert client is not None
-
-
-@pytest.mark.concept("EN-OS.governance.erpn-2")
-@pytest.mark.asyncio
-async def test_mcp_server_authentication_dispatch():
-    """Verify erpnext_agent_authentication routes calls dynamically."""
-    res = get_mcp_instance()
-    mcp = res[0] if isinstance(res, tuple) else res
-
-    tool = next(
-        t for t in await mcp.list_tools() if t.name == "erpnext_agent_authentication"
-    )
-    assert tool is not None
-
-    mock_client = MagicMock()
-    mock_client.login.return_value = {"status": "Logged in"}
-
-    # Call the tool function handler directly
-    result = await tool.fn(
-        action="login",
-        params_json='{"usr": "admin", "pwd": "admin"}',
-        client=mock_client,
-        ctx=None,
-    )
-
-    mock_client.login.assert_called_once_with(usr="admin", pwd="admin")
-    assert result == {"status": "Logged in"}
-
-
-@pytest.mark.concept("EN-OS.governance.erpn-2")
-@pytest.mark.asyncio
-async def test_mcp_server_resource_dispatch():
-    """Verify erpnext_agent_resource routes calls dynamically."""
-    res = get_mcp_instance()
-    mcp = res[0] if isinstance(res, tuple) else res
-
-    tool = next(t for t in await mcp.list_tools() if t.name == "erpnext_agent_resource")
-    assert tool is not None
-
-    mock_client = MagicMock()
-    mock_client.list_documents.return_value = [{"name": "Doc1"}]
-
-    result = await tool.fn(
-        action="list_documents",
-        params_json='{"doctype": "Customer", "limit_page_length": 5}',
-        client=mock_client,
-        ctx=None,
-    )
-
-    mock_client.list_documents.assert_called_once_with(
-        doctype="Customer", limit_page_length=5
-    )
-    assert result == {"result": [{"name": "Doc1"}]}

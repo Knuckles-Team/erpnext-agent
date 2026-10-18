@@ -4,26 +4,26 @@ ontology_source: erpnext
 sync:
 - preset: erpnext-items
   server: erpnext-mcp
-  tool: erpnext_agent_resource
-  action: list_documents
+  tool: erpnext_list_documents
+  action: null
   records_path: data
   id_field: name
   title_field: item_name
   text_field: description
   updated_field: null
   doc_type: erpnext_item
-  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+  tool_schema_sha256: f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494
 - preset: erpnext-sales-orders
   server: erpnext-mcp
-  tool: erpnext_agent_resource
-  action: list_documents
+  tool: erpnext_list_documents
+  action: null
   records_path: data
   id_field: name
   title_field: name
   text_field: status
   updated_field: transaction_date
   doc_type: erpnext_sales_order
-  tool_schema_sha256: 5d745f7b08c9a3bd2dae41f5fe1ddaca65e361c53dc4b831b6cddcb09c38febf
+  tool_schema_sha256: f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494
 governance:
   default_acl: quarantine
   identity: opaque-reference

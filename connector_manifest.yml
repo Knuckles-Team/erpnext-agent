@@ -168,8 +168,8 @@ schema_mappings:
 sync:
 - preset: erpnext-items
   server: erpnext-mcp
-  tool: erpnext_agent_resource
-  action: list_documents
+  tool: erpnext_list_documents
+  action: null
   records_path: data
   id_field: name
   title_field: item_name
@@ -177,19 +177,10 @@ sync:
   updated_field: null
   pagination: null
   doc_type: erpnext_item
-  tool_schema_sha256: 63911c84302dfacb3166b76f10a782083b7ce1b558ae19f36bd9e441cea34322
+  tool_schema_sha256: f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494
   raw:
     server: erpnext-mcp
-    tool: erpnext_agent_resource
-    action: list_documents
-    params:
-      doctype: Item
-      fields:
-      - name
-      - item_code
-      - item_name
-      - item_group
-      - description
+    tool: erpnext_list_documents
     records_path: data
     id_field: name
     title_field: item_name
@@ -197,8 +188,8 @@ sync:
     doc_type: erpnext_item
 - preset: erpnext-sales-orders
   server: erpnext-mcp
-  tool: erpnext_agent_resource
-  action: list_documents
+  tool: erpnext_list_documents
+  action: null
   records_path: data
   id_field: name
   title_field: name
@@ -206,20 +197,10 @@ sync:
   updated_field: transaction_date
   pagination: offset
   doc_type: erpnext_sales_order
-  tool_schema_sha256: 63911c84302dfacb3166b76f10a782083b7ce1b558ae19f36bd9e441cea34322
+  tool_schema_sha256: f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494
   raw:
     server: erpnext-mcp
-    tool: erpnext_agent_resource
-    action: list_documents
-    params:
-      doctype: Sales Order
-      fields:
-      - name
-      - customer
-      - grand_total
-      - docstatus
-      - transaction_date
-      - status
+    tool: erpnext_list_documents
     records_path: data
     id_field: name
     title_field: name

@@ -1,12 +1,12 @@
 {
   "api_version": "arbora.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "52aa9bb9a22ca1ee5d7b968d44ebf413c2a48235561c355da5cb8317242e5ec8",
-    "erpnext_agent/connectors/mcp_source_presets.json": "c7ccf724596567d423abc76aaad0431d23e80e359762afd91563dd204ec197c0",
-    "erpnext_agent/connectors/tool_schema_fingerprints.json": "c7990fee4a99b61c2202445ce848abf1bc219062767e4e9df8b11bffa4a4a52a",
+    "connector_manifest.yml": "2bae393c345f60b5ffccbd5233df49394e939cd38e5858b62f645772fcec7c3f",
+    "erpnext_agent/connectors/mcp_source_presets.json": "55d699734419f1c788be8580d4df2529315c7c9c4681fa98b4751153bb47dbcb",
+    "erpnext_agent/connectors/tool_schema_fingerprints.json": "167663e3a1444a10b05520ea5ce21597b3a330727bedf72b7d3962a384b2bf45",
     "erpnext_agent/ontology/erpnext.ttl": "a0358fb9371646207a3edc1c8b978cffc2684272fc7ca9ca6b1847cb6dd63f94",
     "erpnext_agent/ontology/fixtures/records.json": "83e8cef1e7f213089b1d32bc6f52a88727ab54536d4d0cbe5406f1c4b9a4320e",
-    "erpnext_agent/ontology/mappings/source.yaml": "e4fc6dc12da206b0d8c70c9f5752ffb337638c3d567cab118a21300665011d4b",
+    "erpnext_agent/ontology/mappings/source.yaml": "7c5a262ea6ce4e26bb98475774d0d35f3755cdd52759e3053ed240b21fe7eac8",
     "erpnext_agent/ontology/migrations/manifest.json": "53142e60f360540935470d9d395ac161bd9c1d37aaedb6d16e4fc9b3b094d6fc",
     "erpnext_agent/ontology/shapes/connector.shacl.ttl": "968822565eda2f64b443aa9f9ac2ffec6eaab02c1bbaaf10a2481dbacf3e0725"
   },

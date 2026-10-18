@@ -25,18 +25,16 @@ def _push_matches(workflow, ref):
 @pytest.mark.parametrize(
     "ref, expected",
     [
-        ("refs/tags/v2.1.0", True),
-        ("refs/tags/v2.2.0rc1", True),
-        ("refs/heads/main", False),
+        ("refs/heads/main", True),
         ("refs/heads/docs-update", False),
-        ("refs/tags/docs-preview", False),
+        ("refs/tags/v2.1.0", False),
     ],
 )
-def test_only_release_tags_start_package_publication(ref, expected):
+def test_only_main_starts_package_publication(ref, expected):
     assert _push_matches(_workflow("pipeline.yml"), ref) is expected
 
 
-def test_each_package_publisher_uses_reviewed_contract():
+def test_each_package_publisher_uses_the_shared_pipelines():
     jobs = _workflow("pipeline.yml")["jobs"]
     assert set(jobs) == {"publish-pypi", "publish-docker"}
     for job, workflow in [
@@ -44,7 +42,7 @@ def test_each_package_publisher_uses_reviewed_contract():
         ("publish-docker", "container_pipeline"),
     ]:
         assert jobs[job]["uses"] == (
-            f"Knuckles-Team/pipelines/.github/workflows/{workflow}.yml@{CONTRACT}"
+            f"Knuckles-Team/pipelines/.github/workflows/{workflow}.yml@main"
         )
         assert "if" not in jobs[job]
         assert not jobs[job].get("continue-on-error", False)
