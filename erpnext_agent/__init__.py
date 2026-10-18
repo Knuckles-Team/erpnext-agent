@@ -9,7 +9,6 @@ __all__: list[str] = []
 
 CORE_MODULES = ["erpnext_agent.api_client"]
 OPTIONAL_MODULES = {
-    "erpnext_agent.agent_server": "agent",
     "erpnext_agent.mcp_server": "mcp",
 }
 
@@ -40,7 +39,6 @@ def _import_module_safely(module_name: str):
 
 _AVAILABILITY_FLAG_MARKERS = {
     "_MCP_AVAILABLE": "mcp_server",
-    "_AGENT_AVAILABLE": "agent_server",
 }
 
 

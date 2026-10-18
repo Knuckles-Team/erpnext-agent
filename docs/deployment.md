@@ -69,9 +69,6 @@ name with Technitium. To provision the **ERPNext / Frappe site** it connects to,
 
 > `erpnext-agent` ships **two** console scripts: an **MCP server** (`erpnext-mcp`)
 > that exposes a typed, deterministic tool surface a policy router / agent calls, and
-> an optional **A2A agent server** (`erpnext-agent`) that wraps those tools in a
-> Pydantic-AI agent. Most deployments run the MCP server; the agent server is
-> documented in [Agent server](#agent-server) below.
 
 ## Run the MCP server
 
@@ -230,43 +227,3 @@ Add to the operator's client's `mcp_config.json`:
 ```
 
 For a remote HTTP server, point the client at `http://erpnext-agent.example.invalid/mcp` instead.
-
-## Agent server
-
-In addition to the MCP server, `erpnext-agent` ships a Pydantic-AI **agent server**
-(console script `erpnext-agent`). It connects to one or more MCP servers and exposes
-a conversational agent over A2A:
-
-```bash
-# Run the agent server, wiring it to a running MCP endpoint
-erpnext-agent --host 0.0.0.0 --port 8001 --mcp-url http://erpnext-agent-mcp:8000/mcp
-```
-
-The agent reads its toolset from an `mcp_config.json` (default: the bundled
-`erpnext_agent/mcp_config.json`) or from the `--mcp-url` of an already-running MCP
-server. A companion Compose service mirrors the MCP stack — publish the agent on its
-own port (for example `:8001`) and set `MCP_URL` to the MCP server it should call:
-
-```yaml
-services:
-  erpnext-agent:
-    image: example/erpnext-agent@sha256:<digest>
-    container_name: erpnext-agent
-    hostname: erpnext-agent
-    restart: always
-    entrypoint: ["erpnext-agent"]
-    env_file:
-      - ../.env
-    environment:
-      - PYTHONUNBUFFERED=1
-      - HOST=0.0.0.0
-      - PORT=8001
-      - MCP_URL=http://erpnext-agent-mcp:8000/mcp
-    ports:
-      - "8001:8001"
-    depends_on:
-      - erpnext-agent-mcp
-```
-
-Provision an LLM provider for the agent through the standard `agent-utilities`
-environment variables (provider/model selection via `--provider` / `--model-id`).
