@@ -12,4 +12,4 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 
 ## Local specifications
 
-This repository has no local spec yet.
+- [`CONN-ERPNEXT-AGENT`](erpnext-agent/spec.md) — Connector identity and release metadata.

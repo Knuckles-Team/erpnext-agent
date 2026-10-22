@@ -10,13 +10,13 @@ from fastmcp.utilities.logging import get_logger
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from erpnext_agent import __version__  # single source: package __init__
 from erpnext_agent.api_client import Api
 from erpnext_agent.auth import get_client
 from erpnext_agent.mcp.mcp_authentication import register_authentication_tools
 from erpnext_agent.mcp.mcp_ingest import register_ingest_tools
 from erpnext_agent.mcp.mcp_resource import register_resource_tools
 
-__version__ = "0.15.0"
 logger = get_logger(name="erpnext_agent")
 
 # (tag, env-toggle, registrar) — env names are the framework-derived <TAG>TOOL form.
