@@ -1,4 +1,4 @@
-connector: erpnext-agent
+connector: erpnext-mcp
 ontology_source: erpnext
 schema_version: '1'
 resources:

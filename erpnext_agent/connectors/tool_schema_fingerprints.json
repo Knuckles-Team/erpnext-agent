@@ -1,6 +1,6 @@
 {
   "algorithm": "agent-connector-sdk:mcp-tool-contract-compat:v2",
-  "connector": "erpnext-agent",
+  "connector": "erpnext-mcp",
   "schema_version": "1",
   "tools": {
     "erpnext_list_documents": "f23509b7a5a1fc30a1f5bf2efb71a0b3cec1bbd8a0685061aad0f730634a5494"
