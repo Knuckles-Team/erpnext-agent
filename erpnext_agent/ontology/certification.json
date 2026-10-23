@@ -1,9 +1,6 @@
 {
   "api_version": "arbora.io/v1",
   "artifacts": {
-    "connector_manifest.yml": "2bae393c345f60b5ffccbd5233df49394e939cd38e5858b62f645772fcec7c3f",
-    "erpnext_agent/connectors/mcp_source_presets.json": "55d699734419f1c788be8580d4df2529315c7c9c4681fa98b4751153bb47dbcb",
-    "erpnext_agent/connectors/tool_schema_fingerprints.json": "167663e3a1444a10b05520ea5ce21597b3a330727bedf72b7d3962a384b2bf45",
     "erpnext_agent/ontology/erpnext.ttl": "a0358fb9371646207a3edc1c8b978cffc2684272fc7ca9ca6b1847cb6dd63f94",
     "erpnext_agent/ontology/fixtures/records.json": "83e8cef1e7f213089b1d32bc6f52a88727ab54536d4d0cbe5406f1c4b9a4320e",
     "erpnext_agent/ontology/mappings/source.yaml": "7c5a262ea6ce4e26bb98475774d0d35f3755cdd52759e3053ed240b21fe7eac8",

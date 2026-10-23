@@ -71,7 +71,7 @@ async def test_ingest_entities_writes_nodes_and_edges(ingest):
     acme = next(r for r in request.records if r.record_id == "erpnext:customer:acme")
     assert acme.payload["name"] == "Acme"
     assert request.relationships[0].relation_reference.endswith(
-        "resources/SalesOrder/relations/orderedBy"
+        "relations/SalesOrder/orderedBy"
     )
 
 

@@ -22,9 +22,8 @@
     rdfs:label "Customer" ;
     rdfs:comment "A party that places sales orders (Frappe Customer doctype)." .
 
-:Supplier a owl:Class ;
-    rdfs:label "Supplier" ;
-    rdfs:comment "A party that goods/services are purchased from (Frappe Supplier doctype)." .
+:Supplier a owl:Class .
+
 
 :Item a owl:Class ;
     rdfs:label "Item" ;
@@ -42,20 +41,15 @@
     rdfs:label "Invoice" ;
     rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." .
 
-:Employee a owl:Class ;
-    rdfs:label "Employee" ;
-    rdfs:comment "A person employed by the organization (Frappe Employee doctype)." .
+:Employee a owl:Class .
+
 
 :OrgUnit a owl:Class ;
     rdfs:label "Organizational Unit" ;
     rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." .
 
-:ErpNextIssue a owl:Class ;
-    rdfs:label "ERPNext Issue" ;
-    rdfs:comment """A Frappe/ERPNext Issue doctype record — the ERPNext analogue
-    of a ServiceNow incident (helpdesk/support ITSM ticket). Crosswalked to the
-    canonical :ApplicationEvent in ontology_archimate.ttl, so it is
-    interchangeable with ServiceNow incidents in cross-vendor queries.""" .
+:ErpNextIssue a owl:Class .
+
 
 # --- links (owl:ObjectProperty) ---
 
@@ -120,5 +114,11 @@
     rdfs:comment """ERP entities sourced from an ERPNext (Frappe) instance — customers,
 suppliers, items, sales and purchase orders, invoices, employees and org units — with
 their ordering, supply, line-item and billing relationships, federated into the
-agent-connector-sdk knowledge-graph hub over the enterprise layer.""" ;
-    owl:imports <http://knuckles.team/kg/enterprise> .
+agent-connector-sdk knowledge-graph hub over the enterprise layer.""" .
+
+# ontology-codemod R3
+<http://knuckles.team/kg#PurchaseOrder> rdfs:subClassOf <http://knuckles.team/kg#Order> .
+<http://knuckles.team/kg#SalesOrder> rdfs:subClassOf <http://knuckles.team/kg#Order> .
+
+# ontology-codemod R4
+<http://knuckles.team/kg#Invoice> rdfs:subClassOf <http://knuckles.team/kg#Document> .
