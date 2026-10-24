@@ -69,7 +69,7 @@ def test_release_hook_inherits_catalogue_policy():
     assert len(matches) == 1
     repo, hook = matches[0]
     assert repo["repo"] == "https://github.com/Knuckles-Team/pipelines"
-    assert repo["rev"] == CONTRACT
+    assert repo["rev"] == "main"
     assert hook == {"id": "dependency-readiness"}
 
 

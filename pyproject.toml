@@ -4,29 +4,24 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "erpnext-agent"
-version = "2.3.3"
+version = "2.3.4"
 description = "ERPNext and Frappe REST/RPC MCP Server for Agentic AI!"
 readme = "README.md"
 classifiers = [ "Development Status :: 4 - Beta", "License :: OSI Approved :: MIT License", "Environment :: Console", "Operating System :: POSIX :: Linux", "Programming Language :: Python :: 3",]
 requires-python = ">=3.12, <3.15"
-dependencies = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0", "requests>=2.34.2",]
+dependencies = [ "agent-connector-sdk[mcp]>=0.5.4,<0.6.0", "requests>=2.34.2",]
 [[project.authors]]
-name = "Project Maintainers"
-email = "maintainers@users.noreply.github.com"
+name = "Repository Maintainers"
+email = "maintainers@knuckles.team"
 
 [project.license]
 text = "MIT"
 
 [project.optional-dependencies]
-mcp = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
-all = [ "agent-connector-sdk[mcp]>=0.4.1,<1.0.0",]
 test = [ "pytest-xdist>=3.8.0", "pytest>=9.1.1", "pytest-asyncio>=1.4.0", "pytest-cov>=7.1.0",]
 
 [project.scripts]
-erpnext-mcp = "erpnext_agent.mcp_server:mcp_server"
-
-[project.entry-points."agent_connector_sdk.skill_providers"]
-erpnext-agent = "erpnext_agent.skills"
+erpnext-mcp = "agent_connector_sdk.cli:serve"
 
 [project.entry-points."agent_connector_sdk.prompt_providers"]
 erpnext-agent = "erpnext_agent.prompts"
@@ -34,12 +29,10 @@ erpnext-agent = "erpnext_agent.prompts"
 # CONCEPT:AU-KG.ontology.package-federation-migration — federate this package's OWL/RDF ontology module into the
 # agent-connector-sdk hub (DocTypes, customers, sales orders). Resolved via
 # iter_provider_dirs like the skill/prompt providers.
-[project.entry-points."agent_connector_sdk.ontology_providers"]
-erpnext-agent = "erpnext_agent.ontology"
 
 # The one declared connector identity: the fleet name (SDK-CONNECTOR-CONTROL-R071).
 [project.entry-points."agent_connector_sdk.connector"]
-erpnext-mcp = "erpnext_agent"
+erpnext-mcp = "erpnext_agent:connector"
 
 [tool.uv.workspace]
 members = ["."]
@@ -80,3 +73,10 @@ exempt = ["specs/*", "specs/**/*"]
 
 [tool.pytest.ini_options]
 markers = ["concept(id): associates a test with an existing concept identifier"]
+
+[tool.pipelines.container]
+limits = {"mcp" = {"memory_limit_env" = "AGENT_CONTAINER_MEMORY_LIMIT", "memory_limit" = "4g", "cpu_limit_env" = "AGENT_CONTAINER_CPU_LIMIT", "cpu_limit" = "2.0"}}
+compose_env = ["ERPNEXT_URL", "ERPNEXT_TOKEN"]
+
+[tool.pipelines.codespell]
+exclude = [".specify"]
