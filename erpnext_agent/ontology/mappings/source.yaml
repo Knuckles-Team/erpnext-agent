@@ -1,5 +1,5 @@
 schema_version: '1'
-connector: erpnext-agent
+connector: erpnext-mcp
 ontology_source: erpnext
 sync:
 - preset: erpnext-items

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from agent_connector_sdk.connector_identity import connector_name
 from agent_connector_sdk.ingest import (
     ChangeSet,
     Document,
@@ -22,7 +23,7 @@ from agent_connector_sdk.ingest import (
     current_ingest,
 )
 
-_SOURCE = "erpnext-agent"
+_SOURCE = connector_name("erpnext_agent")
 _DOMAIN = "erpnext"
 
 _BINDING = IngestBinding(connector=_SOURCE, stream=_DOMAIN)

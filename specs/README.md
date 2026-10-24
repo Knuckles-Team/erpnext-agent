@@ -13,3 +13,4 @@ Read the existing specs first. Extend the spec that owns the behavior. Create a 
 ## Local specifications
 
 - [`CONN-ERPNEXT-AGENT`](erpnext-agent/spec.md) — Connector identity and release metadata.
+- [`CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT`](connector-content/spec.md) — The connector serves its packaged content.

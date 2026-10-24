@@ -1,23 +1,8 @@
 """Main FastMCP server and tool registration."""
 
-import sys
-from typing import Any
-
-from agent_connector_sdk.config import load_config
-from agent_connector_sdk.mcp.server import create_mcp_server
-from agent_connector_sdk.mcp.tool_surface import register_tool_surface
-from fastmcp.utilities.logging import get_logger
-from starlette.requests import Request
-from starlette.responses import JSONResponse
-
-from erpnext_agent import __version__  # single source: package __init__
-from erpnext_agent.api_client import Api
-from erpnext_agent.auth import get_client
 from erpnext_agent.mcp.mcp_authentication import register_authentication_tools
 from erpnext_agent.mcp.mcp_ingest import register_ingest_tools
 from erpnext_agent.mcp.mcp_resource import register_resource_tools
-
-logger = get_logger(name="erpnext_agent")
 
 # (tag, env-toggle, registrar) — env names are the framework-derived <TAG>TOOL form.
 TOOL_REGISTRY = [
@@ -25,43 +10,3 @@ TOOL_REGISTRY = [
     ("resource", "RESOURCETOOL", register_resource_tools),
     ("ingest", "INGESTTOOL", register_ingest_tools),
 ]
-
-
-def get_mcp_instance() -> tuple[Any, ...]:
-    load_config()
-    args, mcp, middlewares = create_mcp_server(
-        name="ERPNext Agent MCP",
-        version=__version__,
-        instructions="ERPNext Agent MCP Server - Managed dynamic operations.",
-    )
-
-    @mcp.custom_route("/health", methods=["GET"])
-    async def health_check(request: Request) -> JSONResponse:
-        return JSONResponse({"status": "OK"})
-
-    register_tool_surface(
-        mcp,
-        client_cls=Api,
-        get_client=get_client,
-        service="erpnext-agent",
-        tool_registry=TOOL_REGISTRY,
-    )
-
-    for mw in middlewares:
-        mcp.add_middleware(mw)
-    return mcp, args, middlewares
-
-
-def mcp_server() -> None:
-    mcp, args, middlewares = get_mcp_instance()
-    print(f"ERPNext Agent MCP v{__version__}", file=sys.stderr)
-    if args.transport == "stdio":
-        mcp.run(transport="stdio")
-    elif args.transport == "streamable-http":
-        mcp.run(transport="streamable-http", host=args.host, port=args.port)
-    else:
-        mcp.run(transport="stdio")
-
-
-if __name__ == "__main__":
-    mcp_server()
