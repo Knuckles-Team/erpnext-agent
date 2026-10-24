@@ -32,7 +32,7 @@ services:
     ports:
       - "8000:8000"            # Frappe site (HTTP)
     volumes:
-      - erpnext_sites:/home/frappe/frappe-bench/sites
+      - erpnext_sites:<frappe-home>/frappe-bench/sites
     depends_on:
       - erpnext-db
       - erpnext-redis
@@ -97,7 +97,7 @@ services:
       - REDIS_CACHE=redis://erpnext-redis:6379/0
       - REDIS_QUEUE=redis://erpnext-redis:6379/1
       - REDIS_SOCKETIO=redis://erpnext-redis:6379/2
-    volumes: ["erpnext_sites:/home/frappe/frappe-bench/sites"]
+    volumes: ["erpnext_sites:<frappe-home>/frappe-bench/sites"]
     depends_on: [erpnext-db, erpnext-redis]
 
   erpnext-db:
