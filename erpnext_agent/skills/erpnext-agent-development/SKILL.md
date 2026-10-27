@@ -11,7 +11,7 @@ license: MIT
 tags: [erpnext, frappe, development, connector, mcp, test, gates]
 tier: repository
 metadata:
-  author: Genius
+  author: ERPNext contributors
   version: '0.1.0'
 ---
 

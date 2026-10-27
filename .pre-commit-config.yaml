@@ -22,7 +22,7 @@ repos:
   - id: ruff-check
   - id: ruff-format
 - repo: https://github.com/Knuckles-Team/pipelines
-  rev: main
+  rev: e07c5568e725e9dd3dd34b37ac175800e81dd112
   hooks:
   - id: connector-standard
   - id: secrets

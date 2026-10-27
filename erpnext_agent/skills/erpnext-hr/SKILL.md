@@ -11,7 +11,7 @@ description: >-
 license: MIT
 tags: [erpnext, frappe, hr, employee, org, rest-api, mcp]
 metadata:
-  author: Genius
+  author: ERPNext contributors
   version: '0.1.0'
 ---
 # ERPNext HR
