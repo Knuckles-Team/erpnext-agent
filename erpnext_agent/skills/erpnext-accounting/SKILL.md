@@ -12,7 +12,7 @@ description: >-
 license: MIT
 tags: [erpnext, frappe, accounting, erp, invoice, rest-api, mcp]
 metadata:
-  author: Genius
+  author: ERPNext contributors
   version: '0.1.0'
 ---
 # ERPNext Accounting
