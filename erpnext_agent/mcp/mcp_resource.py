@@ -24,8 +24,6 @@ def register_resource_tools(mcp: FastMCP):
         ctx: Context | None = Field(default=None, description="MCP context"),
     ) -> dict:
         """Manage ERPNext Agent resource operations."""
-        if ctx:
-            await ctx.info("Executing resource operations...")
         import json
 
         try:

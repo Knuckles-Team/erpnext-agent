@@ -72,7 +72,7 @@ override-dependencies = [
 exempt = ["specs/*", "specs/**/*"]
 
 [tool.pytest.ini_options]
-markers = ["concept(id): associates a test with an existing concept identifier"]
+markers = ["concept(id): associates a test with an existing concept identifier", "spec(id): associates a test with a specification requirement"]
 
 [tool.pipelines.container]
 limits = {"mcp" = {"memory_limit_env" = "AGENT_CONTAINER_MEMORY_LIMIT", "memory_limit" = "4g", "cpu_limit_env" = "AGENT_CONTAINER_CPU_LIMIT", "cpu_limit" = "2.0"}}
