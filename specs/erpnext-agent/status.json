@@ -4,7 +4,8 @@
   "owner_repo": "erpnext-agent",
   "delivery_state": "SPECIFIED",
   "requirement_ids": [
-    "CONN-ERPNEXT-AGENT-R001"
+    "CONN-ERPNEXT-AGENT-R001",
+    "CONN-ERPNEXT-AGENT-R002"
   ],
   "requirements": [
     {
@@ -13,6 +14,15 @@
       "delivery_state": "SPECIFIED",
       "landed_in": [],
       "verified_by": []
+    },
+    {
+      "id": "CONN-ERPNEXT-AGENT-R002",
+      "title": "Supplier and purchase-order access fields match served tool data",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": [
+        "tests/test_access_contracts.py:17"
+      ]
     }
   ]
 }
