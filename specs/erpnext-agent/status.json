@@ -18,8 +18,10 @@
     {
       "id": "CONN-ERPNEXT-AGENT-R002",
       "title": "Supplier and purchase-order access fields match served tool data",
-      "delivery_state": "SPECIFIED",
-      "landed_in": [],
+      "delivery_state": "VERIFIED",
+      "landed_in": [
+        "20a871530773"
+      ],
       "verified_by": [
         "tests/test_access_contracts.py:17"
       ]
