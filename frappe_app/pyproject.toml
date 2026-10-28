@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=80", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scion-erp-guard"
+version = "0.1.0"
+description = "Optional Frappe transaction guard for governed ERPNext invoice writes"
+requires-python = ">=3.10"
+license = "MIT"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scion_erp_guard*"]
+
+[tool.setuptools.package-data]
+scion_erp_guard = ["modules.txt", "**/*.json"]

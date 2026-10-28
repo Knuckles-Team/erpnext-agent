@@ -68,3 +68,30 @@ python -c "import erpnext_agent; print(erpnext_agent.__version__)"
 - **[Deployment](deployment.md)** — run it as a long-lived MCP server behind Caddy + DNS.
 - **[Usage](usage.md)** — call the tools, the API, and example prompts.
 - **[Configuration](deployment.md#configuration-environment)** — every environment variable.
+
+### Optional transactional invoice app
+
+Invoice creation through the enterprise interchange requires the optional
+`scion_erp_guard` app installed on the Frappe site. Installing the MCP package
+alone does not install a Frappe app. The site operator installs the standalone `frappe_app` package in
+the site's Frappe environment, adds `scion_erp_guard` to the bench app list,
+and runs `bench --site <site> install-app scion_erp_guard`. The operator must
+also configure the site setting `scion_invoice_tenant_bindings`: a mapping from
+each authorized Frappe API user to exactly one tenant identifier. Missing or
+mismatched bindings refuse the call. The user still needs ERPNext permissions
+to create and read the invoice.
+
+The POST-only RPC endpoints are `scion_erp_guard.api.reserve_invoice`,
+`scion_erp_guard.api.create_invoice_once` and
+`scion_erp_guard.api.reconcile_invoice`. The site must preserve
+Frappe's request transaction and the unique claim table. Custom hooks that commit independently or trigger external effects invalidate
+the atomicity assumption. A missing claim
+returns `unknown`; it never authorizes an automatic retry. Installing this app
+is an operator action and does not itself authorize a connector or an invoice.
+
+The connector transport requires an SDK version that verifies durable approval
+before any source access. The current published SDK version does not establish
+that ordering for every writer, so do not activate this transport until that
+SDK prerequisite is released and the source app is qualified on the site.
+A committed reservation is no-effect evidence only after reconciliation locks
+the same source row that the create operation locks.

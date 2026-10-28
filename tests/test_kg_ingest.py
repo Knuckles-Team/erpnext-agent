@@ -26,8 +26,10 @@ class _FakeTransport:
     def __init__(self) -> None:
         self.requests: list[SourceIngestionRequest] = []
 
-    async def source_status(self, _connector: str, _stream: str) -> Any:
-        return SimpleNamespace(accepted_checkpoint=None)
+    async def source_status(self, connector: str, stream: str) -> Any:
+        return SimpleNamespace(
+            connector=connector, stream=stream, accepted_checkpoint=None
+        )
 
     async def submit(self, request: SourceIngestionRequest) -> Any:
         self.requests.append(request)

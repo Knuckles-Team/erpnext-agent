@@ -54,13 +54,15 @@ dev = [ "pytest-timeout>=2.4.0",]
 
 [tool.setuptools.package-data]
 erpnext_agent = [ "mcp_config.json", "agent_data/**", "prompts/**", "skills/**", "ontology/**", "connectors/**",]
+scion_erp_guard = [ "modules.txt", "**/*.json",]
 
 [tool.ruff.lint]
 select = [ "E", "F", "I", "UP", "B",]
 ignore = [ "E402", "E501", "B008",]
 
 [tool.setuptools.packages.find]
-where = [ ".",]
+where = [ ".", "frappe_app",]
+include = [ "erpnext_agent*", "scion_erp_guard*",]
 
 [tool.uv]
 override-dependencies = [
