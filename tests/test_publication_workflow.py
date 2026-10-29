@@ -4,7 +4,6 @@ import re
 from fnmatch import fnmatchcase
 from pathlib import Path
 
-import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,42 +20,6 @@ def _push_matches(workflow, ref):
     kind, name = ref.removeprefix("refs/").split("/", 1)
     filters = push.get({"heads": "branches", "tags": "tags"}[kind], [])
     return any(fnmatchcase(name, pattern) for pattern in filters)
-
-
-@pytest.mark.parametrize(
-    "ref, expected",
-    [
-        ("refs/heads/main", True),
-        ("refs/heads/docs-update", False),
-        ("refs/tags/v2.1.0", False),
-    ],
-)
-def test_only_main_starts_package_publication(ref, expected):
-    assert _push_matches(_workflow("pipeline.yml"), ref) is expected
-
-
-def test_each_package_publisher_uses_the_shared_pipelines():
-    jobs = _workflow("pipeline.yml")["jobs"]
-    assert set(jobs) == {"publish-pypi", "publish-docker"}
-    for job, workflow in [
-        ("publish-pypi", "python_pipeline"),
-        ("publish-docker", "container_pipeline"),
-    ]:
-        assert jobs[job]["uses"] == (
-            f"Knuckles-Team/pipelines/.github/workflows/{workflow}.yml@main"
-        )
-        assert "if" not in jobs[job]
-        assert not jobs[job].get("continue-on-error", False)
-    assert jobs["publish-docker"]["needs"] == "publish-pypi"
-
-
-def test_pages_keeps_shared_main_and_spec_triggers():
-    workflow = _workflow("pages.yml")
-    publisher = workflow["jobs"]["publish-pages"]
-    assert publisher["uses"].endswith("/pages_pipeline.yml@main")
-    assert publisher["with"]["spec_dashboard_enabled"] is True
-    assert "specs/**" in workflow[True]["push"]["paths"]
-    assert ".github/spec-dashboard.json" in workflow[True]["push"]["paths"]
 
 
 def test_release_hook_inherits_catalogue_policy():

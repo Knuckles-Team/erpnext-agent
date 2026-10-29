@@ -19,7 +19,7 @@ reconciles before any retry. An absent claim is unknown, not proof that no
 source effect occurred. The site operator binds each source user to
 one tenant and grants the Sales Invoice permissions separately.
 
-This source app is a prerequisite for SDK-SOURCE-INGEST-R006.33 through
+This source app is a prerequisite for SCION-SOURCE-INGEST-R006.33 through
 R006.37. Local tests do not prove that a deployed site's app, hooks and
 transaction isolation satisfy that contract. The connector still needs a
 qualified transport, durable EG approval and receipt binding, and a real
