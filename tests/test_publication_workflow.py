@@ -23,12 +23,6 @@ def _push_matches(workflow, ref):
     return any(fnmatchcase(name, pattern) for pattern in filters)
 
 
-
-
-
-
-
-
 def test_release_hook_inherits_catalogue_policy():
     config = yaml.safe_load((ROOT / ".pre-commit-config.yaml").read_text())
     matches = [
