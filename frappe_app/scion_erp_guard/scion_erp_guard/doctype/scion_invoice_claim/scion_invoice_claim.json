@@ -1,0 +1,24 @@
+{
+  "actions": [],
+  "allow_rename": 0,
+  "autoname": "field:claim_id",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": ["claim_id", "request_digest", "company", "source_user", "status", "invoice", "invoice_version"],
+  "fields": [
+    {"fieldname": "claim_id", "fieldtype": "Data", "label": "Claim ID", "reqd": 1, "unique": 1},
+    {"fieldname": "request_digest", "fieldtype": "Data", "label": "Request Digest", "reqd": 1},
+    {"fieldname": "company", "fieldtype": "Link", "label": "Company", "options": "Company", "reqd": 1},
+    {"fieldname": "source_user", "fieldtype": "Link", "label": "Source User", "options": "User", "reqd": 1},
+    {"fieldname": "status", "fieldtype": "Select", "label": "Status", "options": "reserved\napplied", "reqd": 1},
+    {"fieldname": "invoice", "fieldtype": "Link", "label": "Invoice", "options": "Sales Invoice"},
+    {"fieldname": "invoice_version", "fieldtype": "Data", "label": "Invoice Version"}
+  ],
+  "istable": 0,
+  "module": "Scion ERP Guard",
+  "name": "Scion Invoice Claim",
+  "permissions": [],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "states": []
+}
