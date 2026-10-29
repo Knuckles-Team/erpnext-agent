@@ -2,7 +2,7 @@
 @prefix erp: <http://knuckles.team/kg#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# Access contracts (SDK-CONNECTOR-CONTROL-R021 / G24): how Supplier, Item
+# Access contracts (SCION-CONNECTOR-CONTROL-R021 / G24): how Supplier, Item
 # and PurchaseOrder are answered live through the erpnext_agent_resource
 # MCP tool (action list_documents / get_document), not a copied snapshot.
 # Kept apart from erpnext.ttl so the flat access-contract parser only reads
