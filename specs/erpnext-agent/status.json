@@ -5,7 +5,8 @@
   "delivery_state": "SPECIFIED",
   "requirement_ids": [
     "CONN-ERPNEXT-AGENT-R001",
-    "CONN-ERPNEXT-AGENT-R002"
+    "CONN-ERPNEXT-AGENT-R002",
+    "CONN-ERPNEXT-AGENT-R003"
   ],
   "requirements": [
     {
@@ -25,6 +26,13 @@
       "verified_by": [
         "tests/test_access_contracts.py:17"
       ]
+    },
+    {
+      "id": "CONN-ERPNEXT-AGENT-R003",
+      "title": "Supplier table recorded response",
+      "delivery_state": "SPECIFIED",
+      "landed_in": [],
+      "verified_by": []
     }
   ]
 }
