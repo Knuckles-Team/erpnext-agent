@@ -3,11 +3,11 @@
 import json
 
 import pytest
-from agent_connector_sdk.http.options import HttpClientOptions
-from agent_connector_sdk.http.retry import RetryPolicy
-from agent_connector_sdk.testing.http_server import ScriptedHttpServer, ScriptedResponse
-from agent_connector_sdk.writeback.errors import OutcomeUncertainError
 from scion_erp_guard.bindings import _request
+from scion_sdk.http.options import HttpClientOptions
+from scion_sdk.http.retry import RetryPolicy
+from scion_sdk.testing.http_server import ScriptedHttpServer, ScriptedResponse
+from scion_sdk.writeback.errors import OutcomeUncertainError
 
 from erpnext_agent.invoice_guard_client import InvoiceGuardClient
 

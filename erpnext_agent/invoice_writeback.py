@@ -11,11 +11,6 @@ import json
 from dataclasses import asdict
 from typing import Any
 
-from agent_connector_sdk.writeback.errors import (
-    ChangeSetValidationError,
-    OutcomeUncertainError,
-)
-from agent_connector_sdk.writeback.models import DryRunObservation, SourceSnapshot
 from epistemic_graph.generated.write_back import (
     ReconciliationObservation,
     SourceChangeSet,
@@ -25,11 +20,16 @@ from epistemic_graph.generated.write_back import (
     WriteBackOutcome,
 )
 from scion_erp_guard.bindings import _request
+from scion_sdk.writeback.errors import (
+    ChangeSetValidationError,
+    OutcomeUncertainError,
+)
+from scion_sdk.writeback.models import DryRunObservation, SourceSnapshot
 
 from erpnext_agent.invoice_guard_client import InvoiceGuardClient, InvoiceGuardOutcome
 
 try:
-    from agent_connector_sdk.ports.writeback_transport import (
+    from scion_sdk.ports.writeback_transport import (
         ReservableWriteBackTransport,
     )
 except ImportError:
