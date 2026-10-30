@@ -1,5 +1,5 @@
 site_name: "erpnext-agent"
-site_description: "ERPNext and Frappe REST/RPC API + MCP Server — a typed, deterministic tool surface over the ERPNext / Frappe business platform for the agent-connector-sdk ecosystem."
+site_description: "ERPNext and Frappe REST/RPC API + MCP Server — a typed, deterministic tool surface over the ERPNext / Frappe business platform for the scion-sdk ecosystem."
 site_url: "https://knuckles-team.github.io/erpnext-agent/"
 repo_name: "Knuckles-Team/erpnext-agent"
 repo_url: "https://github.com/Knuckles-Team/erpnext-agent"
