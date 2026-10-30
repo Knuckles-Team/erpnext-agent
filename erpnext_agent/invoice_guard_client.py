@@ -13,11 +13,11 @@ from dataclasses import dataclass, replace
 from types import MappingProxyType
 from typing import Any, Literal
 
-from agent_connector_sdk.http.bodies import aread_bounded
-from agent_connector_sdk.http.client import create_async_http_client
-from agent_connector_sdk.http.options import HttpClientOptions
-from agent_connector_sdk.writeback.errors import OutcomeUncertainError
 from scion_erp_guard.bindings import _identity, _request
+from scion_sdk.http.bodies import aread_bounded
+from scion_sdk.http.client import create_async_http_client
+from scion_sdk.http.options import HttpClientOptions
+from scion_sdk.writeback.errors import OutcomeUncertainError
 
 _RECEIPT_DIGEST = re.compile(r"[0-9a-f]{64}\Z")
 _MAX_REPLY_BYTES = 4096

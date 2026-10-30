@@ -67,7 +67,7 @@ Pick the extra that matches what the operator want to run:
 
 | Extra | Installs | Use when |
 |-------|----------|----------|
-| `erpnext-agent[mcp]` | Connector-focused MCP server (`agent-connector-sdk` — FastMCP/FastAPI + `epistemic-graph[full]`) | The operator only run the **MCP server** (smallest install / image) |
+| `erpnext-agent[mcp]` | Connector-focused MCP server (`scion-sdk` — FastMCP/FastAPI + `epistemic-graph[full]`) | The operator only run the **MCP server** (smallest install / image) |
 | `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
 
 ```bash
@@ -92,7 +92,7 @@ One multi-stage `docker/Dockerfile` builds the MCP-only image (`--target mcp`):
 
 ### Knowledge-graph database (`epistemic-graph`)
 
-Agent Connector SDK core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
+Scion SDK core dependency (`epistemic-graph[full]`). The `[mcp]` extra keeps
 deployments can use the bundled engine. For production or shared state, run
 **epistemic-graph as a dedicated database service** and configure the runtime to use it.
 Deployment recipes (single-node + Raft HA), connection configuration, and architecture
@@ -178,7 +178,7 @@ _3 intent tool(s) · 0 operation(s). Call an operation as `act(action='<operatio
 <!-- MCP-CONFIG-EXAMPLES:START -->
 
 > **Install the connector-focused `[mcp]` extra.** Examples use `erpnext-agent[mcp]` to add
-> FastMCP / FastAPI through `agent-connector-sdk`; the required Agent Connector SDK core
+> FastMCP / FastAPI through `scion-sdk`; the required Scion SDK core
 > still carries `epistemic-graph[full]`. The `[agent-runtime]` extra additionally
 > enables model orchestration.
 
@@ -321,15 +321,15 @@ pre-commit run --all-files
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
 
-<!-- BEGIN agent-connector-sdk-deployment (generated; do not edit between markers) -->
+<!-- BEGIN scion-sdk-deployment (generated; do not edit between markers) -->
 
-## Deploy with `agent-connector-sdk-deployment`
+## Deploy with `scion-sdk-deployment`
 
-Provision this package with the consolidated **`agent-connector-sdk-deployment`**
+Provision this package with the consolidated **`scion-sdk-deployment`**
 workflow. It selects an installed-package, editable-source, or immutable-container
 path; records only runtime secret and TLS-profile references in `AgentConfig`; and
 runs doctor, registration, policy, observability, and rollback gates. Ask your agent
-to **"deploy `erpnext-agent` with agent-connector-sdk-deployment"**.
+to **"deploy `erpnext-agent` with scion-sdk-deployment"**.
 
 | Install mode | Command |
 |------|---------|
@@ -340,7 +340,7 @@ The repository embeds no deployment profile, credential value, certificate path,
 environment-specific endpoint. Supply those at runtime through `AgentConfig` and the
 configured secret provider.
 
-<!-- END agent-connector-sdk-deployment -->
+<!-- END scion-sdk-deployment -->
 
 ## Environment Variables
 
@@ -366,7 +366,7 @@ configured secret provider.
 | `INGESTTOOL` | `True` |  |
 | `ERPNEXT_AGENT_MCP_IMAGE` | — | Required for that Compose deployment; supply image@sha256:digest. |
 
-#### Inherited agent-connector-sdk variables (apply to every connector)
+#### Inherited scion-sdk variables (apply to every connector)
 
 | Variable | Example | Description |
 |----------|---------|-------------|
@@ -390,7 +390,7 @@ configured secret provider.
 | `PROVIDER` | — | Operator-configured LLM provider for the agent |
 | `MODEL_ID` | — | Operator-configured model id for the agent |
 
-_15 package + 20 inherited variable(s). Auto-generated from `.env.example` + the shared agent-connector-sdk set — do not edit._
+_15 package + 20 inherited variable(s). Auto-generated from `.env.example` + the shared scion-sdk set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
 
 <!-- GOVERNED-CAPABILITY:START -->

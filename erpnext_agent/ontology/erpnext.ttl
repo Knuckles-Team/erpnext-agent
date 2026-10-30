@@ -114,7 +114,7 @@
     rdfs:comment """ERP entities sourced from an ERPNext (Frappe) instance — customers,
 suppliers, items, sales and purchase orders, invoices, employees and org units — with
 their ordering, supply, line-item and billing relationships, federated into the
-agent-connector-sdk knowledge-graph hub over the enterprise layer.""" .
+scion-sdk knowledge-graph hub over the enterprise layer.""" .
 
 # ontology-codemod R3
 <http://knuckles.team/kg#PurchaseOrder> rdfs:subClassOf <http://knuckles.team/kg#Order> .
