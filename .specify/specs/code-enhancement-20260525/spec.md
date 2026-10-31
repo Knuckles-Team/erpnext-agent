@@ -14,7 +14,7 @@
 
 ## Functional Requirements
 
-- **FR-001**: Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
+- **FR-001**: Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0
 - **FR-002**: Low test-to-source ratio: 0.19
 - **FR-003**: Test suite lacks intent diversity (only one type)
 - **FR-004**: README.md missing sections: overview, installation
@@ -43,7 +43,7 @@
 - **FR-027**: Only 29% of env vars documented in README.md
 - **FR-028**: Undocumented env vars: ERPNEXT_AGENT_BASE_URL, ERPNEXT_AGENT_PASSWORD, ERPNEXT_AGENT_SSL_VERIFY, ERPNEXT_AGENT_USERNAME, RESOURCETOOL
 - **FR-029**: No .env.example file — create one for developer onboarding
-- **FR-030**: Analysis error: No module named 'agent_connector_sdk.knowledge_graph'
+- **FR-030**: Analysis error: No module named 'scion_sdk.knowledge_graph'
 
 ## Success Criteria
 

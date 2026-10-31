@@ -1,6 +1,5 @@
 """Keep docs pushes separate from guarded package publication."""
 
-import re
 from fnmatch import fnmatchcase
 from pathlib import Path
 
@@ -33,24 +32,18 @@ def test_release_hook_inherits_catalogue_policy():
     assert len(matches) == 1
     repo, hook = matches[0]
     assert repo["repo"] == "https://github.com/Knuckles-Team/pipelines"
-    assert re.fullmatch(r"[0-9a-f]{40}", repo["rev"])
+    assert repo["rev"] == "main"
     assert hook == {"id": "dependency-readiness"}
 
 
-def test_alternate_docs_job_keeps_validation_without_publication():
-    workflow = _workflow("docs.yml")
-    assert workflow[True] == {
-        "push": {"branches": ["main"]},
-        "workflow_dispatch": None,
-    }
-    assert workflow["permissions"] == {"contents": "write"}
-    assert set(workflow["jobs"]) == {"deploy-docs"}
-    job = workflow["jobs"]["deploy-docs"]
-    assert job["runs-on"] == "ubuntu-latest"
-    assert [step.get("run") for step in job["steps"] if "run" in step] == [
-        "pip install mkdocs-material",
-        "mkdocs build",
-    ]
+def test_docs_build_and_publication_belong_to_the_standard_connector_workflow():
+    workflows = {path.name for path in (ROOT / ".github/workflows").glob("*.yml")}
+    assert workflows == {"connector.yml"}
+    workflow = _workflow("connector.yml")
+    assert workflow["jobs"]["pipeline"]["uses"] == (
+        "Knuckles-Team/pipelines/.github/workflows/connector_pipeline.yml@main"
+    )
+    assert _push_matches(workflow, "refs/tags/v1.2.3")
     assert all(
         "gh-deploy" not in path.read_text()
         for path in (ROOT / ".github/workflows").glob("*.yml")

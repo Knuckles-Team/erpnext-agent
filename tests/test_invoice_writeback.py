@@ -4,12 +4,6 @@ import json
 import time
 
 import pytest
-from agent_connector_sdk.http.options import HttpClientOptions
-from agent_connector_sdk.http.retry import RetryPolicy
-from agent_connector_sdk.testing.http_server import ScriptedHttpServer, ScriptedResponse
-from agent_connector_sdk.testing.writeback_audit import InMemoryAuditReservation
-from agent_connector_sdk.writeback.connector import DurableWritableConnector
-from agent_connector_sdk.writeback.durable_ledger import FileWriteBackLedger
 from epistemic_graph.generated.write_back import (
     SourceChangeSet,
     WriteBackAuthorizationDecision,
@@ -17,6 +11,12 @@ from epistemic_graph.generated.write_back import (
     WriteBackEffectStatus,
 )
 from scion_erp_guard.bindings import _request
+from scion_sdk.http.options import HttpClientOptions
+from scion_sdk.http.retry import RetryPolicy
+from scion_sdk.testing.http_server import ScriptedHttpServer, ScriptedResponse
+from scion_sdk.testing.writeback_audit import InMemoryAuditReservation
+from scion_sdk.writeback.connector import DurableWritableConnector
+from scion_sdk.writeback.durable_ledger import FileWriteBackLedger
 
 from erpnext_agent.invoice_guard_client import InvoiceGuardClient
 from erpnext_agent.invoice_writeback import (
@@ -172,7 +172,7 @@ async def test_reconciliation_unknown_never_authorizes_retry():
 )
 @pytest.mark.asyncio
 async def test_wrong_company_or_operation_is_refused_before_source():
-    from agent_connector_sdk.writeback.errors import ChangeSetValidationError
+    from scion_sdk.writeback.errors import ChangeSetValidationError
 
     change = change_set()
     with ScriptedHttpServer() as upstream:
@@ -203,7 +203,7 @@ async def test_wrong_company_or_operation_is_refused_before_source():
 
 @pytest.mark.asyncio
 async def test_missing_sdk_preflight_refuses_before_source(monkeypatch):
-    from agent_connector_sdk.writeback.errors import ChangeSetValidationError
+    from scion_sdk.writeback.errors import ChangeSetValidationError
 
     import erpnext_agent.invoice_writeback as module
 
@@ -233,7 +233,7 @@ async def test_missing_sdk_preflight_refuses_before_source(monkeypatch):
 )
 @pytest.mark.asyncio
 async def test_denied_approval_makes_no_source_request(tmp_path):
-    from agent_connector_sdk.writeback.errors import AuthorizationDeniedError
+    from scion_sdk.writeback.errors import AuthorizationDeniedError
 
     change = change_set()
     denied = change.model_copy(
@@ -273,19 +273,19 @@ async def test_denied_approval_makes_no_source_request(tmp_path):
 )
 @pytest.mark.asyncio
 async def test_served_enterprise_write_uses_guard_and_durable_receipt(tmp_path):
-    from agent_connector_sdk.identity import ActorContext, ActorType, use_actor
-    from agent_connector_sdk.mcp.server import create_mcp_server
-    from agent_connector_sdk.vendor_extractors.enterprise_contract import (
+    from fastmcp import Client
+    from scion_sdk.identity import ActorContext, ActorType, use_actor
+    from scion_sdk.mcp.server import create_mcp_server
+    from scion_sdk.vendor_extractors.enterprise_contract import (
         CreateInvoice,
         EnterpriseCapability,
         EnterpriseOperation,
     )
-    from agent_connector_sdk.vendor_extractors.enterprise_dispatch import (
+    from scion_sdk.vendor_extractors.enterprise_dispatch import (
         EnterpriseDispatcher,
         EnterpriseWriteTarget,
         enterprise_schema_binding,
     )
-    from fastmcp import Client
 
     change = change_set()
     claim, _, digest, _ = _request(

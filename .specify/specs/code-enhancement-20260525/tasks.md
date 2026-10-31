@@ -3,7 +3,7 @@
 Generated: 2026-05-25T05:39:16.618549+00:00
 Skipped informational: 4
 
-- [ ] [P] **T001** [Dependency Audit] Minor update: agent-connector-sdk 0.2.40 (installed) -> 0.16.0
+- [ ] [P] **T001** [Dependency Audit] Minor update: scion-sdk 0.2.40 (installed) -> 0.16.0
   - Priority: P3-Low | Effort: Small
 - [ ] [P] **T002** [Test Coverage] Low test-to-source ratio: 0.19
   - Priority: P2-Medium | Effort: Medium
@@ -61,5 +61,5 @@ Skipped informational: 4
   - Priority: P2-Medium | Effort: Medium
 - [ ] [P] **T029** [Environment Variables] No .env.example file — create one for developer onboarding
   - Priority: P2-Medium | Effort: Medium
-- [ ] [P] **T030** [analyze_xdg_kg] Analysis error: No module named 'agent_connector_sdk.knowledge_graph'
+- [ ] [P] **T030** [analyze_xdg_kg] Analysis error: No module named 'scion_sdk.knowledge_graph'
   - Priority: P1-High | Effort: Medium
