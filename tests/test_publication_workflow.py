@@ -1,6 +1,5 @@
 """Keep docs pushes separate from guarded package publication."""
 
-import re
 from fnmatch import fnmatchcase
 from pathlib import Path
 
@@ -33,7 +32,7 @@ def test_release_hook_inherits_catalogue_policy():
     assert len(matches) == 1
     repo, hook = matches[0]
     assert repo["repo"] == "https://github.com/Knuckles-Team/pipelines"
-    assert re.fullmatch(r"[0-9a-f]{40}", repo["rev"])
+    assert repo["rev"] == "main"
     assert hook == {"id": "dependency-readiness"}
 
 
