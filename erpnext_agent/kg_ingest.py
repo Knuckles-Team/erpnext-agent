@@ -1,7 +1,7 @@
 """Epistemic-graph ingestion for ERPNext / Frappe records.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. Connector-specific mappers emit
-canonical node_type nodes and relationship edges. ``agent_connector_sdk.ingest`` --
+canonical node_type nodes and relationship edges. ``scion_sdk.ingest`` --
 the generated ``SourceIngest`` client, not a local ingestion helper -- owns the
 transaction and raises ``IngestError`` when the authoritative engine cannot commit.
 """
@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_connector_sdk.connector_identity import connector_name
-from agent_connector_sdk.ingest import (
+from scion_sdk.connector_identity import connector_name
+from scion_sdk.ingest import (
     ChangeSet,
     Document,
     Entity,

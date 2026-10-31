@@ -5,8 +5,8 @@ import json
 from pathlib import Path
 
 import pytest
-from agent_connector_sdk.access_contract import parse_access_contracts
 from fastmcp import Client, FastMCP
+from scion_sdk.access_contract import parse_access_contracts
 
 from erpnext_agent.api_client import Api
 from erpnext_agent.mcp.mcp_resource import register_resource_tools

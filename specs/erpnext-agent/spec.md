@@ -16,4 +16,4 @@ The version the `erpnext_agent` package reports at runtime (`erpnext_agent.__ver
 
 ## Boundaries
 
-The connector contract, certification and transport rules belong to agent-connector-sdk. Release publication belongs to the repository pipeline.
+The connector contract, certification and transport rules belong to scion-sdk. Release publication belongs to the repository pipeline.

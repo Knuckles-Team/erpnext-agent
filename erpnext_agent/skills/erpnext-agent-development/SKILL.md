@@ -20,7 +20,7 @@ metadata:
 This repository owns the ERPNext/Frappe REST client, document resource mappings,
 action-routed MCP tools, source declarations and knowledge-graph ingestion, and
 packaged connector content. Shared connector contracts, transports, TLS profiles,
-and credential helpers belong to `agent-connector-sdk`; admission, serving, and
+and credential helpers belong to `scion-sdk`; admission, serving, and
 durable graph state belong to their owning repositories. Read `AGENTS.md` before
 changing code and keep credentials, private endpoints, tenant data, and customer
 records out of source, logs, fixtures, and skill content.
