@@ -19,7 +19,7 @@ metadata:
 
 Domain-typed access to the ERPNext catalog / party master DocTypes (`Item`,
 `Customer`, `Supplier`) via the Frappe REST resource API, plus native ingestion of
-those records into the epistemic-graph knowledge graph.
+those records into the medulla knowledge graph.
 
 ## When to use
 - Look up an Item by `item_code`, or browse the catalog by `item_group` / `stock_uom`.

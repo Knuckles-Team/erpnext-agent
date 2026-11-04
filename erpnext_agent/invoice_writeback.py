@@ -11,7 +11,7 @@ import json
 from dataclasses import asdict
 from typing import Any
 
-from epistemic_graph.generated.write_back import (
+from medulla.generated.write_back import (
     ReconciliationObservation,
     SourceChangeSet,
     WriteBackAttempt,

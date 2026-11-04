@@ -6,7 +6,7 @@ Human-resources operations on ERPNext (Frappe) via the erpnext-agent MCP server 
 
 Domain-typed access to the ERPNext HR master DocTypes (`Employee`, `Department`) via
 the Frappe REST resource API, plus native ingestion of those records into the
-epistemic-graph knowledge graph.
+medulla knowledge graph.
 
 ## When to use
 - Look up an `Employee` by `name` / `employee_name`, or by `company` / `department`.

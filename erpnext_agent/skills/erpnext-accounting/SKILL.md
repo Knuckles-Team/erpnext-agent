@@ -19,7 +19,7 @@ metadata:
 
 Domain-typed access to the ERPNext **order-to-cash** and **procure-to-pay** DocTypes
 (`Sales Order`, `Purchase Order`, `Sales Invoice`, `Purchase Invoice`) via the Frappe
-REST resource API, plus native ingestion of those records into the epistemic-graph
+REST resource API, plus native ingestion of those records into the medulla
 knowledge graph.
 
 ## When to use
