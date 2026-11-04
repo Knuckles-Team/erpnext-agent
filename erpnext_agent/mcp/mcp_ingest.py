@@ -1,4 +1,4 @@
-"""MCP tool for native epistemic-graph ingestion of ERPNext DocType records.
+"""MCP tool for native medulla ingestion of ERPNext DocType records.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. Wire-First: lists a Frappe DocType
 via the existing client and natively pushes the records into the knowledge graph as
@@ -35,7 +35,7 @@ def register_ingest_tools(mcp: FastMCP):
         client=Depends(get_client),
         ctx: Context | None = Field(default=None, description="MCP context"),
     ) -> dict:
-        """Natively ingest an ERPNext DocType into epistemic-graph as typed nodes.
+        """Natively ingest an ERPNext DocType into medulla as typed nodes.
 
         Lists records via the Frappe REST client and pushes them (with their party /
         line-item / department links) into the knowledge graph via the fast engine
