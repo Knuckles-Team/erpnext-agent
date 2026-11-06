@@ -17,7 +17,9 @@ def _client() -> Api:
 def test_submit_reads_the_current_draft_then_submits_it():
     client = _client()
     draft = {"doctype": "Sales Invoice", "name": "SINV-1", "modified": "t"}
-    with patch.object(client, "request", side_effect=[{"data": draft}, {"message": {}}]) as req:
+    with patch.object(
+        client, "request", side_effect=[{"data": draft}, {"message": {}}]
+    ) as req:
         client.submit_document("Sales Invoice", "SINV-1")
     assert req.call_args_list[0].args == ("GET", "/api/resource/Sales%20Invoice/SINV-1")
     assert req.call_args_list[1].args == ("POST", "/api/method/frappe.client.submit")
@@ -54,13 +56,23 @@ def test_lifecycle_and_value_operations_map_to_frappe_client():
         req.assert_called_with(
             "POST",
             "/api/method/frappe.client.set_value",
-            data={"doctype": "Task", "name": "TASK-1", "fieldname": "status", "value": "Completed"},
+            data={
+                "doctype": "Task",
+                "name": "TASK-1",
+                "fieldname": "status",
+                "value": "Completed",
+            },
         )
         client.rename_document("Customer", "A", "B")
         req.assert_called_with(
             "POST",
             "/api/method/frappe.client.rename_doc",
-            data={"doctype": "Customer", "old_name": "A", "new_name": "B", "merge": False},
+            data={
+                "doctype": "Customer",
+                "old_name": "A",
+                "new_name": "B",
+                "merge": False,
+            },
         )
 
 
@@ -91,26 +103,50 @@ def test_flow_report_and_search_operations():
             "/api/method/frappe.desk.search.search_link",
             params={"doctype": "Customer", "txt": "acme", "page_length": 10},
         )
-        client.run_document_method("Opportunity", "OPP-1", "declare_enquiry_lost", {"a": 1})
+        client.run_document_method(
+            "Opportunity", "OPP-1", "declare_enquiry_lost", {"a": 1}
+        )
         req.assert_called_with(
             "POST",
             "/api/method/run_doc_method",
-            data={"dt": "Opportunity", "dn": "OPP-1", "method": "declare_enquiry_lost", "args": '{"a": 1}'},
+            data={
+                "dt": "Opportunity",
+                "dn": "OPP-1",
+                "method": "declare_enquiry_lost",
+                "args": '{"a": 1}',
+            },
         )
         client.upload_file("a.txt", "eno=", "Sales Invoice", "SINV-1")
         args, kwargs = req.call_args
         assert args == ("POST", "/api/method/upload_file")
-        assert kwargs["data"] == {"is_private": 1, "doctype": "Sales Invoice", "docname": "SINV-1"}
+        assert kwargs["data"] == {
+            "is_private": 1,
+            "doctype": "Sales Invoice",
+            "docname": "SINV-1",
+        }
         assert kwargs["files"]["file"][0] == "a.txt"
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R005")
 def test_doctype_meta_is_trimmed_to_fields():
     client = _client()
-    raw = {"docs": [{"name": "Lead", "is_submittable": 0, "fields": [
-        {"fieldname": "lead_name", "fieldtype": "Data", "label": "Name", "reqd": 1},
-        {"fieldname": "sb", "fieldtype": "Section Break"},
-    ]}]}
+    raw = {
+        "docs": [
+            {
+                "name": "Lead",
+                "is_submittable": 0,
+                "fields": [
+                    {
+                        "fieldname": "lead_name",
+                        "fieldtype": "Data",
+                        "label": "Name",
+                        "reqd": 1,
+                    },
+                    {"fieldname": "sb", "fieldtype": "Section Break"},
+                ],
+            }
+        ]
+    }
     with patch.object(client, "request", return_value=raw):
         meta = client.get_doctype_meta("Lead")
     assert meta["is_submittable"] == 0
@@ -120,13 +156,20 @@ def test_doctype_meta_is_trimmed_to_fields():
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R006")
 def test_refusal_carries_the_server_reason_not_the_traceback():
-    body = json.dumps({
-        "exc_type": "LinkValidationError",
-        "exc": "Traceback (most recent call last): secret frames",
-        "_server_messages": json.dumps([json.dumps({"message": "Could not find <b>Gender</b>: X"})]),
-    })
+    body = json.dumps(
+        {
+            "exc_type": "LinkValidationError",
+            "exc": "Traceback (most recent call last): secret frames",
+            "_server_messages": json.dumps(
+                [json.dumps({"message": "Could not find <b>Gender</b>: X"})]
+            ),
+        }
+    )
     err = frappe_error(417, body)
     assert isinstance(err, ErpNextApiError)
     assert str(err) == "API error: 417 LinkValidationError: Could not find Gender: X"
     assert "Traceback" not in str(err)
-    assert str(frappe_error(502, "<html>bad gateway</html>")) == "API error: 502: no server message"
+    assert (
+        str(frappe_error(502, "<html>bad gateway</html>"))
+        == "API error: 502: no server message"
+    )

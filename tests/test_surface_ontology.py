@@ -53,8 +53,14 @@ def test_every_class_rolls_up_to_core_by_subclassing_never_import():
         assert not [t for t in parse_triples(path.read_text()) if t[1] == OWL_IMPORTS]
     triples = _triples("erpnext.ttl")
     core_reused = {
-        "Customer", "Supplier", "Company", "Employee", "PurchaseOrder",
-        "PurchaseInvoice", "Opportunity", "ErpNextIssue",
+        "Customer",
+        "Supplier",
+        "Company",
+        "Employee",
+        "PurchaseOrder",
+        "PurchaseInvoice",
+        "Opportunity",
+        "ErpNextIssue",
     }
     supers = {}
     for s, p, o in triples:
@@ -77,14 +83,18 @@ def test_surface_lists_exactly_the_served_tools_skills_and_prompts(monkeypatch):
     prompt_names = {s.split("#prompt-")[1] for s in _labels(triples, CP + "Prompt")}
     assert tool_names and skill_names and prompt_names
     assert tool_names == _served_tools(monkeypatch)
-    assert skill_names == {p.name for p in SKILLS.iterdir() if (p / "SKILL.md").is_file()}
+    assert skill_names == {
+        p.name for p in SKILLS.iterdir() if (p / "SKILL.md").is_file()
+    }
     assert prompt_names == {p.stem for p in PROMPTS.glob("*.json")}
     features = _labels(triples, CP + "Feature")
     realized = {s for s, p, o in triples if p == CP + "realizedBy"}
     assert features and features <= realized
     for tool in _labels(triples, CP + "Tool"):
         assert any(s == tool and p == CP + "operatesOn" for s, p, o in triples), tool
-    used_skills = {o for s, p, o in triples if p == CP + "realizedBy" and "#skill-" in o}
+    used_skills = {
+        o for s, p, o in triples if p == CP + "realizedBy" and "#skill-" in o
+    }
     workflow = {s for s in _labels(triples, CP + "Skill") if "development" not in s}
     assert workflow <= used_skills
 
@@ -98,9 +108,14 @@ def test_every_domain_class_has_a_live_virtual_authority():
     authorities = _labels(fed, VG + "SourceAuthority")
     served = {o for s, p, o in fed if p == VG + "authorityFor" and s in authorities}
     # Abstract parents (Invoice) and computed outputs (ErpReport) have no own records.
-    assert classes - served == {CORE_NAMESPACE + "Invoice", CORE_NAMESPACE + "ErpReport"}
+    assert classes - served == {
+        CORE_NAMESPACE + "Invoice",
+        CORE_NAMESPACE + "ErpReport",
+    }
     for authority in authorities:
-        mapping = {o for s, p, o in fed if s == authority and p == VG + "authorityMapping"}
+        mapping = {
+            o for s, p, o in fed if s == authority and p == VG + "authorityMapping"
+        }
         assert len(mapping) == 1, authority
         assert any(s in mapping and p == VG + "mapsOntologyClass" for s, p, o in fed)
     sources = _labels(fed, VG + "SourceConnection")
