@@ -2,11 +2,11 @@
 @prefix erp: <http://knuckles.team/kg#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# Access contracts (SCION-CONNECTOR-CONTROL-R021 / G24): how Supplier, Item
-# and PurchaseOrder are answered live through the erpnext_agent_resource
-# MCP tool (action list_documents / get_document), not a copied snapshot.
-# Kept apart from erpnext.ttl so the flat access-contract parser only reads
-# this file.
+# Access contracts (SCION-CONNECTOR-CONTROL-R021 / G24): how ERP records are
+# answered live through the typed erpnext_list_documents MCP tool (one Frappe
+# DocType per contract, filters/fields/limit pushed down), not a copied
+# snapshot. Kept apart from erpnext.ttl so the flat access-contract parser
+# only reads this file.
 
 erp:supplierAccess a ac:AccessContract ;
     ac:classIri erp:Supplier ;
@@ -14,8 +14,8 @@ erp:supplierAccess a ac:AccessContract ;
     ac:entity "Supplier" ;
     ac:keyField "name" ;
     ac:accessKind "mcp_tool" ;
-    ac:operation "erpnext_agent_resource" ;
-    ac:parameter "action", "params_json" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
     ac:pagination "offset" ;
     ac:pushdown "filter", "limit" ;
     ac:authRef "env://ERPNEXT_TOKEN" ;
@@ -32,8 +32,8 @@ erp:itemAccess a ac:AccessContract ;
     ac:entity "Item" ;
     ac:keyField "name" ;
     ac:accessKind "mcp_tool" ;
-    ac:operation "erpnext_agent_resource" ;
-    ac:parameter "action", "params_json" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
     ac:pagination "offset" ;
     ac:pushdown "filter", "limit" ;
     ac:authRef "env://ERPNEXT_TOKEN" ;
@@ -50,8 +50,8 @@ erp:purchaseOrderAccess a ac:AccessContract ;
     ac:entity "Purchase Order" ;
     ac:keyField "name" ;
     ac:accessKind "mcp_tool" ;
-    ac:operation "erpnext_agent_resource" ;
-    ac:parameter "action", "params_json" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
     ac:pagination "offset" ;
     ac:pushdown "filter", "limit" ;
     ac:authRef "env://ERPNEXT_TOKEN" ;
@@ -64,3 +64,147 @@ erp:purchaseOrderTotalBinding a ac:PropertyBinding ;
 
 erp:purchaseOrderStatusBinding a ac:PropertyBinding ;
     ac:contract erp:purchaseOrderAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+
+erp:customerAccess a ac:AccessContract ;
+    ac:classIri erp:Customer ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Customer" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:customerNameBinding a ac:PropertyBinding ;
+    ac:contract erp:customerAccess ; ac:property rdfs:label ; ac:field "customer_name" .
+
+erp:salesInvoiceAccess a ac:AccessContract ;
+    ac:classIri erp:SalesInvoice ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Sales Invoice" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:salesInvoiceTotalBinding a ac:PropertyBinding ;
+    ac:contract erp:salesInvoiceAccess ; ac:property erp:grandTotal ; ac:field "grand_total" .
+
+erp:salesInvoiceOutstandingBinding a ac:PropertyBinding ;
+    ac:contract erp:salesInvoiceAccess ; ac:property erp:outstandingAmount ; ac:field "outstanding_amount" .
+
+erp:salesInvoiceStatusBinding a ac:PropertyBinding ;
+    ac:contract erp:salesInvoiceAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+
+erp:salesInvoicePostingBinding a ac:PropertyBinding ;
+    ac:contract erp:salesInvoiceAccess ; ac:property erp:postingDate ; ac:field "posting_date" .
+
+erp:purchaseInvoiceAccess a ac:AccessContract ;
+    ac:classIri erp:PurchaseInvoice ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Purchase Invoice" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:purchaseInvoiceTotalBinding a ac:PropertyBinding ;
+    ac:contract erp:purchaseInvoiceAccess ; ac:property erp:grandTotal ; ac:field "grand_total" .
+
+erp:purchaseInvoiceOutstandingBinding a ac:PropertyBinding ;
+    ac:contract erp:purchaseInvoiceAccess ; ac:property erp:outstandingAmount ; ac:field "outstanding_amount" .
+
+erp:purchaseInvoiceStatusBinding a ac:PropertyBinding ;
+    ac:contract erp:purchaseInvoiceAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+
+erp:paymentEntryAccess a ac:AccessContract ;
+    ac:classIri erp:PaymentEntry ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Payment Entry" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:paymentEntryStatusBinding a ac:PropertyBinding ;
+    ac:contract erp:paymentEntryAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+
+erp:paymentEntryPostingBinding a ac:PropertyBinding ;
+    ac:contract erp:paymentEntryAccess ; ac:property erp:postingDate ; ac:field "posting_date" .
+
+erp:leadAccess a ac:AccessContract ;
+    ac:classIri erp:Lead ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Lead" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:leadNameBinding a ac:PropertyBinding ;
+    ac:contract erp:leadAccess ; ac:property rdfs:label ; ac:field "lead_name" .
+
+erp:projectAccess a ac:AccessContract ;
+    ac:classIri erp:Project ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Project" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:projectNameBinding a ac:PropertyBinding ;
+    ac:contract erp:projectAccess ; ac:property rdfs:label ; ac:field "project_name" .
+
+erp:employeeAccess a ac:AccessContract ;
+    ac:classIri erp:Employee ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Employee" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 900 ;
+    ac:costHint "low" .
+
+erp:employeeNameBinding a ac:PropertyBinding ;
+    ac:contract erp:employeeAccess ; ac:property erp:employeeName ; ac:field "employee_name" .

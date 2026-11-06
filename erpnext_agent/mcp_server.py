@@ -1,12 +1,13 @@
-"""Main FastMCP server and tool registration."""
+"""Main FastMCP server and tool registration.
 
-from erpnext_agent.mcp.mcp_authentication import register_authentication_tools
+Every Frappe REST operation is its own typed tool, derived by the SDK from
+the public methods of :class:`erpnext_agent.api_client.Api`. Only the native
+knowledge-graph ingest tool is registered by hand.
+"""
+
 from erpnext_agent.mcp.mcp_ingest import register_ingest_tools
-from erpnext_agent.mcp.mcp_resource import register_resource_tools
 
 # (tag, env-toggle, registrar) — env names are the framework-derived <TAG>TOOL form.
 TOOL_REGISTRY = [
-    ("authentication", "AUTHENTICATIONTOOL", register_authentication_tools),
-    ("resource", "RESOURCETOOL", register_resource_tools),
     ("ingest", "INGESTTOOL", register_ingest_tools),
 ]

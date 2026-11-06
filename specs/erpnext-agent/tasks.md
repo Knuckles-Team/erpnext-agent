@@ -8,3 +8,6 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [x] T002 [US1] CONN-ERPNEXT-AGENT-R002 Supplier and purchase-order access fields match served tool data.
 - [ ] T003 [US1] CONN-ERPNEXT-AGENT-R003 Supplier table recorded response.
 - [ ] T004 [US1] CONN-ERPNEXT-AGENT-R004 Supplier and purchase-order contract fields and recorded fixture.
+- [x] T005 [US1] CONN-ERPNEXT-AGENT-R005 Every Frappe business operation is its own typed tool.
+- [x] T006 [US1] CONN-ERPNEXT-AGENT-R006 A refused call returns the server's reason.
+- [x] T007 [US1] CONN-ERPNEXT-AGENT-R007 Every access contract names a served tool and only its parameters.

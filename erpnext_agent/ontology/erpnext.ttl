@@ -17,21 +17,40 @@
 # 2=Cancelled; monetary DocTypes carry grand_total; postings carry posting_date.
 
 # --- classes (owl:Class) ---
+# Every class rolls up to a medulla core class by rdfs:subClassOf (never owl:imports).
+# :Customer, :Supplier, :Employee, :Company, :PurchaseOrder, :PurchaseInvoice and
+# :Opportunity and :ErpNextIssue are core classes themselves (same IRI); the pack only
+# labels them.
+# Core :Account (brokerage), :Warehouse (data warehouse) and :Task (agent task) mean
+# something else, so the ERP ledger account, stock warehouse and project task get
+# their own classes below.
 
 :Customer a owl:Class ;
     rdfs:label "Customer" ;
-    rdfs:comment "A party that places sales orders (Frappe Customer doctype)." .
+    rdfs:comment "A party that buys from the company (Frappe Customer doctype)." .
 
-:Supplier a owl:Class .
+:Supplier a owl:Class ;
+    rdfs:label "Supplier" ;
+    rdfs:comment "A party the company buys from (Frappe Supplier doctype)." .
 
+:Company a owl:Class ;
+    rdfs:label "Company" ;
+    rdfs:comment "The legal entity whose books a document posts to (Frappe Company doctype)." .
 
 :Item a owl:Class ;
     rdfs:label "Item" ;
-    rdfs:comment "A sellable/stockable product or service (Frappe Item doctype)." .
+    rdfs:comment "A sellable/stockable product or service (Frappe Item doctype)." ;
+    rdfs:subClassOf :SupplyChainItem .
+
+:Quotation a owl:Class ;
+    rdfs:label "Quotation" ;
+    rdfs:comment "A priced offer to a customer or lead (Frappe Quotation doctype); submittable." ;
+    rdfs:subClassOf :Document .
 
 :SalesOrder a owl:Class ;
     rdfs:label "Sales Order" ;
-    rdfs:comment "A confirmed customer order (Frappe Sales Order doctype)." .
+    rdfs:comment "A confirmed customer order (Frappe Sales Order doctype); submittable." ;
+    rdfs:subClassOf :Order .
 
 :PurchaseOrder a owl:Class ;
     rdfs:label "Purchase Order" ;
@@ -39,17 +58,84 @@
 
 :Invoice a owl:Class ;
     rdfs:label "Invoice" ;
-    rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." .
+    rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." ;
+    rdfs:subClassOf :Document .
 
-:Employee a owl:Class .
+:SalesInvoice a owl:Class ;
+    rdfs:label "Sales Invoice" ;
+    rdfs:comment "An invoice the company issues to a customer; submitting it posts receivable and income GL entries (Frappe Sales Invoice doctype)." ;
+    rdfs:subClassOf :Invoice .
 
+:PurchaseInvoice a owl:Class ;
+    rdfs:label "Purchase Invoice" ;
+    rdfs:comment "A supplier bill booked against payables (Frappe Purchase Invoice doctype)." .
+
+:PaymentEntry a owl:Class ;
+    rdfs:label "Payment Entry" ;
+    rdfs:comment "Money received from a customer or paid to a supplier, allocated against invoices (Frappe Payment Entry doctype); submittable." ;
+    rdfs:subClassOf :Document .
+
+:StockEntry a owl:Class ;
+    rdfs:label "Stock Entry" ;
+    rdfs:comment "A stock movement: material receipt, issue, transfer or manufacture (Frappe Stock Entry doctype); submitting it writes the stock ledger." ;
+    rdfs:subClassOf :Document .
+
+:StockWarehouse a owl:Class ;
+    rdfs:label "Stock Warehouse" ;
+    rdfs:comment "A physical or logical stock location of a company (Frappe Warehouse doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:LedgerAccount a owl:Class ;
+    rdfs:label "Ledger Account" ;
+    rdfs:comment "One account of a company's chart of accounts (Frappe Account doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:GLEntry a owl:Class ;
+    rdfs:label "GL Entry" ;
+    rdfs:comment "One general-ledger posting a submitted document wrote (Frappe GL Entry doctype); read-only." ;
+    rdfs:subClassOf :DomainEntity .
+
+:FiscalYear a owl:Class ;
+    rdfs:label "Fiscal Year" ;
+    rdfs:comment "An accounting period with start and end dates (Frappe Fiscal Year doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:Lead a owl:Class ;
+    rdfs:label "Lead" ;
+    rdfs:comment "A prospective customer not yet qualified (Frappe Lead doctype)." ;
+    rdfs:subClassOf :BusinessActor .
+
+:Opportunity a owl:Class ;
+    rdfs:label "Opportunity" ;
+    rdfs:comment "A qualified sales opportunity from a lead or customer (Frappe Opportunity doctype)." .
+
+:Project a owl:Class ;
+    rdfs:label "Project" ;
+    rdfs:comment "A body of billable or internal work with tasks and costing (Frappe Project doctype)." ;
+    rdfs:subClassOf :WorkItem .
+
+:ProjectTask a owl:Class ;
+    rdfs:label "Project Task" ;
+    rdfs:comment "One unit of project work (Frappe Task doctype)." ;
+    rdfs:subClassOf :WorkItem .
+
+:Employee a owl:Class ;
+    rdfs:label "Employee" ;
+    rdfs:comment "A person employed by a company (Frappe Employee doctype)." .
 
 :OrgUnit a owl:Class ;
     rdfs:label "Organizational Unit" ;
-    rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." .
+    rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." ;
+    rdfs:subClassOf :Department .
 
-:ErpNextIssue a owl:Class .
+:ErpReport a owl:Class ;
+    rdfs:label "ERP Report" ;
+    rdfs:comment "A query or script report computed by the ERP (Frappe Report doctype), such as General Ledger or Accounts Receivable." ;
+    rdfs:subClassOf :DomainEntity .
 
+:ErpNextIssue a owl:Class ;
+    rdfs:label "ERPNext Issue" ;
+    rdfs:comment "A customer support issue (Frappe Issue doctype); core declares it equivalent to :Incident." .
 
 # --- links (owl:ObjectProperty) ---
 
@@ -87,6 +173,70 @@
     rdfs:domain :Employee ;
     rdfs:range :OrgUnit .
 
+
+:quotedTo a owl:ObjectProperty ;
+    rdfs:label "quoted to" ;
+    rdfs:comment "Links a Quotation to the Customer or Lead it offers to (party_name)." ;
+    rdfs:domain :Quotation .
+
+:fromQuotation a owl:ObjectProperty ;
+    rdfs:label "from quotation" ;
+    rdfs:comment "Links a SalesOrder to the Quotation it was mapped from (items.prevdoc_docname)." ;
+    rdfs:domain :SalesOrder ;
+    rdfs:range :Quotation .
+
+:allocatedTo a owl:ObjectProperty ;
+    rdfs:label "allocated to" ;
+    rdfs:comment "Links a PaymentEntry to an Invoice it settles (references.reference_name)." ;
+    rdfs:domain :PaymentEntry ;
+    rdfs:range :Invoice .
+
+:postsToAccount a owl:ObjectProperty ;
+    rdfs:label "posts to account" ;
+    rdfs:comment "Links a GLEntry to the LedgerAccount it debits or credits." ;
+    rdfs:domain :GLEntry ;
+    rdfs:range :LedgerAccount .
+
+:bookedFor a owl:ObjectProperty ;
+    rdfs:label "booked for" ;
+    rdfs:comment "Links an ERP document, account or warehouse to the Company whose books it belongs to (company)." ;
+    rdfs:range :Company .
+
+:movesItem a owl:ObjectProperty ;
+    rdfs:label "moves item" ;
+    rdfs:comment "Links a StockEntry to an Item it moves (items.item_code)." ;
+    rdfs:domain :StockEntry ;
+    rdfs:range :Item .
+
+:targetWarehouse a owl:ObjectProperty ;
+    rdfs:label "target warehouse" ;
+    rdfs:comment "Links a StockEntry to the StockWarehouse it receives into (items.t_warehouse)." ;
+    rdfs:domain :StockEntry ;
+    rdfs:range :StockWarehouse .
+
+:convertedFrom a owl:ObjectProperty ;
+    rdfs:label "converted from" ;
+    rdfs:comment "Links an Opportunity to the Lead it was raised from (party_name when opportunity_from is Lead)." ;
+    rdfs:domain :Opportunity ;
+    rdfs:range :Lead .
+
+:taskOf a owl:ObjectProperty ;
+    rdfs:label "task of" ;
+    rdfs:comment "Links a ProjectTask to its Project." ;
+    rdfs:domain :ProjectTask ;
+    rdfs:range :Project .
+
+:employedBy a owl:ObjectProperty ;
+    rdfs:label "employed by" ;
+    rdfs:comment "Links an Employee to the Company that employs them." ;
+    rdfs:domain :Employee ;
+    rdfs:range :Company .
+
+:outstandingAmount a owl:DatatypeProperty ;
+    rdfs:label "outstanding amount" ;
+    rdfs:comment "Amount of an Invoice still unpaid (outstanding_amount); 0 once fully allocated." ;
+    rdfs:range xsd:float .
+
 # --- fields (owl:DatatypeProperty) ---
 
 :grandTotal a owl:DatatypeProperty ;
@@ -115,10 +265,3 @@
 suppliers, items, sales and purchase orders, invoices, employees and org units — with
 their ordering, supply, line-item and billing relationships, federated into the
 scion-sdk knowledge-graph hub over the enterprise layer.""" .
-
-# ontology-codemod R3
-<http://knuckles.team/kg#PurchaseOrder> rdfs:subClassOf <http://knuckles.team/kg#Order> .
-<http://knuckles.team/kg#SalesOrder> rdfs:subClassOf <http://knuckles.team/kg#Order> .
-
-# ontology-codemod R4
-<http://knuckles.team/kg#Invoice> rdfs:subClassOf <http://knuckles.team/kg#Document> .

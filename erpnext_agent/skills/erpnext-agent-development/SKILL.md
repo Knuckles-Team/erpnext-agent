@@ -43,10 +43,11 @@ owning spec row in the commit trailer.
   `erpnext_agent/auth.py`, together with the SDK TLS resolver for
   `erpnext_agent`. Never hardcode a secret, endpoint, tenant, or TLS-verification
   bypass.
-- Keep the action-routed registrations in
-  `erpnext_agent/mcp/mcp_authentication.py`, `erpnext_agent/mcp/mcp_resource.py`,
-  and `erpnext_agent/mcp/mcp_ingest.py` aligned with the registry in
-  `erpnext_agent/mcp_server.py`. Preserve source declarations in
+- Add a Frappe operation as one public method on the resource client; the SDK
+  serves it as one typed tool. Never add an action-routed tool. The only
+  hand-registered tool is `erpnext_ingest` in
+  `erpnext_agent/mcp/mcp_ingest.py`, listed in `erpnext_agent/mcp_server.py`.
+  A new tool also needs its node in `erpnext_agent/ontology/surface.ttl`. Preserve source declarations in
   `erpnext_agent/connector_sources.py` and typed mappings in
   `erpnext_agent/kg_ingest.py`; keep tenant and installation data neutral.
 - Every delivered requirement needs a bound focused test. Generated

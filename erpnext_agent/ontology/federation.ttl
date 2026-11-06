@@ -1,0 +1,519 @@
+@prefix : <http://knuckles.team/kg#> .
+@prefix vg: <http://knuckles.team/kg/virtual-graph#> .
+@prefix erpx: <http://knuckles.team/kg/erpnext#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Data location and federation of erpnext-mcp in the medulla virtual-graph
+# vocabulary. ERP records stay in the ERP: medulla reads them live through the
+# typed tools (materialisation "virtual"), one mapping per DocType, and ranks
+# this source per class. ERPNext is rank 1 (live truth) for the books, stock and
+# the parties it bills; rank 2 where a dedicated system may own the class.
+# The endpoint is the fleet server name, never a host: the gateway resolves it.
+# contentDigest is sha256 over the sorted entity, field and operation lists
+# ("entities:", "fields:", "operations:" sections, one value per line).
+
+erpx:source a vg:SourceConnection ;
+    rdfs:label "erpnext-mcp" ;
+    vg:sourceKind "mcp" ;
+    vg:foreignSourceName "erpnext-mcp" ;
+    vg:sourceRole "live_truth" ;
+    vg:endpointRef [ vg:url "mcp://erpnext-mcp" ] ;
+    vg:declaredCapability "read", "write", "submit", "report" .
+
+erpx:contract a vg:MetadataContract ;
+    vg:contractSource erpx:source ;
+    vg:schemaVersion "1" ;
+    vg:contentDigest "sha256:687df60bbf8cc612c711124a012887145314b605c453bcba48999b8ba08044a2" ;
+    vg:discoveredEntity "Account", "Company", "Customer", "Department", "Employee", "Fiscal Year", "GL Entry", "Issue", "Item", "Lead", "Opportunity", "Payment Entry", "Project", "Purchase Invoice", "Purchase Order", "Quotation", "Sales Invoice", "Sales Order", "Stock Entry", "Supplier", "Task", "Warehouse" ;
+    vg:discoveredField "account_name", "company_name", "customer_name", "department_name", "employee_name", "item_name", "lead_name", "name", "project_name", "subject", "supplier_name", "title", "voucher_no", "warehouse_name", "year" ;
+    vg:discoveredOperation "erpnext_call_method", "erpnext_cancel_document", "erpnext_create_document", "erpnext_delete_document", "erpnext_get_count", "erpnext_get_doctype_meta", "erpnext_get_document", "erpnext_get_logged_user", "erpnext_get_value", "erpnext_get_version", "erpnext_ingest", "erpnext_list_documents", "erpnext_login", "erpnext_logout", "erpnext_make_mapped_document", "erpnext_rename_document", "erpnext_run_document_method", "erpnext_run_report", "erpnext_search_link", "erpnext_set_value", "erpnext_submit_document", "erpnext_update_document", "erpnext_upload_file" .
+
+erpx:customerMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Customer ;
+    vg:mapsEntity "Customer" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:customerLabelPair ;
+    vg:approved true .
+
+erpx:customerLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "customer_name" .
+
+erpx:customerAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Customer ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:customerMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:supplierMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Supplier ;
+    vg:mapsEntity "Supplier" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:supplierLabelPair ;
+    vg:approved true .
+
+erpx:supplierLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "supplier_name" .
+
+erpx:supplierAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Supplier ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:supplierMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:companyMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Company ;
+    vg:mapsEntity "Company" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:companyLabelPair ;
+    vg:approved true .
+
+erpx:companyLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "company_name" .
+
+erpx:companyAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Company ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:companyMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:itemMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Item ;
+    vg:mapsEntity "Item" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:itemLabelPair ;
+    vg:approved true .
+
+erpx:itemLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "item_name" .
+
+erpx:itemAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Item ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:itemMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:quotationMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Quotation ;
+    vg:mapsEntity "Quotation" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:quotationLabelPair ;
+    vg:approved true .
+
+erpx:quotationLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:quotationAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Quotation ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:quotationMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salesOrderMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalesOrder ;
+    vg:mapsEntity "Sales Order" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salesOrderLabelPair ;
+    vg:approved true .
+
+erpx:salesOrderLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:salesOrderAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalesOrder ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salesOrderMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:purchaseOrderMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :PurchaseOrder ;
+    vg:mapsEntity "Purchase Order" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:purchaseOrderLabelPair ;
+    vg:approved true .
+
+erpx:purchaseOrderLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:purchaseOrderAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :PurchaseOrder ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:purchaseOrderMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salesInvoiceMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalesInvoice ;
+    vg:mapsEntity "Sales Invoice" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salesInvoiceLabelPair ;
+    vg:approved true .
+
+erpx:salesInvoiceLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:salesInvoiceAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalesInvoice ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salesInvoiceMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:purchaseInvoiceMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :PurchaseInvoice ;
+    vg:mapsEntity "Purchase Invoice" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:purchaseInvoiceLabelPair ;
+    vg:approved true .
+
+erpx:purchaseInvoiceLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:purchaseInvoiceAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :PurchaseInvoice ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:purchaseInvoiceMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:paymentEntryMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :PaymentEntry ;
+    vg:mapsEntity "Payment Entry" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:paymentEntryLabelPair ;
+    vg:approved true .
+
+erpx:paymentEntryLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:paymentEntryAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :PaymentEntry ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:paymentEntryMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:stockEntryMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :StockEntry ;
+    vg:mapsEntity "Stock Entry" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:stockEntryLabelPair ;
+    vg:approved true .
+
+erpx:stockEntryLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:stockEntryAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :StockEntry ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:stockEntryMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:stockWarehouseMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :StockWarehouse ;
+    vg:mapsEntity "Warehouse" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:stockWarehouseLabelPair ;
+    vg:approved true .
+
+erpx:stockWarehouseLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "warehouse_name" .
+
+erpx:stockWarehouseAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :StockWarehouse ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:stockWarehouseMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:ledgerAccountMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :LedgerAccount ;
+    vg:mapsEntity "Account" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:ledgerAccountLabelPair ;
+    vg:approved true .
+
+erpx:ledgerAccountLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "account_name" .
+
+erpx:ledgerAccountAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :LedgerAccount ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:ledgerAccountMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:gLEntryMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :GLEntry ;
+    vg:mapsEntity "GL Entry" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:gLEntryLabelPair ;
+    vg:approved true .
+
+erpx:gLEntryLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "voucher_no" .
+
+erpx:gLEntryAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :GLEntry ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:gLEntryMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:fiscalYearMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :FiscalYear ;
+    vg:mapsEntity "Fiscal Year" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:fiscalYearLabelPair ;
+    vg:approved true .
+
+erpx:fiscalYearLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "year" .
+
+erpx:fiscalYearAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :FiscalYear ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:fiscalYearMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:leadMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Lead ;
+    vg:mapsEntity "Lead" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:leadLabelPair ;
+    vg:approved true .
+
+erpx:leadLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "lead_name" .
+
+erpx:leadAuthority a vg:SourceAuthority ;
+    rdfs:comment "A dedicated CRM may own leads; rank 2 until the owner decides." ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Lead ;
+    vg:authorityRank 2 ;
+    vg:authorityMapping erpx:leadMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback true .
+
+erpx:opportunityMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Opportunity ;
+    vg:mapsEntity "Opportunity" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:opportunityLabelPair ;
+    vg:approved true .
+
+erpx:opportunityLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "title" .
+
+erpx:opportunityAuthority a vg:SourceAuthority ;
+    rdfs:comment "A dedicated CRM may own opportunities; rank 2 until the owner decides." ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Opportunity ;
+    vg:authorityRank 2 ;
+    vg:authorityMapping erpx:opportunityMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback true .
+
+erpx:projectMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Project ;
+    vg:mapsEntity "Project" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:projectLabelPair ;
+    vg:approved true .
+
+erpx:projectLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "project_name" .
+
+erpx:projectAuthority a vg:SourceAuthority ;
+    rdfs:comment "A work tracker may own projects; rank 2 until the owner decides." ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Project ;
+    vg:authorityRank 2 ;
+    vg:authorityMapping erpx:projectMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback true .
+
+erpx:projectTaskMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ProjectTask ;
+    vg:mapsEntity "Task" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:projectTaskLabelPair ;
+    vg:approved true .
+
+erpx:projectTaskLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "subject" .
+
+erpx:projectTaskAuthority a vg:SourceAuthority ;
+    rdfs:comment "A work tracker may own tasks; rank 2 until the owner decides." ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ProjectTask ;
+    vg:authorityRank 2 ;
+    vg:authorityMapping erpx:projectTaskMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback true .
+
+erpx:employeeMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Employee ;
+    vg:mapsEntity "Employee" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:employeeLabelPair ;
+    vg:approved true .
+
+erpx:employeeLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:employeeAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Employee ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:employeeMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:orgUnitMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :OrgUnit ;
+    vg:mapsEntity "Department" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:orgUnitLabelPair ;
+    vg:approved true .
+
+erpx:orgUnitLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "department_name" .
+
+erpx:orgUnitAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :OrgUnit ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:orgUnitMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:erpNextIssueMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ErpNextIssue ;
+    vg:mapsEntity "Issue" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:erpNextIssueLabelPair ;
+    vg:approved true .
+
+erpx:erpNextIssueLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "subject" .
+
+erpx:erpNextIssueAuthority a vg:SourceAuthority ;
+    rdfs:comment "An ITSM tool is rank 1 for incidents." ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ErpNextIssue ;
+    vg:authorityRank 2 ;
+    vg:authorityMapping erpx:erpNextIssueMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback true .

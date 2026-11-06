@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-11-06
+
+### Added
+- Typed tools for every Frappe business operation: submit, cancel, count, get and set value,
+  rename, mapped follow-on documents (quotation to order to invoice, lead to opportunity),
+  document methods, DocType field metadata, report runs, link search and file upload.
+- Workflow skills proven against a live instance: order to cash, procure to pay, inventory,
+  CRM pipeline, projects, HR basics and accounting reports.
+- Ontology: every class rolls up to medulla core by subclassing; the served surface
+  (connector, features, tools, skills, prompt) and the data location and federation
+  (one live virtual authority per record class) are declared.
+
+### Changed
+- A refused call now returns the server's reason (`API error: 417 LinkValidationError: ...`).
+- Access contracts name the served `erpnext_list_documents` tool.
+- The operator prompt names the typed tools and the workflow skills.
+
+### Removed
+- The alias tools `erpnext_version`, `erpnext_authGetLoggedUser` and
+  `erpnext_auth_get_logged_user`, and the unserved action-routed registrations.
+
 ## [2.3.6] - 2026-10-30
 
 ### Changed

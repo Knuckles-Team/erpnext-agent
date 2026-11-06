@@ -162,15 +162,33 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 <!-- MCP-TOOLS-TABLE:START -->
 
-#### Intent tools
-
 | MCP Tool | Kind | Description |
 |----------|------|-------------|
-| `erpnext_agent_authentication` | intent | Manage ERPNext Agent authentication operations. |
-| `erpnext_agent_resource` | intent | Manage ERPNext Agent resource operations. |
-| `erpnext_ingest` | intent | Natively ingest an ERPNext DocType into medulla as typed nodes. |
+| `erpnext_call_method` | write | Execute dotted path whitelisted RPC methods (covers 100% of custom functions). |
+| `erpnext_cancel_document` | write | Cancel a submitted document (docstatus 1 -> 2), reversing its postings. |
+| `erpnext_create_document` | write | Create a new document resource. |
+| `erpnext_delete_document` | write | Delete a specific document resource. |
+| `erpnext_get_count` | read | Count the documents of a DocType that match the filters. |
+| `erpnext_get_doctype_meta` | read | Describe a DocType's fields: name, type, label, link target and whether required. |
+| `erpnext_get_document` | read | Get a document resource by name. |
+| `erpnext_get_logged_user` | read | Get the user that is logged in. |
+| `erpnext_get_value` | read | Read selected field values of the first document matching the filters. |
+| `erpnext_get_version` | read | Get installed app versions. |
+| `erpnext_ingest` | write | Natively ingest an ERPNext DocType into medulla as typed nodes. |
+| `erpnext_list_documents` | read | List document resources with pagination, filters, and selected fields. |
+| `erpnext_login` | write | Authenticate yourself. |
+| `erpnext_logout` | read | Logout from current session. |
+| `erpnext_make_mapped_document` | write | Build the next document of a business flow from a source document. |
+| `erpnext_rename_document` | write | Rename a document, updating every link to it; optionally merge into an existing one. |
+| `erpnext_run_document_method` | write | Run a whitelisted controller method of one document. |
+| `erpnext_run_report` | read | Run a query or script report and return its columns and rows. |
+| `erpnext_search_link` | read | Find documents of a DocType whose name or title fields match the text. |
+| `erpnext_set_value` | write | Set one field of a document and save it (runs the DocType's validation). |
+| `erpnext_submit_document` | write | Submit a saved draft (docstatus 0 -> 1), posting its ledger entries. |
+| `erpnext_update_document` | write | Update a specific document resource. |
+| `erpnext_upload_file` | write | Upload a file, optionally attaching it to a document. |
 
-_3 intent tool(s) · 0 operation(s). Call an operation as `act(action='<operation>', params={...})` (`ask` for reads); `find(action='describe', params={'action': '<operation>'})` returns its arguments. An operation is enabled unless its `<DOMAIN>TOOL` toggle is set false. Auto-generated — do not edit._
+_23 typed tool(s), one per Frappe operation._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### MCP Configuration Examples

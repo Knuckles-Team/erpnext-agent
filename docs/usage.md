@@ -6,21 +6,32 @@ calls, as a **Python API** (`Api`) the operator import, and as a **command-line*
 
 ## As an MCP server
 
-Once [deployed](deployment.md), the server registers two action-dispatch tools that
-cover the entire ERPNext / Frappe REST and whitelisted-RPC surface. Each tool takes
-an `action` plus a JSON `params_json` payload:
+Once [deployed](deployment.md), the server serves one typed tool per Frappe
+operation, plus `erpnext_ingest` for the knowledge graph:
 
-| Tool | Actions |
+| Tool | Frappe call |
 |---|---|
-| `erpnext_agent_authentication` | `login`, `logout`, `get_logged_user`, `get_version` |
-| `erpnext_agent_resource` | `get_document`, `create_document`, `update_document`, `delete_document`, `list_documents`, `call_method` |
+| `erpnext_list_documents`, `erpnext_get_document`, `erpnext_create_document`, `erpnext_update_document`, `erpnext_delete_document` | `/api/resource/<doctype>[/<name>]` |
+| `erpnext_submit_document`, `erpnext_cancel_document` | `frappe.client.submit`, `frappe.client.cancel` |
+| `erpnext_get_count`, `erpnext_get_value`, `erpnext_set_value`, `erpnext_rename_document` | `frappe.client.*` |
+| `erpnext_make_mapped_document` | `frappe.model.mapper.make_mapped_doc` (quotation to order, order to invoice, lead to opportunity) |
+| `erpnext_run_document_method` | `run_doc_method` |
+| `erpnext_get_doctype_meta` | `frappe.desk.form.load.getdoctype` |
+| `erpnext_run_report` | `frappe.desk.query_report.run` |
+| `erpnext_search_link` | `frappe.desk.search.search_link` |
+| `erpnext_upload_file` | `upload_file` |
+| `erpnext_call_method` | any other whitelisted method |
+| `erpnext_get_version`, `erpnext_get_logged_user`, `erpnext_login`, `erpnext_logout` | version and session |
 
-Example agent prompts that map onto these tools:
+Example agent prompts:
 
-- *"List the 10 most recent Sales Invoices"* → `erpnext_agent_resource` / `list_documents`
-- *"Fetch the Customer document named 'ACME Corp'"* → `erpnext_agent_resource` / `get_document`
-- *"Who is the currently logged-in user?"* → `erpnext_agent_authentication` / `get_logged_user`
-- *"Run the whitelisted method `frappe.ping`"* → `erpnext_agent_resource` / `call_method`
+- *"Bill the accepted quotation and record the payment"* → skill `erpnext-order-to-cash`
+- *"What do customers owe us?"* → `erpnext_run_report` `Accounts Receivable`
+- *"How many units of item X are in Stores?"* → `erpnext_get_value` on `Bin`
+- *"Run the whitelisted method `frappe.ping`"* → `erpnext_call_method`
+
+A refused call returns the server's reason, for example
+`API error: 417 LinkValidationError: Could not find Customer: X`.
 
 ## As a Python API
 

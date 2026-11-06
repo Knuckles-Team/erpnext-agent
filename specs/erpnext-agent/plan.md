@@ -75,9 +75,12 @@ The repository pre-commit hooks apply: `ruff-format`, `connector-standard`, `sec
 ## Production caller chain
 
 1. `CONN-ERPNEXT-AGENT-R001`: the erpnext-mcp console script (scion_sdk.cli:serve) loads erpnext_agent:connector, and the version is read at import from erpnext_agent/api_client.py:8 (__version__ = _v("erpnext-agent")) using installed package metadata, while the bump configuration edits pyproject.toml.
-2. `CONN-ERPNEXT-AGENT-R002`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89), whose tools erpnext_agent.mcp_server register register_resource_tools (erpnext_agent/mcp/mcp_resource.py:13) defining erpnext_agent_resource at mcp_resource.py:16, which dispatches to Api.list_documents (erpnext_agent/api/api_client_resource.py:63).
-3. `CONN-ERPNEXT-AGENT-R003`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89); the declared Supplier contract in erpnext_agent/ontology/access_contracts.ttl is answered by erpnext_agent_resource (erpnext_agent/mcp/mcp_resource.py:16) calling Api.list_documents (erpnext_agent/api/api_client_resource.py:63).
-4. `CONN-ERPNEXT-AGENT-R004`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89), and the served tool erpnext_agent_resource (erpnext_agent/mcp/mcp_resource.py:16) returns the Supplier and PurchaseOrder fields pinned in erpnext_agent/ontology/access_contracts.ttl.
+2. `CONN-ERPNEXT-AGENT-R002`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89), whose SDK tool surface (scion_sdk.mcp.method_tools.register_method_tools) serves Api.list_documents (erpnext_agent/api/api_client_resource.py) as the typed tool erpnext_list_documents.
+3. `CONN-ERPNEXT-AGENT-R003`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89); the declared Supplier contract in erpnext_agent/ontology/access_contracts.ttl is answered by the typed tool erpnext_list_documents calling Api.list_documents (erpnext_agent/api/api_client_resource.py).
+4. `CONN-ERPNEXT-AGENT-R004`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py:89), and the served tool erpnext_list_documents returns the Supplier and PurchaseOrder fields pinned in erpnext_agent/ontology/access_contracts.ttl.
+5. `CONN-ERPNEXT-AGENT-R005`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py), and the SDK tool surface registers one typed tool per public method of Api (erpnext_agent/api/api_client_resource.py); each method sends one Frappe REST call through ApiClientBase.request.
+6. `CONN-ERPNEXT-AGENT-R006`: every typed tool calls an Api method, which calls ApiClientBase.request (erpnext_agent/api/api_client_base.py); a 4xx/5xx response raises frappe_error(status, body).
+7. `CONN-ERPNEXT-AGENT-R007`: scion_sdk.access_contract.parse_access_contracts reads erpnext_agent/ontology/access_contracts.ttl; each contract's operation is served by the server that scion_sdk._connector_serve.build_server builds.
 
 ## Cross-repo seams
 
