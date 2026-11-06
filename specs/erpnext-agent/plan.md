@@ -60,6 +60,21 @@ transaction isolation satisfy that contract. The connector still needs a
 qualified transport, durable EG approval and receipt binding, and a real
 ERPNext served test before the full workflow is complete.
 
+### Document lifecycle machine (CONN-ERPNEXT-AGENT-R011)
+
+Frappe stores the lifecycle as the integer `docstatus`. The connector reads that integer once, at the edge, and maps it to `DocumentState`. Every move goes through `transition(state, event, guards)` in `erpnext_agent/lifecycle.py`.
+
+| From | Event | Guard | To |
+|---|---|---|---|
+| Draft | Save | none | Draft |
+| Draft | Submit | doctype is submittable | Submitted |
+| Submitted | Cancel | no submitted linked documents; `modified` is current | Cancelled |
+| Cancelled | Amend | none | Draft (new document, `amended_from` set) |
+
+Every other pair is refused with `IllegalTransition` before the write request. Ledger postings are irreversible, so the refusal is the only guard that acts before the posting.
+
+Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, six members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: the scion-sdk state-machine descriptor row (SCION-GOVERNED-WRITEBACK) and the medulla core vocabulary row MEDULLA-ORCH-VOCAB-R811.
+
 ## Phase 2: Task approach
 
 `tasks.md` holds one task line per row, producer first.
@@ -84,6 +99,7 @@ The repository pre-commit hooks apply: `ruff-format`, `connector-standard`, `sec
 8. `CONN-ERPNEXT-AGENT-R008`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers one typed tool per public method of Api (erpnext_agent/api_client.py), which inherits ApiHr (erpnext_agent/api/api_client_hr.py); each method sends its Frappe or HR-app call through ApiClientBase.request.
 9. `CONN-ERPNEXT-AGENT-R009`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers one typed tool per public method of Api, which inherits ApiCrm (erpnext_agent/api/api_client_crm.py); mapped drafts come from frappe.model.mapper.make_mapped_doc and are saved through /api/resource.
 10. `CONN-ERPNEXT-AGENT-R010`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers the onboarding tools from Api, which inherits ApiOnboarding (erpnext_agent/api/api_client_onboarding.py); plan, apply and verify call erpnext_agent.onboarding over the typed client.
+11. `CONN-ERPNEXT-AGENT-R011`: the erpnext-mcp console script loads erpnext_agent:connector, whose SDK tool surface registers `erpnext_submit_document`, `erpnext_cancel_document` and `erpnext_amend_document` from `Api` (erpnext_agent/api/api_client_resource.py:103,117); each calls `transition` (erpnext_agent/lifecycle.py) before `ApiClientBase.request`.
 
 ## Cross-repo seams
 
@@ -92,3 +108,4 @@ none. The cited owner rows are library capabilities the connector calls in proce
 ### Amendments
 
 - 2026-11-06: ERPNext is the CRM and HR system of record (owner). Rows `CONN-ERPNEXT-AGENT-R008` (HR operations), `CONN-ERPNEXT-AGENT-R009` (built-in CRM operations; the separate Frappe CRM app is not targeted, one owner of leads) and `CONN-ERPNEXT-AGENT-R010` (repeatable business onboarding: validate, dry run, apply on confirm, verify, idempotent) extend the typed-operation surface of `CONN-ERPNEXT-AGENT-R005`. Methods target the Frappe, ERPNext and HR app version-16 whitelisted methods and doctypes.
+- 2026-11-06: document lifecycle as an explicit state machine (organization constitution Article XXXI). Row `CONN-ERPNEXT-AGENT-R011` and its children R011.1 to R011.6 extend `CONN-ERPNEXT-AGENT-R005` (typed submit and cancel) with guards and an amend tool. The ontology half is `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`.
