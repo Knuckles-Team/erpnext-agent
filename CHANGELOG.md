@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-11-06
+
+### Added
+- Typed HR tools (31): employee hire, update, read, list and relieve; departments and
+  designations; holiday lists with the server's weekly-off generator; attendance (single
+  and bulk) and check-ins; leave types, allocations, applications, approve or reject, and
+  balance; salary components, structures and assignments; payroll entry, fill employees,
+  create and submit salary slips, and slip reads.
+- Typed CRM tools (19) on ERPNext's built-in CRM: lead capture, update and qualification;
+  opportunity from lead, stage moves and lost with reasons; customer from lead or
+  opportunity; sales stages, opportunity types and lost reasons; communication log and
+  follow-up ToDos.
+- Business onboarding (13 tools): setup status, time zones, chart templates, setup wizard
+  (confirm only), company, fiscal year, address, bank, bank account and tax ID, plus
+  plan (validate and dry run), apply (confirm, idempotent) and verify.
+- Skills: hire to retire, leave approval, payroll run (test data), lead nurturing and
+  business onboarding with its input schema; HR and CRM pipeline skills rewritten for the
+  typed tools.
+- Prompts as complete agent definitions: HR manager, sales representative and business
+  onboarding; the operator prompt names every workflow skill.
+- Ontology: 20 HR, CRM and onboarding classes rolled up to medulla core, their links,
+  tool-use contracts, live virtual authorities and access contracts; sync presets for
+  employees, leads and opportunities.
+
+### Changed
+- Leads and opportunities are rank 1 in the federation: ERPNext is the CRM of record.
+
 ## [2.4.0] - 2026-11-06
 
 ### Added
