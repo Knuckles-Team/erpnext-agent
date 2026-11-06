@@ -73,7 +73,9 @@ Frappe stores the lifecycle as the integer `docstatus`. The connector reads that
 
 Every other pair is refused with `IllegalTransition` before the write request. Ledger postings are irreversible, so the refusal is the only guard that acts before the posting.
 
-Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, six members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: the scion-sdk state-machine descriptor row (SCION-GOVERNED-WRITEBACK) and the medulla core vocabulary row MEDULLA-ORCH-VOCAB-R811.
+Terminal states: none. The persisted field is the Frappe `docstatus` integer; `documentState` in the graph mirror is derived from it. `DOCUMENT_LIFECYCLE` is the SDK descriptor built from the same table (R011.7); `execute_governed` refuses an illegal governed write before the API call. Entry point to attach point: `erpnext_agent:connector` -> `Api.submit_document` -> `transition` (erpnext_agent/lifecycle.py) -> `ApiClientBase.request` (erpnext_agent/api/api_client_base.py). Wiring row R011.6 and hot-path proof R011.6 test it.
+
+Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, six members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: SCION-GOVERNED-WRITEBACK-R007, SCION-CONNECTOR-CONTROL-R917 and, pending on a medulla branch, MEDULLA-ORCH-VOCAB-R811.
 
 ## Phase 2: Task approach
 
@@ -108,4 +110,4 @@ none. The cited owner rows are library capabilities the connector calls in proce
 ### Amendments
 
 - 2026-11-06: ERPNext is the CRM and HR system of record (owner). Rows `CONN-ERPNEXT-AGENT-R008` (HR operations), `CONN-ERPNEXT-AGENT-R009` (built-in CRM operations; the separate Frappe CRM app is not targeted, one owner of leads) and `CONN-ERPNEXT-AGENT-R010` (repeatable business onboarding: validate, dry run, apply on confirm, verify, idempotent) extend the typed-operation surface of `CONN-ERPNEXT-AGENT-R005`. Methods target the Frappe, ERPNext and HR app version-16 whitelisted methods and doctypes.
-- 2026-11-06: document lifecycle as an explicit state machine (organization constitution Article XXXI). Row `CONN-ERPNEXT-AGENT-R011` and its children R011.1 to R011.6 extend `CONN-ERPNEXT-AGENT-R005` (typed submit and cancel) with guards and an amend tool. The ontology half is `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`.
+- 2026-11-06: document lifecycle as an explicit state machine (organization constitution Article XXXI). Row `CONN-ERPNEXT-AGENT-R011` and its children R011.1 to R011.7 extend `CONN-ERPNEXT-AGENT-R005` (typed submit and cancel) with guards and an amend tool. The ontology half is `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`.
