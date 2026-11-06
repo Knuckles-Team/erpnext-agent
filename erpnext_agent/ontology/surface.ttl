@@ -1,0 +1,227 @@
+@prefix : <http://knuckles.team/kg#> .
+@prefix cp: <http://knuckles.team/kg/connector-pack#> .
+@prefix erpx: <http://knuckles.team/kg/erpnext#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Connector surface of erpnext-mcp in the medulla connector-pack vocabulary:
+# the connector, the features it offers, and which typed tool, prompt and
+# skill realise each feature, with the domain classes each one acts on. Every
+# domain class is declared in erpnext.ttl and rolls up to medulla core there.
+# Instances only: this file declares no classes.
+
+erpx:connector a cp:Connector ;
+    rdfs:label "erpnext-mcp" ;
+    cp:componentId "erpnext-mcp" ;
+    cp:providesFeature erpx:feature-orderToCash, erpx:feature-procureToPay, erpx:feature-inventory, erpx:feature-crmPipeline, erpx:feature-projects, erpx:feature-hrBasics, erpx:feature-accountingReports, erpx:feature-schemaDiscovery, erpx:feature-recordMaintenance, erpx:feature-session, erpx:feature-knowledgeGraphIngest .
+
+erpx:feature-orderToCash a cp:Feature ;
+    rdfs:label "Order to cash: quote, order, bill and collect from customers" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator .
+
+erpx:feature-procureToPay a cp:Feature ;
+    rdfs:label "Procure to pay: book and pay supplier bills" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_call_method, erpx:tool-erpnext_get_count, erpx:skill-erpnext-procure-to-pay, erpx:prompt-erp_operator .
+
+erpx:feature-inventory a cp:Feature ;
+    rdfs:label "Item catalog and stock movements" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_run_report, erpx:skill-erpnext-inventory, erpx:prompt-erp_operator .
+
+erpx:feature-crmPipeline a cp:Feature ;
+    rdfs:label "Leads and opportunities through to quotation" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_run_document_method, erpx:tool-erpnext_search_link, erpx:skill-erpnext-crm-pipeline, erpx:prompt-erp_operator .
+
+erpx:feature-projects a cp:Feature ;
+    rdfs:label "Projects and tasks" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_set_value, erpx:tool-erpnext_get_value, erpx:tool-erpnext_list_documents, erpx:skill-erpnext-projects, erpx:prompt-erp_operator .
+
+erpx:feature-hrBasics a cp:Feature ;
+    rdfs:label "Employee master and headcount" ;
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_search_link, erpx:tool-erpnext_get_count, erpx:tool-erpnext_set_value, erpx:skill-erpnext-hr, erpx:prompt-erp_operator .
+
+erpx:feature-accountingReports a cp:Feature ;
+    rdfs:label "Ledger and financial reports" ;
+    cp:realizedBy erpx:tool-erpnext_run_report, erpx:tool-erpnext_list_documents, erpx:skill-erpnext-accounting, erpx:prompt-erp_operator .
+
+erpx:feature-schemaDiscovery a cp:Feature ;
+    rdfs:label "DocType schema and record discovery" ;
+    cp:realizedBy erpx:tool-erpnext_get_doctype_meta, erpx:tool-erpnext_search_link, erpx:tool-erpnext_list_documents, erpx:tool-erpnext_get_document, erpx:tool-erpnext_get_count, erpx:tool-erpnext_get_version, erpx:prompt-erp_operator .
+
+erpx:feature-recordMaintenance a cp:Feature ;
+    rdfs:label "Generic record maintenance on any DocType" ;
+    cp:realizedBy erpx:tool-erpnext_update_document, erpx:tool-erpnext_delete_document, erpx:tool-erpnext_rename_document, erpx:tool-erpnext_set_value, erpx:tool-erpnext_run_document_method, erpx:tool-erpnext_call_method, erpx:skill-erpnext-agent-operations, erpx:prompt-erp_operator .
+
+erpx:feature-session a cp:Feature ;
+    rdfs:label "Session and identity" ;
+    cp:realizedBy erpx:tool-erpnext_login, erpx:tool-erpnext_logout, erpx:tool-erpnext_get_logged_user, erpx:prompt-erp_operator .
+
+erpx:feature-knowledgeGraphIngest a cp:Feature ;
+    rdfs:label "Native knowledge-graph ingestion of ERP records" ;
+    cp:realizedBy erpx:tool-erpnext_ingest, erpx:prompt-erp_operator .
+
+erpx:tool-erpnext_list_documents a cp:Tool ;
+    rdfs:label "erpnext_list_documents" ;
+    cp:componentId "erpnext-mcp/erpnext_list_documents" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_get_document a cp:Tool ;
+    rdfs:label "erpnext_get_document" ;
+    cp:componentId "erpnext-mcp/erpnext_get_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_create_document a cp:Tool ;
+    rdfs:label "erpnext_create_document" ;
+    cp:componentId "erpnext-mcp/erpnext_create_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_update_document a cp:Tool ;
+    rdfs:label "erpnext_update_document" ;
+    cp:componentId "erpnext-mcp/erpnext_update_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_delete_document a cp:Tool ;
+    rdfs:label "erpnext_delete_document" ;
+    cp:componentId "erpnext-mcp/erpnext_delete_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_get_count a cp:Tool ;
+    rdfs:label "erpnext_get_count" ;
+    cp:componentId "erpnext-mcp/erpnext_get_count" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_get_value a cp:Tool ;
+    rdfs:label "erpnext_get_value" ;
+    cp:componentId "erpnext-mcp/erpnext_get_value" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_set_value a cp:Tool ;
+    rdfs:label "erpnext_set_value" ;
+    cp:componentId "erpnext-mcp/erpnext_set_value" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_rename_document a cp:Tool ;
+    rdfs:label "erpnext_rename_document" ;
+    cp:componentId "erpnext-mcp/erpnext_rename_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_search_link a cp:Tool ;
+    rdfs:label "erpnext_search_link" ;
+    cp:componentId "erpnext-mcp/erpnext_search_link" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_submit_document a cp:Tool ;
+    rdfs:label "erpnext_submit_document" ;
+    cp:componentId "erpnext-mcp/erpnext_submit_document" ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
+
+erpx:tool-erpnext_cancel_document a cp:Tool ;
+    rdfs:label "erpnext_cancel_document" ;
+    cp:componentId "erpnext-mcp/erpnext_cancel_document" ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
+
+erpx:tool-erpnext_make_mapped_document a cp:Tool ;
+    rdfs:label "erpnext_make_mapped_document" ;
+    cp:componentId "erpnext-mcp/erpnext_make_mapped_document" ;
+    cp:operatesOn :Lead, :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PurchaseInvoice ;
+    cp:produces :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PaymentEntry .
+
+erpx:tool-erpnext_run_document_method a cp:Tool ;
+    rdfs:label "erpnext_run_document_method" ;
+    cp:componentId "erpnext-mcp/erpnext_run_document_method" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+
+erpx:tool-erpnext_call_method a cp:Tool ;
+    rdfs:label "erpnext_call_method" ;
+    cp:componentId "erpnext-mcp/erpnext_call_method" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_get_doctype_meta a cp:Tool ;
+    rdfs:label "erpnext_get_doctype_meta" ;
+    cp:componentId "erpnext-mcp/erpnext_get_doctype_meta" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_run_report a cp:Tool ;
+    rdfs:label "erpnext_run_report" ;
+    cp:componentId "erpnext-mcp/erpnext_run_report" ;
+    cp:operatesOn :GLEntry, :LedgerAccount, :SalesInvoice, :PurchaseInvoice, :StockWarehouse, :Item ;
+    cp:produces :ErpReport .
+
+erpx:tool-erpnext_upload_file a cp:Tool ;
+    rdfs:label "erpnext_upload_file" ;
+    cp:componentId "erpnext-mcp/erpnext_upload_file" ;
+    cp:operatesOn :Document .
+
+erpx:tool-erpnext_get_version a cp:Tool ;
+    rdfs:label "erpnext_get_version" ;
+    cp:componentId "erpnext-mcp/erpnext_get_version" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_get_logged_user a cp:Tool ;
+    rdfs:label "erpnext_get_logged_user" ;
+    cp:componentId "erpnext-mcp/erpnext_get_logged_user" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_login a cp:Tool ;
+    rdfs:label "erpnext_login" ;
+    cp:componentId "erpnext-mcp/erpnext_login" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_logout a cp:Tool ;
+    rdfs:label "erpnext_logout" ;
+    cp:componentId "erpnext-mcp/erpnext_logout" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_ingest a cp:Tool ;
+    rdfs:label "erpnext_ingest" ;
+    cp:componentId "erpnext-mcp/erpnext_ingest" ;
+    cp:operatesOn :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :Employee ;
+    cp:produces :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :Invoice, :Employee .
+
+erpx:skill-erpnext-order-to-cash a cp:Skill ;
+    rdfs:label "erpnext-order-to-cash" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-order-to-cash" ;
+    cp:appliesTo :Customer, :Quotation, :SalesOrder, :SalesInvoice, :PaymentEntry .
+
+erpx:skill-erpnext-procure-to-pay a cp:Skill ;
+    rdfs:label "erpnext-procure-to-pay" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-procure-to-pay" ;
+    cp:appliesTo :Supplier, :PurchaseOrder, :PurchaseInvoice, :PaymentEntry .
+
+erpx:skill-erpnext-inventory a cp:Skill ;
+    rdfs:label "erpnext-inventory" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-inventory" ;
+    cp:appliesTo :Item, :StockEntry, :StockWarehouse .
+
+erpx:skill-erpnext-crm-pipeline a cp:Skill ;
+    rdfs:label "erpnext-crm-pipeline" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-crm-pipeline" ;
+    cp:appliesTo :Lead, :Opportunity, :Quotation .
+
+erpx:skill-erpnext-projects a cp:Skill ;
+    rdfs:label "erpnext-projects" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-projects" ;
+    cp:appliesTo :Project, :ProjectTask .
+
+erpx:skill-erpnext-hr a cp:Skill ;
+    rdfs:label "erpnext-hr" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-hr" ;
+    cp:appliesTo :Employee, :OrgUnit .
+
+erpx:skill-erpnext-accounting a cp:Skill ;
+    rdfs:label "erpnext-accounting" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-accounting" ;
+    cp:appliesTo :LedgerAccount, :GLEntry, :FiscalYear, :ErpReport .
+
+erpx:skill-erpnext-agent-operations a cp:Skill ;
+    rdfs:label "erpnext-agent-operations" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-agent-operations" ;
+    cp:appliesTo :DomainEntity .
+
+erpx:skill-erpnext-agent-development a cp:Skill ;
+    rdfs:label "erpnext-agent-development" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-agent-development" ;
+    cp:appliesTo :DomainEntity .
+
+erpx:prompt-erp_operator a cp:Prompt ;
+    rdfs:label "erp_operator" ;
+    cp:componentId "erpnext-mcp/prompt/erp_operator" ;
+    cp:appliesTo :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .

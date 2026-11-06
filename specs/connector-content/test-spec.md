@@ -6,3 +6,8 @@ Governing spec: [spec.md](spec.md).
 |---|---|---|---|
 | T-001 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` | `tests/test_default_content_surfaces.py` | The listings include the packaged skills, ontology and prompts. |
 | T-002 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` | connector ontology certification | The connector manifest gate passes; none of the four is `UNRESOLVED`. |
+| T-003 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R003` | `tests/test_workflow_content.py::test_workflow_skills_are_served_and_name_only_served_tools` | Each workflow skill is a served `skill://` resource and names only served tools. |
+| T-004 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R004` | `tests/test_workflow_content.py::test_operator_prompt_names_served_tools_and_shipped_workflow_skills` | The prompt's tools are served and its skills are the workflow set. |
+| T-005 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005` | `tests/test_surface_ontology.py::test_every_class_rolls_up_to_core_by_subclassing_never_import` | No orphan class; no `owl:imports`. |
+| T-006 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006` | `tests/test_surface_ontology.py::test_surface_lists_exactly_the_served_tools_skills_and_prompts` | Surface tools equal served tools; every feature is realised; every tool operates on a class. |
+| T-007 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007` | `tests/test_surface_ontology.py::test_every_domain_class_has_a_live_virtual_authority` | Every record class has one virtual authority with one mapping. |

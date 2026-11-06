@@ -2,6 +2,21 @@
 
 Load only the workflow relevant to the current request.
 
-- [erpnext-accounting](../../erpnext-accounting/WORKFLOW.md): Accounts-receivable/payable operations on ERPNext (Frappe) via the erpnext-agent MCP server — list, read, and create Sales Order, Purchase Order, Sales Invoice and Purchase Invoice DocTypes, and natively ingest them into the knowledge graph as typed :SalesOrder / :PurchaseOrder / :Invoice nodes. Use when the agent must review open orders, reconcile invoices by grand_total/status, or push order-to-cash / procure-to-pay state into the KG. Do NOT use for stock/item catalog work (use erpnext-inventory) or employee/HR records (use erpnext-hr).
-- [erpnext-hr](../../erpnext-hr/WORKFLOW.md): Human-resources operations on ERPNext (Frappe) via the erpnext-agent MCP server — list, read, and create Employee (and Department) DocTypes, and natively ingest them into the knowledge graph as typed :Employee / :OrgUnit nodes with :memberOf links. Use when the agent must look up an employee by name/company, review an org unit's headcount, or push HR master data into the KG. Do NOT use for order/invoice financials (use erpnext-accounting) or the item/party catalog (use erpnext-inventory).
-- [erpnext-inventory](../../erpnext-inventory/WORKFLOW.md): Item-catalog and stock operations on ERPNext (Frappe) via the erpnext-agent MCP server — list, read, and create Item, Customer and Supplier DocTypes, and natively ingest them into the knowledge graph as typed :Item / :Customer / :Supplier nodes. Use when the agent must look up a product by item_code, review the catalog by item_group/stock_uom, resolve a party for an order, or push catalog/master data into the KG. Do NOT use for order/invoice financials (use erpnext-accounting) or employee records (use erpnext-hr).
+- [erpnext-order-to-cash](../../erpnext-order-to-cash/SKILL.md): customer, quotation, sales order, sales invoice and payment entry.
+- [erpnext-procure-to-pay](../../erpnext-procure-to-pay/SKILL.md): supplier, purchase invoice, supplier payment.
+- [erpnext-inventory](../../erpnext-inventory/SKILL.md): items, stock entries, stock on hand.
+- [erpnext-crm-pipeline](../../erpnext-crm-pipeline/SKILL.md): lead, opportunity, quotation.
+- [erpnext-projects](../../erpnext-projects/SKILL.md): projects and tasks.
+- [erpnext-hr](../../erpnext-hr/SKILL.md): employee master and headcount.
+- [erpnext-accounting](../../erpnext-accounting/SKILL.md): chart of accounts, ledger and financial reports.
+
+## Tool surface
+One typed tool per Frappe operation: `erpnext_list_documents`,
+`erpnext_get_document`, `erpnext_create_document`, `erpnext_update_document`,
+`erpnext_delete_document`, `erpnext_submit_document`, `erpnext_cancel_document`,
+`erpnext_get_count`, `erpnext_get_value`, `erpnext_set_value`,
+`erpnext_rename_document`, `erpnext_make_mapped_document`,
+`erpnext_run_document_method`, `erpnext_get_doctype_meta`, `erpnext_run_report`,
+`erpnext_search_link`, `erpnext_upload_file`, `erpnext_call_method` (any other
+whitelisted method), `erpnext_get_version`, `erpnext_get_logged_user`,
+`erpnext_login`, `erpnext_logout` and `erpnext_ingest` (knowledge graph).

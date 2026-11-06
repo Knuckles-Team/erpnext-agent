@@ -50,6 +50,9 @@ The version the `erpnext_agent` package reports at runtime (`erpnext_agent.__ver
 - **FR-002**: Supplier and purchase-order access fields match served tool data. Rows: `CONN-ERPNEXT-AGENT-R002`.
 - **FR-003**: Supplier table recorded response. Rows: `CONN-ERPNEXT-AGENT-R003`.
 - **FR-004**: Supplier and purchase-order contract fields and recorded fixture. Rows: `CONN-ERPNEXT-AGENT-R004`.
+- **FR-005**: Every Frappe business operation is its own typed tool. Rows: `CONN-ERPNEXT-AGENT-R005`.
+- **FR-006**: A refused call returns the server's reason. Rows: `CONN-ERPNEXT-AGENT-R006`.
+- **FR-007**: Every access contract names a served tool and only its parameters. Rows: `CONN-ERPNEXT-AGENT-R007`.
 
 ## Success Criteria
 
@@ -71,3 +74,6 @@ The version the `erpnext_agent` package reports at runtime (`erpnext_agent.__ver
 | FR-002 | `CONN-ERPNEXT-AGENT-R002` | [plan.md](plan.md) | T-002 | [test-spec.md](test-spec.md) |
 | FR-003 | `CONN-ERPNEXT-AGENT-R003` | [plan.md](plan.md) | T-003 | [test-spec.md](test-spec.md) |
 | FR-004 | `CONN-ERPNEXT-AGENT-R004` | [plan.md](plan.md) | T-004 | [test-spec.md](test-spec.md) |
+| FR-005 | `CONN-ERPNEXT-AGENT-R005` | [plan.md](plan.md) | T-005 | [test-spec.md](test-spec.md) |
+| FR-006 | `CONN-ERPNEXT-AGENT-R006` | [plan.md](plan.md) | T-006 | [test-spec.md](test-spec.md) |
+| FR-007 | `CONN-ERPNEXT-AGENT-R007` | [plan.md](plan.md) | T-007 | [test-spec.md](test-spec.md) |

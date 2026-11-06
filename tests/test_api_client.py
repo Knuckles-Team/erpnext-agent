@@ -100,22 +100,11 @@ def test_auth_and_version_methods():
             "GET", "/api/method/frappe.auth.get_logged_user"
         )
 
-        client.authGetLoggedUser()
-        mock_request.assert_called_with(
-            "GET", "/api/method/frappe.auth.get_logged_user"
-        )
-
-        client.auth_get_logged_user()
-        mock_request.assert_called_with(
-            "GET", "/api/method/frappe.auth.get_logged_user"
-        )
-
         client.get_version()
         mock_request.assert_called_with(
             "GET", "/api/method/frappe.utils.change_log.get_versions"
         )
 
-        client.version()
-        mock_request.assert_called_with(
-            "GET", "/api/method/frappe.utils.change_log.get_versions"
-        )
+    assert not hasattr(client, "version")
+    assert not hasattr(client, "authGetLoggedUser")
+    assert not hasattr(client, "auth_get_logged_user")
