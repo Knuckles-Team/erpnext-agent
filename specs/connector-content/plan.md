@@ -40,7 +40,7 @@ The rows are delivered in place; the design is the caller chain below.
 
 ### Lifecycle ontology (CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009)
 
-`erpnext_agent/ontology/lifecycle.ttl` describes the machine of `CONN-ERPNEXT-AGENT-R011`. It declares one machine class, three state classes, three transition classes and the refusal reasons. Every class extends a medulla core state-machine class; the file never imports the core ontology. The test compares the file with the code table, so a state added in code without an ontology class fails the build.
+`erpnext_agent/ontology/lifecycle.ttl` describes the machine of `CONN-ERPNEXT-AGENT-R011`. It declares one machine class, three state classes, four transition classes, event and guard classes, and the refusal reasons. Every class extends a medulla core state-machine class; the file never imports the core ontology. The test compares the file with the code table, so a state added in code without an ontology class fails the build.
 
 ## Phase 2: Task approach
 

@@ -21,3 +21,4 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [ ] T015 [US1] CONN-ERPNEXT-AGENT-R011.4 Amend needs a Cancelled document and has its own tool.
 - [ ] T016 [US1] CONN-ERPNEXT-AGENT-R011.5 Lifecycle state is one typed field in the knowledge-graph mirror.
 - [ ] T017 [US1] CONN-ERPNEXT-AGENT-R011.6 Wiring and hot-path proof: an illegal move never reaches the server.
+- [ ] T018 [US1] CONN-ERPNEXT-AGENT-R011.7 Declare the descriptor and refuse through the SDK writeback guard.
