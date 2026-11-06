@@ -21,7 +21,8 @@ class ApiOnboarding(ApiHr, ApiCrm):
     def get_setup_status(self) -> dict:
         """Report whether the setup wizard is complete (per app) and list the companies.
 
-        GET /api/resource/Installed Application and /api/resource/Company
+        GET /api/resource/Installed Applications, frappe.client.get_single_value
+        (System Settings setup_complete) and /api/resource/Company
         """
         return onboarding.setup_status(self)
 

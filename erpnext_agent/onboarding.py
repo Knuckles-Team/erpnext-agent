@@ -25,6 +25,7 @@ COA_METHOD = (
 )
 TIMEZONES_METHOD = "frappe.core.doctype.user.user.get_timezones"
 SETUP_COMPLETE_METHOD = "frappe.desk.page.setup_wizard.setup_wizard.setup_complete"
+SINGLE_VALUE_METHOD = "/api/method/frappe.client.get_single_value"
 
 MODES = ("auto", "setup_wizard", "company")
 
@@ -47,16 +48,37 @@ def _first(client: Any, doctype: str, filters: dict[str, Any], fields: list[str]
 
 
 def setup_status(client: Any) -> dict[str, Any]:
-    """Whether the setup wizard is complete, per installed app, plus the companies."""
-    apps = _rows(
-        client.list_documents(
-            "Installed Application",
-            fields=["app_name", "app_version", "is_setup_complete"],
-            limit=50,
-        )
+    """Whether the setup wizard is complete, per installed app, plus the companies.
+
+    The per-app flags live in the ``Installed Applications`` single document;
+    a site whose table is still empty falls back to the System Settings flag.
+    """
+    installed = data_of(
+        client.get_document("Installed Applications", "Installed Applications")
     )
-    by_app = {a.get("app_name"): bool(a.get("is_setup_complete")) for a in apps}
-    core = [by_app.get(app) for app in ("frappe", "erpnext")]
+    rows = (
+        installed.get("installed_applications") if isinstance(installed, dict) else None
+    )
+    apps = [
+        {
+            "app_name": a.get("app_name"),
+            "app_version": a.get("app_version"),
+            "is_setup_complete": bool(a.get("is_setup_complete")),
+        }
+        for a in rows or []
+    ]
+    by_app = {a["app_name"]: a["is_setup_complete"] for a in apps}
+    if "frappe" in by_app and "erpnext" in by_app:
+        complete = by_app["frappe"] and by_app["erpnext"]
+    else:
+        flag = _message(
+            client.request(
+                "GET",
+                SINGLE_VALUE_METHOD,
+                params={"doctype": "System Settings", "field": "setup_complete"},
+            )
+        )
+        complete = bool(int(flag or 0))
     companies = _rows(
         client.list_documents(
             "Company",
@@ -64,18 +86,7 @@ def setup_status(client: Any) -> dict[str, Any]:
             limit=100,
         )
     )
-    return {
-        "setup_complete": all(core) and None not in core,
-        "apps": [
-            {
-                "app_name": a.get("app_name"),
-                "app_version": a.get("app_version"),
-                "is_setup_complete": bool(a.get("is_setup_complete")),
-            }
-            for a in apps
-        ],
-        "companies": companies,
-    }
+    return {"setup_complete": complete, "apps": apps, "companies": companies}
 
 
 def _required(spec: dict[str, Any]) -> list[str]:

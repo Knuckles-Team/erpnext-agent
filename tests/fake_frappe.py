@@ -55,11 +55,17 @@ class FakeFrappe:
         self.db: dict[str, dict[str, dict[str, Any]]] = {
             "Country": {"United States": {"name": "United States"}},
             "Currency": {"USD": {"name": "USD"}},
-            "Installed Application": {
-                "frappe": {"app_name": "frappe", "is_setup_complete": setup_complete},
-                "erpnext": {"app_name": "erpnext", "is_setup_complete": setup_complete},
+            "Installed Applications": {
+                "Installed Applications": {
+                    "name": "Installed Applications",
+                    "installed_applications": [
+                        {"app_name": "frappe", "is_setup_complete": setup_complete},
+                        {"app_name": "erpnext", "is_setup_complete": setup_complete},
+                    ],
+                }
             },
         }
+        self.system_setup_complete = setup_complete
         self.writes: list[tuple[str, str]] = []
         self.wizard_args: dict[str, Any] | None = None
 
@@ -114,7 +120,8 @@ class FakeFrappe:
                 "companies": [],
             },
         )
-        for app in self.db["Installed Application"].values():
+        installed = self.db["Installed Applications"]["Installed Applications"]
+        for app in installed["installed_applications"]:
             app["is_setup_complete"] = True
         return {"message": {"status": "ok"}}
 
@@ -149,6 +156,8 @@ class FakeFrappe:
                 self._table(doctype)[name].update(data)
                 self.writes.append(("update", f"{doctype}/{name}"))
                 return {"data": dict(self._table(doctype)[name])}
+        if endpoint.endswith("frappe.client.get_single_value"):
+            return {"message": int(self.system_setup_complete)}
         if endpoint.endswith("get_timezones"):
             return {"message": {"timezones": ["America/Chicago", "UTC"]}}
         if endpoint.endswith("get_charts_for_country"):

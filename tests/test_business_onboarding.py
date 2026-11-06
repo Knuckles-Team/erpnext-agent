@@ -191,3 +191,15 @@ def test_setup_wizard_tool_refuses_without_confirm():
         )
         assert kwargs["data"]["args"]["company_abbr"] == "C"
         assert kwargs["data"]["args"]["timezone"] == "UTC"
+
+
+@pytest.mark.spec("CONN-ERPNEXT-AGENT-R010")
+def test_empty_app_table_falls_back_to_the_system_settings_flag():
+    server = FakeFrappe(setup_complete=False)
+    server.db["Installed Applications"]["Installed Applications"][
+        "installed_applications"
+    ] = []
+    client = _client(server)
+    assert client.get_setup_status()["setup_complete"] is False
+    server.system_setup_complete = True
+    assert client.get_setup_status()["setup_complete"] is True
