@@ -22,6 +22,10 @@ operation, plus `erpnext_ingest` for the knowledge graph:
 | `erpnext_upload_file` | `upload_file` |
 | `erpnext_call_method` | any other whitelisted method |
 | `erpnext_get_version`, `erpnext_get_logged_user`, `erpnext_login`, `erpnext_logout` | version and session |
+| HR: `erpnext_create_employee` ... `erpnext_relieve_employee`, departments, designations, holiday lists, attendance, check-ins, leave, salary and payroll (31 tools) | `/api/resource/<HR doctype>`, `run_doc_method` (`get_weekly_off_dates`, `fill_employee_details`, `create_salary_slips`, `submit_salary_slips`), `hrms...mark_employee_attendance`, `hrms...get_leave_balance_on` |
+| CRM: `erpnext_create_lead` ... `erpnext_close_follow_up`: leads, opportunities, sales stages, opportunity types, lost reasons, conversion to customer, communication log and follow-ups (19 tools) | `/api/resource/<CRM doctype>`, `make_mapped_doc` (`lead.make_opportunity`, `lead.make_customer`, `opportunity.make_customer`), `run_doc_method` (`declare_enquiry_lost`) |
+| Onboarding: `erpnext_get_setup_status`, `erpnext_list_timezones`, `erpnext_list_chart_of_accounts_templates`, `erpnext_complete_setup_wizard`, `erpnext_create_company`, `erpnext_create_fiscal_year`, `erpnext_create_address`, `erpnext_create_bank`, `erpnext_create_bank_account`, `erpnext_set_tax_id` | `Installed Application`, `get_timezones`, `get_charts_for_country`, `setup_wizard.setup_complete` (only with `confirm`), `/api/resource/<doctype>` |
+| `erpnext_plan_business_onboarding`, `erpnext_apply_business_onboarding`, `erpnext_verify_business_onboarding` | repeatable onboarding: validate and dry run, apply on `confirm` (idempotent), verify |
 
 Example agent prompts:
 
@@ -29,6 +33,8 @@ Example agent prompts:
 - *"What do customers owe us?"* → `erpnext_run_report` `Accounts Receivable`
 - *"How many units of item X are in Stores?"* → `erpnext_get_value` on `Bin`
 - *"Run the whitelisted method `frappe.ping`"* → `erpnext_call_method`
+- *"Approve Ada's leave request"* → `erpnext_approve_leave_application`
+- *"Set up our company"* → `erpnext_plan_business_onboarding`, then `erpnext_apply_business_onboarding` after approval
 
 A refused call returns the server's reason, for example
 `API error: 417 LinkValidationError: Could not find Customer: X`.

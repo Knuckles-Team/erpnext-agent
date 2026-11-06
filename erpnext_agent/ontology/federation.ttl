@@ -24,10 +24,10 @@ erpx:source a vg:SourceConnection ;
 erpx:contract a vg:MetadataContract ;
     vg:contractSource erpx:source ;
     vg:schemaVersion "1" ;
-    vg:contentDigest "sha256:687df60bbf8cc612c711124a012887145314b605c453bcba48999b8ba08044a2" ;
-    vg:discoveredEntity "Account", "Company", "Customer", "Department", "Employee", "Fiscal Year", "GL Entry", "Issue", "Item", "Lead", "Opportunity", "Payment Entry", "Project", "Purchase Invoice", "Purchase Order", "Quotation", "Sales Invoice", "Sales Order", "Stock Entry", "Supplier", "Task", "Warehouse" ;
-    vg:discoveredField "account_name", "company_name", "customer_name", "department_name", "employee_name", "item_name", "lead_name", "name", "project_name", "subject", "supplier_name", "title", "voucher_no", "warehouse_name", "year" ;
-    vg:discoveredOperation "erpnext_call_method", "erpnext_cancel_document", "erpnext_create_document", "erpnext_delete_document", "erpnext_get_count", "erpnext_get_doctype_meta", "erpnext_get_document", "erpnext_get_logged_user", "erpnext_get_value", "erpnext_get_version", "erpnext_ingest", "erpnext_list_documents", "erpnext_login", "erpnext_logout", "erpnext_make_mapped_document", "erpnext_rename_document", "erpnext_run_document_method", "erpnext_run_report", "erpnext_search_link", "erpnext_set_value", "erpnext_submit_document", "erpnext_update_document", "erpnext_upload_file" .
+    vg:contentDigest "sha256:66f666e144726eaee64e69fda4c7a7bfb5573d38f081eac2cb844d86bfdd5540" ;
+    vg:discoveredEntity "Account", "Address", "Attendance", "Bank", "Bank Account", "Communication", "Company", "Customer", "Department", "Designation", "Employee", "Employee Checkin", "Fiscal Year", "GL Entry", "Holiday List", "Issue", "Item", "Lead", "Leave Allocation", "Leave Application", "Leave Type", "Opportunity", "Opportunity Lost Reason", "Opportunity Type", "Payment Entry", "Payroll Entry", "Project", "Purchase Invoice", "Purchase Order", "Quotation", "Salary Component", "Salary Slip", "Salary Structure", "Salary Structure Assignment", "Sales Invoice", "Sales Order", "Sales Stage", "Stock Entry", "Supplier", "Task", "ToDo", "Warehouse" ;
+    vg:discoveredField "account_name", "address_title", "bank_name", "company_name", "customer_name", "department_name", "description", "designation_name", "employee_name", "holiday_list_name", "item_name", "lead_name", "leave_type_name", "lost_reason", "name", "project_name", "salary_component", "subject", "supplier_name", "title", "voucher_no", "warehouse_name", "year" ;
+    vg:discoveredOperation "erpnext_add_employee_checkin", "erpnext_add_holiday_list_weekly_offs", "erpnext_allocate_leave", "erpnext_apply_business_onboarding", "erpnext_apply_leave", "erpnext_approve_leave_application", "erpnext_assign_salary_structure", "erpnext_call_method", "erpnext_cancel_document", "erpnext_close_follow_up", "erpnext_complete_setup_wizard", "erpnext_create_address", "erpnext_create_bank", "erpnext_create_bank_account", "erpnext_create_company", "erpnext_create_department", "erpnext_create_designation", "erpnext_create_document", "erpnext_create_employee", "erpnext_create_fiscal_year", "erpnext_create_follow_up", "erpnext_create_holiday_list", "erpnext_create_lead", "erpnext_create_leave_type", "erpnext_create_opportunity_from_lead", "erpnext_create_opportunity_lost_reason", "erpnext_create_opportunity_type", "erpnext_create_payroll_entry", "erpnext_create_salary_component", "erpnext_create_salary_slips", "erpnext_create_salary_structure", "erpnext_create_sales_stage", "erpnext_declare_opportunity_lost", "erpnext_delete_document", "erpnext_fill_payroll_employees", "erpnext_get_count", "erpnext_get_doctype_meta", "erpnext_get_document", "erpnext_get_employee", "erpnext_get_holiday_list", "erpnext_get_leave_balance", "erpnext_get_logged_user", "erpnext_get_salary_slip", "erpnext_get_setup_status", "erpnext_get_value", "erpnext_get_version", "erpnext_ingest", "erpnext_list_attendance", "erpnext_list_chart_of_accounts_templates", "erpnext_list_departments", "erpnext_list_designations", "erpnext_list_documents", "erpnext_list_employees", "erpnext_list_follow_ups", "erpnext_list_leads", "erpnext_list_opportunities", "erpnext_list_opportunity_types", "erpnext_list_salary_slips", "erpnext_list_sales_stages", "erpnext_list_timezones", "erpnext_log_communication", "erpnext_login", "erpnext_logout", "erpnext_make_customer_from_lead", "erpnext_make_customer_from_opportunity", "erpnext_make_mapped_document", "erpnext_mark_attendance", "erpnext_mark_bulk_attendance", "erpnext_plan_business_onboarding", "erpnext_qualify_lead", "erpnext_reject_leave_application", "erpnext_relieve_employee", "erpnext_rename_document", "erpnext_run_document_method", "erpnext_run_report", "erpnext_search_link", "erpnext_set_tax_id", "erpnext_set_value", "erpnext_submit_document", "erpnext_submit_salary_slips", "erpnext_update_document", "erpnext_update_employee", "erpnext_update_lead", "erpnext_update_opportunity_stage", "erpnext_upload_file", "erpnext_verify_business_onboarding" .
 
 erpx:customerMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
@@ -372,15 +372,15 @@ erpx:leadLabelPair a vg:PredicateFieldPair ;
     vg:field "lead_name" .
 
 erpx:leadAuthority a vg:SourceAuthority ;
-    rdfs:comment "A dedicated CRM may own leads; rank 2 until the owner decides." ;
+    rdfs:comment "ERPNext is the CRM of record (owner decision 2026-11-06)." ;
     vg:authoritativeSource erpx:source ;
     vg:authorityFor :Lead ;
-    vg:authorityRank 2 ;
+    vg:authorityRank 1 ;
     vg:authorityMapping erpx:leadMapping ;
     vg:authorityContract "mcp" ;
     vg:materialisation "virtual" ;
     vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
-    vg:allowFallback true .
+    vg:allowFallback false .
 
 erpx:opportunityMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
@@ -395,15 +395,15 @@ erpx:opportunityLabelPair a vg:PredicateFieldPair ;
     vg:field "title" .
 
 erpx:opportunityAuthority a vg:SourceAuthority ;
-    rdfs:comment "A dedicated CRM may own opportunities; rank 2 until the owner decides." ;
+    rdfs:comment "ERPNext is the CRM of record (owner decision 2026-11-06)." ;
     vg:authoritativeSource erpx:source ;
     vg:authorityFor :Opportunity ;
-    vg:authorityRank 2 ;
+    vg:authorityRank 1 ;
     vg:authorityMapping erpx:opportunityMapping ;
     vg:authorityContract "mcp" ;
     vg:materialisation "virtual" ;
     vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
-    vg:allowFallback true .
+    vg:allowFallback false .
 
 erpx:projectMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
@@ -517,3 +517,443 @@ erpx:erpNextIssueAuthority a vg:SourceAuthority ;
     vg:materialisation "virtual" ;
     vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
     vg:allowFallback true .
+
+erpx:designationMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Designation ;
+    vg:mapsEntity "Designation" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:designationLabelPair ;
+    vg:approved true .
+
+erpx:designationLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "designation_name" .
+
+erpx:designationAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Designation ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:designationMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:holidayListMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :HolidayList ;
+    vg:mapsEntity "Holiday List" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:holidayListLabelPair ;
+    vg:approved true .
+
+erpx:holidayListLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "holiday_list_name" .
+
+erpx:holidayListAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :HolidayList ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:holidayListMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:attendanceMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :Attendance ;
+    vg:mapsEntity "Attendance" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:attendanceLabelPair ;
+    vg:approved true .
+
+erpx:attendanceLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:attendanceAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :Attendance ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:attendanceMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:employeeCheckinMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :EmployeeCheckin ;
+    vg:mapsEntity "Employee Checkin" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:employeeCheckinLabelPair ;
+    vg:approved true .
+
+erpx:employeeCheckinLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:employeeCheckinAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :EmployeeCheckin ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:employeeCheckinMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:leaveTypeMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :LeaveType ;
+    vg:mapsEntity "Leave Type" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:leaveTypeLabelPair ;
+    vg:approved true .
+
+erpx:leaveTypeLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "leave_type_name" .
+
+erpx:leaveTypeAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :LeaveType ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:leaveTypeMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:leaveAllocationMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :LeaveAllocation ;
+    vg:mapsEntity "Leave Allocation" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:leaveAllocationLabelPair ;
+    vg:approved true .
+
+erpx:leaveAllocationLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:leaveAllocationAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :LeaveAllocation ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:leaveAllocationMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:leaveApplicationMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :LeaveApplication ;
+    vg:mapsEntity "Leave Application" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:leaveApplicationLabelPair ;
+    vg:approved true .
+
+erpx:leaveApplicationLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:leaveApplicationAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :LeaveApplication ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:leaveApplicationMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salaryComponentMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalaryComponent ;
+    vg:mapsEntity "Salary Component" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salaryComponentLabelPair ;
+    vg:approved true .
+
+erpx:salaryComponentLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "salary_component" .
+
+erpx:salaryComponentAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalaryComponent ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salaryComponentMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salaryStructureMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalaryStructure ;
+    vg:mapsEntity "Salary Structure" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salaryStructureLabelPair ;
+    vg:approved true .
+
+erpx:salaryStructureLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "name" .
+
+erpx:salaryStructureAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalaryStructure ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salaryStructureMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salaryStructureAssignmentMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalaryStructureAssignment ;
+    vg:mapsEntity "Salary Structure Assignment" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salaryStructureAssignmentLabelPair ;
+    vg:approved true .
+
+erpx:salaryStructureAssignmentLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:salaryStructureAssignmentAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalaryStructureAssignment ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salaryStructureAssignmentMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:payrollEntryMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :PayrollEntry ;
+    vg:mapsEntity "Payroll Entry" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:payrollEntryLabelPair ;
+    vg:approved true .
+
+erpx:payrollEntryLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "name" .
+
+erpx:payrollEntryAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :PayrollEntry ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:payrollEntryMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salarySlipMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalarySlip ;
+    vg:mapsEntity "Salary Slip" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salarySlipLabelPair ;
+    vg:approved true .
+
+erpx:salarySlipLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "employee_name" .
+
+erpx:salarySlipAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalarySlip ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salarySlipMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:salesStageMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :SalesStage ;
+    vg:mapsEntity "Sales Stage" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:salesStageLabelPair ;
+    vg:approved true .
+
+erpx:salesStageLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "name" .
+
+erpx:salesStageAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :SalesStage ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:salesStageMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:opportunityTypeMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :OpportunityType ;
+    vg:mapsEntity "Opportunity Type" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:opportunityTypeLabelPair ;
+    vg:approved true .
+
+erpx:opportunityTypeLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "name" .
+
+erpx:opportunityTypeAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :OpportunityType ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:opportunityTypeMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:opportunityLostReasonMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :OpportunityLostReason ;
+    vg:mapsEntity "Opportunity Lost Reason" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:opportunityLostReasonLabelPair ;
+    vg:approved true .
+
+erpx:opportunityLostReasonLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "lost_reason" .
+
+erpx:opportunityLostReasonAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :OpportunityLostReason ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:opportunityLostReasonMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:erpCommunicationMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ErpCommunication ;
+    vg:mapsEntity "Communication" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:erpCommunicationLabelPair ;
+    vg:approved true .
+
+erpx:erpCommunicationLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "subject" .
+
+erpx:erpCommunicationAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ErpCommunication ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:erpCommunicationMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:followUpTodoMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :FollowUpTodo ;
+    vg:mapsEntity "ToDo" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:followUpTodoLabelPair ;
+    vg:approved true .
+
+erpx:followUpTodoLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "description" .
+
+erpx:followUpTodoAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :FollowUpTodo ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:followUpTodoMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:erpAddressMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ErpAddress ;
+    vg:mapsEntity "Address" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:erpAddressLabelPair ;
+    vg:approved true .
+
+erpx:erpAddressLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "address_title" .
+
+erpx:erpAddressAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ErpAddress ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:erpAddressMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:erpBankMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ErpBank ;
+    vg:mapsEntity "Bank" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:erpBankLabelPair ;
+    vg:approved true .
+
+erpx:erpBankLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "bank_name" .
+
+erpx:erpBankAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ErpBank ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:erpBankMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .
+
+erpx:erpBankAccountMapping a vg:VirtualMapping ;
+    vg:mapsContract erpx:contract ;
+    vg:mapsOntologyClass :ErpBankAccount ;
+    vg:mapsEntity "Bank Account" ;
+    vg:keyField "name" ;
+    vg:hasPredicateFieldPair erpx:erpBankAccountLabelPair ;
+    vg:approved true .
+
+erpx:erpBankAccountLabelPair a vg:PredicateFieldPair ;
+    vg:predicate rdfs:label ;
+    vg:field "account_name" .
+
+erpx:erpBankAccountAuthority a vg:SourceAuthority ;
+    vg:authoritativeSource erpx:source ;
+    vg:authorityFor :ErpBankAccount ;
+    vg:authorityRank 1 ;
+    vg:authorityMapping erpx:erpBankAccountMapping ;
+    vg:authorityContract "mcp" ;
+    vg:materialisation "virtual" ;
+    vg:freshnessMaxAgeSeconds "900"^^xsd:nonNegativeInteger ;
+    vg:allowFallback false .

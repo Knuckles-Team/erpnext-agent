@@ -11,3 +11,4 @@ Governing spec: [spec.md](spec.md).
 | T-005 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005` | `tests/test_surface_ontology.py::test_every_class_rolls_up_to_core_by_subclassing_never_import` | No orphan class; no `owl:imports`. |
 | T-006 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006` | `tests/test_surface_ontology.py::test_surface_lists_exactly_the_served_tools_skills_and_prompts` | Surface tools equal served tools; every feature is realised; every tool operates on a class. |
 | T-007 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007` | `tests/test_surface_ontology.py::test_every_domain_class_has_a_live_virtual_authority` | Every record class has one virtual authority with one mapping. |
+| T-008 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008` | `tests/test_workflow_content.py::test_role_prompts_are_complete_agent_definitions` | Every role prompt names its role, goal, skills, tools, data, guardrails and outputs; its skills ship and its tools are served. |

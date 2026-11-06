@@ -2,7 +2,7 @@
 name: erpnext-agent-operations
 skill_type: skill
 description: >-
-  Operate erpnext-agent through its governed MCP and Arbora capabilities, including order to cash, procure to pay, inventory, CRM pipeline, projects, HR basics and accounting reports. Use when a request requires this provider's read, change, automation, ingestion, troubleshooting, or evidence workflows.
+  Operate erpnext-agent through its governed MCP and Arbora capabilities, including order to cash, procure to pay, inventory, CRM pipeline and lead nurturing, projects, HR (hire to retire, leave, payroll) and accounting reports, and repeatable business onboarding. Use when a request requires this provider's read, change, automation, ingestion, troubleshooting, or evidence workflows.
 ---
 
 # Erpnext Agent Operations

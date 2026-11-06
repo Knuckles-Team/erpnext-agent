@@ -11,3 +11,4 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [x] T005 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005 Every ontology class rolls up to medulla core by subclassing.
 - [x] T006 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006 The ontology records the served surface and its links.
 - [x] T007 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007 The ontology locates each class's data and how medulla federates it.
+- [x] T008 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008 Each business role has a complete agent-definition prompt.

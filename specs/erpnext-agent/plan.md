@@ -81,7 +81,14 @@ The repository pre-commit hooks apply: `ruff-format`, `connector-standard`, `sec
 5. `CONN-ERPNEXT-AGENT-R005`: the erpnext-mcp console script loads erpnext_agent:connector (erpnext_agent/__init__.py), and the SDK tool surface registers one typed tool per public method of Api (erpnext_agent/api/api_client_resource.py); each method sends one Frappe REST call through ApiClientBase.request.
 6. `CONN-ERPNEXT-AGENT-R006`: every typed tool calls an Api method, which calls ApiClientBase.request (erpnext_agent/api/api_client_base.py); a 4xx/5xx response raises frappe_error(status, body).
 7. `CONN-ERPNEXT-AGENT-R007`: scion_sdk.access_contract.parse_access_contracts reads erpnext_agent/ontology/access_contracts.ttl; each contract's operation is served by the server that scion_sdk._connector_serve.build_server builds.
+8. `CONN-ERPNEXT-AGENT-R008`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers one typed tool per public method of Api (erpnext_agent/api_client.py), which inherits ApiHr (erpnext_agent/api/api_client_hr.py); each method sends its Frappe or HR-app call through ApiClientBase.request.
+9. `CONN-ERPNEXT-AGENT-R009`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers one typed tool per public method of Api, which inherits ApiCrm (erpnext_agent/api/api_client_crm.py); mapped drafts come from frappe.model.mapper.make_mapped_doc and are saved through /api/resource.
+10. `CONN-ERPNEXT-AGENT-R010`: the erpnext-mcp console script loads erpnext_agent:connector, and the SDK tool surface registers the onboarding tools from Api, which inherits ApiOnboarding (erpnext_agent/api/api_client_onboarding.py); plan, apply and verify call erpnext_agent.onboarding over the typed client.
 
 ## Cross-repo seams
 
 none. The cited owner rows are library capabilities the connector calls in process; spec.md names them.
+
+### Amendments
+
+- 2026-11-06: ERPNext is the CRM and HR system of record (owner). Rows `CONN-ERPNEXT-AGENT-R008` (HR operations), `CONN-ERPNEXT-AGENT-R009` (built-in CRM operations; the separate Frappe CRM app is not targeted, one owner of leads) and `CONN-ERPNEXT-AGENT-R010` (repeatable business onboarding: validate, dry run, apply on confirm, verify, idempotent) extend the typed-operation surface of `CONN-ERPNEXT-AGENT-R005`. Methods target the Frappe, ERPNext and HR app version-16 whitelisted methods and doctypes.

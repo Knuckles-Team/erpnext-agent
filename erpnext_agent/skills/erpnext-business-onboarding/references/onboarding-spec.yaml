@@ -1,0 +1,65 @@
+# Business onboarding spec for erpnext_plan_business_onboarding,
+# erpnext_apply_business_onboarding and erpnext_verify_business_onboarding.
+# Required keys are marked; everything else may be left out.
+
+# auto: run the setup wizard when the site has not completed it, else company mode.
+# setup_wizard: always plan the wizard (refused once the wizard is complete).
+# company: create the company and its records directly (extra or test company).
+mode: auto
+
+company:
+  name: Example Trading LLC          # required: legal name (also the record name)
+  abbr: ETL                         # required: short code, suffix of accounts and departments
+  country: United States            # required: a Country record
+  currency: USD                     # required: a Currency record
+  chart_of_accounts: Standard       # required: from erpnext_list_chart_of_accounts_templates
+  tax_id: null                      # tax / VAT / EIN number, set on the Company
+  domain: null                      # optional ERPNext domain (Services, Retail, ...)
+
+fiscal_year:
+  name: "2026"                      # optional; defaults to the start year
+  start_date: "2026-01-01"          # required, YYYY-MM-DD
+  end_date: "2026-12-31"            # required, after start_date
+
+time_zone: America/Chicago          # required: from erpnext_list_timezones
+language: English                   # setup wizard only
+
+admin:                              # setup wizard only: the administrator's name and e-mail
+  full_name: null
+  email: null
+
+address:                            # the company's own address
+  title: Example Trading LLC
+  address_type: Billing
+  address_line1: 1 Example Street
+  address_line2: null
+  city: Example City
+  state: null
+  pincode: null
+  country: null                     # defaults to company.country
+  email_id: null
+  phone: null
+
+bank:
+  bank_name: Example Bank           # Bank master
+  account_name: Operating           # Bank Account name
+  gl_account: null                  # existing ledger; default creates "<account_name> - <abbr>" under "Bank Accounts - <abbr>"
+  bank_account_no: null
+  iban: null
+  branch_code: null
+  is_default: true
+
+hr:
+  holiday_list:
+    name: Example Holidays 2026
+    from_date: "2026-01-01"
+    to_date: "2026-12-31"
+    weekly_off: Sunday              # filled by the server's weekly-off generator
+    holidays:
+      - {date: "2026-01-01", description: New Year's Day}
+  departments: [Operations, Sales, Accounts]
+  designations: [Managing Director, Sales Representative]
+
+crm:
+  sales_stages: [Prospecting, Qualification, Proposal, Negotiation]
+  opportunity_types: [Sales, Consulting]

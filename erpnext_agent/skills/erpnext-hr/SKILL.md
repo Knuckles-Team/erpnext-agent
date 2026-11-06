@@ -2,32 +2,43 @@
 name: erpnext-hr
 skill_type: skill
 description: >-
-  Keep the ERPNext (Frappe) employee master through the erpnext-mcp MCP server:
-  create employees for a company, read and count them, and record departments. Use
-  when the agent must onboard an employee record, look one up, or report headcount.
-  Payroll, leave and attendance need the separate HR app; do NOT use this skill for
-  them until that app is installed.
+  Keep the ERPNext (Frappe) HR records through the erpnext-mcp MCP server:
+  employees, departments, designations, holiday lists, attendance, leave and the
+  salary set-up, with one typed tool per operation. Use when the agent must look up
+  or change an HR record, report headcount, or pick the right HR workflow. For a
+  full hire or exit use erpnext-hire-to-retire; for leave decisions
+  erpnext-leave-approval; for a pay run erpnext-payroll-run.
 license: MIT
-tags: [erpnext, frappe, hr, employee, mcp]
+tags: [erpnext, frappe, hr, employee, attendance, leave, mcp]
 metadata:
-  version: '1.0.0'
+  version: '2.0.0'
 ---
-# ERPNext HR basics
+# ERPNext HR
 
-The Employee master ships with ERPNext itself. Leave, attendance, salary
-structures and payroll come from the separate HR app; check
-`erpnext_get_version` for an `hrms` entry before using them.
+Employee, Department, Designation and Holiday List ship with ERPNext. Leave,
+attendance, salary and payroll come from the HR app: check `erpnext_get_version`
+for an `hrms` entry before using them.
+
+## Records and their tools
+| Record | Create / change | Read |
+|---|---|---|
+| Employee | `erpnext_create_employee`, `erpnext_update_employee`, `erpnext_relieve_employee` | `erpnext_get_employee`, `erpnext_list_employees` |
+| Department | `erpnext_create_department` | `erpnext_list_departments` |
+| Designation | `erpnext_create_designation` | `erpnext_list_designations` |
+| Holiday List | `erpnext_create_holiday_list`, `erpnext_add_holiday_list_weekly_offs` | `erpnext_get_holiday_list` |
+| Attendance | `erpnext_mark_attendance`, `erpnext_mark_bulk_attendance` | `erpnext_list_attendance` |
+| Check-in | `erpnext_add_employee_checkin` | `erpnext_list_documents` `Employee Checkin` |
+| Leave | `erpnext_create_leave_type`, `erpnext_allocate_leave`, `erpnext_apply_leave`, `erpnext_approve_leave_application`, `erpnext_reject_leave_application` | `erpnext_get_leave_balance` |
+| Salary | `erpnext_create_salary_component`, `erpnext_create_salary_structure`, `erpnext_assign_salary_structure` | `erpnext_get_salary_slip`, `erpnext_list_salary_slips` |
 
 ## Steps
-1. **Employee**: `erpnext_create_document` `Employee` with `first_name`,
-   `last_name`, `gender` (a `Gender` record: `Male`, `Female`, `Other`, ...),
-   `date_of_birth`, `date_of_joining`, `company`, and optionally `department`,
-   `designation`, `reports_to`.
-2. **Find**: `erpnext_search_link` `Employee` with the person's name; the
-   record's `name` is its series id (`HR-EMP-00001`).
-3. **Headcount**: `erpnext_get_count` `Employee` with `filters`
+1. **Find before you create**: `erpnext_search_link` `Employee` with the
+   person's name; the record's `name` is its series id (`HR-EMP-00001`).
+2. **Headcount**: `erpnext_get_count` `Employee` with `filters`
    `{"company": ..., "status": "Active"}`.
-4. **Leaving**: `erpnext_set_value` `Employee` `relieving_date`, then `status`
+3. **Departments** are per company and named `<department> - <abbr>`;
+   designations are shared by every company.
+4. **Leaving**: `erpnext_relieve_employee` sets the relieving date and status
    `Left`. Never delete an employee with history.
 
 ## Privacy

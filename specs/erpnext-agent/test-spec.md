@@ -6,6 +6,9 @@
 | OPS-T1 | Call each typed operation on `Api` with `request` patched | Each sends its one documented Frappe verb, path and parameters (`CONN-ERPNEXT-AGENT-R005`) |
 | ERR-T1 | Build the error from a Frappe 417 body with `_server_messages` and `exc` | Message is `API error: 417 <exc_type>: <reason>`; no traceback text (`CONN-ERPNEXT-AGENT-R006`) |
 | AC-T2 | Parse every access contract and list the served tools | Each contract's tool is served and its parameters are in the tool's input schema (`CONN-ERPNEXT-AGENT-R007`) |
+| HR-T1 | Call each HR method on `Api` with `request` patched | Each sends its documented Frappe path, verb and body; submittable HR documents are submitted after insert; leave decisions set status then submit (`CONN-ERPNEXT-AGENT-R008`) |
+| CRM-T1 | Call each CRM method on `Api` with `request` patched | Each sends its documented path and body; mapped drafts are completed and saved; communications are records only (`CONN-ERPNEXT-AGENT-R009`) |
+| ONB-T1 | Plan, apply, apply again and verify a spec against an in-memory Frappe | The dry run writes nothing; apply creates each record once and verifies; the second apply writes nothing; the wizard runs only when planned and confirmed (`CONN-ERPNEXT-AGENT-R010`) |
 
 Proof: `tests/test_version.py::test_reported_version_matches_the_released_package` (`CONN-ERPNEXT-AGENT-R001`).
 # Synthetic access contracts (CONN-ERPNEXT-AGENT-R002)

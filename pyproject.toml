@@ -82,3 +82,5 @@ compose_env = ["ERPNEXT_URL", "ERPNEXT_TOKEN"]
 
 [tool.pipelines.codespell]
 exclude = [".specify"]
+# "Employee Checkin" is the HR app DocType name.
+ignore_words = ["checkin"]

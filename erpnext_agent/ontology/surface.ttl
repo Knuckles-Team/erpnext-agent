@@ -5,18 +5,20 @@
 
 # Connector surface of erpnext-mcp in the medulla connector-pack vocabulary:
 # the connector, the features it offers, and which typed tool, prompt and
-# skill realise each feature, with the domain classes each one acts on. Every
-# domain class is declared in erpnext.ttl and rolls up to medulla core there.
+# skill realise each feature, with the domain classes each one acts on. A
+# role prompt (hr_manager, sales_rep, business_onboarding) is linked to its
+# skills and tools through the features it realises. Every domain class is
+# declared in erpnext.ttl and rolls up to medulla core there.
 # Instances only: this file declares no classes.
 
 erpx:connector a cp:Connector ;
     rdfs:label "erpnext-mcp" ;
     cp:componentId "erpnext-mcp" ;
-    cp:providesFeature erpx:feature-orderToCash, erpx:feature-procureToPay, erpx:feature-inventory, erpx:feature-crmPipeline, erpx:feature-projects, erpx:feature-hrBasics, erpx:feature-accountingReports, erpx:feature-schemaDiscovery, erpx:feature-recordMaintenance, erpx:feature-session, erpx:feature-knowledgeGraphIngest .
+    cp:providesFeature erpx:feature-orderToCash, erpx:feature-procureToPay, erpx:feature-inventory, erpx:feature-crmPipeline, erpx:feature-leadNurturing, erpx:feature-projects, erpx:feature-hrBasics, erpx:feature-hireToRetire, erpx:feature-attendance, erpx:feature-leaveManagement, erpx:feature-payroll, erpx:feature-businessOnboarding, erpx:feature-accountingReports, erpx:feature-schemaDiscovery, erpx:feature-recordMaintenance, erpx:feature-session, erpx:feature-knowledgeGraphIngest .
 
 erpx:feature-orderToCash a cp:Feature ;
     rdfs:label "Order to cash: quote, order, bill and collect from customers" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator .
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
 
 erpx:feature-procureToPay a cp:Feature ;
     rdfs:label "Procure to pay: book and pay supplier bills" ;
@@ -27,16 +29,40 @@ erpx:feature-inventory a cp:Feature ;
     cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_run_report, erpx:skill-erpnext-inventory, erpx:prompt-erp_operator .
 
 erpx:feature-crmPipeline a cp:Feature ;
-    rdfs:label "Leads and opportunities through to quotation" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_run_document_method, erpx:tool-erpnext_search_link, erpx:skill-erpnext-crm-pipeline, erpx:prompt-erp_operator .
+    rdfs:label "Leads and opportunities through sales stages to quotation and customer" ;
+    cp:realizedBy erpx:tool-erpnext_create_lead, erpx:tool-erpnext_qualify_lead, erpx:tool-erpnext_create_opportunity_from_lead, erpx:tool-erpnext_update_opportunity_stage, erpx:tool-erpnext_declare_opportunity_lost, erpx:tool-erpnext_create_opportunity_lost_reason, erpx:tool-erpnext_list_opportunities, erpx:tool-erpnext_make_customer_from_lead, erpx:tool-erpnext_make_customer_from_opportunity, erpx:tool-erpnext_create_sales_stage, erpx:tool-erpnext_list_sales_stages, erpx:tool-erpnext_create_opportunity_type, erpx:tool-erpnext_list_opportunity_types, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_search_link, erpx:skill-erpnext-crm-pipeline, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
+
+erpx:feature-leadNurturing a cp:Feature ;
+    rdfs:label "Lead nurturing: logged touches, follow-ups and qualification" ;
+    cp:realizedBy erpx:tool-erpnext_create_lead, erpx:tool-erpnext_update_lead, erpx:tool-erpnext_qualify_lead, erpx:tool-erpnext_list_leads, erpx:tool-erpnext_log_communication, erpx:tool-erpnext_create_follow_up, erpx:tool-erpnext_list_follow_ups, erpx:tool-erpnext_close_follow_up, erpx:skill-erpnext-lead-nurturing, erpx:prompt-sales_rep .
 
 erpx:feature-projects a cp:Feature ;
     rdfs:label "Projects and tasks" ;
     cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_set_value, erpx:tool-erpnext_get_value, erpx:tool-erpnext_list_documents, erpx:skill-erpnext-projects, erpx:prompt-erp_operator .
 
 erpx:feature-hrBasics a cp:Feature ;
-    rdfs:label "Employee master and headcount" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_search_link, erpx:tool-erpnext_get_count, erpx:tool-erpnext_set_value, erpx:skill-erpnext-hr, erpx:prompt-erp_operator .
+    rdfs:label "HR records, headcount and the HR workflow index" ;
+    cp:realizedBy erpx:tool-erpnext_create_employee, erpx:tool-erpnext_get_employee, erpx:tool-erpnext_list_employees, erpx:tool-erpnext_list_departments, erpx:tool-erpnext_list_designations, erpx:tool-erpnext_get_holiday_list, erpx:tool-erpnext_get_count, erpx:tool-erpnext_search_link, erpx:skill-erpnext-hr, erpx:prompt-erp_operator, erpx:prompt-hr_manager .
+
+erpx:feature-hireToRetire a cp:Feature ;
+    rdfs:label "Hire to retire: hire, set up, change and exit an employee" ;
+    cp:realizedBy erpx:tool-erpnext_create_employee, erpx:tool-erpnext_update_employee, erpx:tool-erpnext_relieve_employee, erpx:tool-erpnext_create_department, erpx:tool-erpnext_create_designation, erpx:tool-erpnext_create_holiday_list, erpx:tool-erpnext_add_holiday_list_weekly_offs, erpx:tool-erpnext_allocate_leave, erpx:tool-erpnext_assign_salary_structure, erpx:skill-erpnext-hire-to-retire, erpx:prompt-hr_manager .
+
+erpx:feature-attendance a cp:Feature ;
+    rdfs:label "Attendance and check-ins" ;
+    cp:realizedBy erpx:tool-erpnext_mark_attendance, erpx:tool-erpnext_mark_bulk_attendance, erpx:tool-erpnext_list_attendance, erpx:tool-erpnext_add_employee_checkin, erpx:skill-erpnext-hr, erpx:prompt-hr_manager .
+
+erpx:feature-leaveManagement a cp:Feature ;
+    rdfs:label "Leave types, allocations, requests and approval" ;
+    cp:realizedBy erpx:tool-erpnext_create_leave_type, erpx:tool-erpnext_allocate_leave, erpx:tool-erpnext_apply_leave, erpx:tool-erpnext_approve_leave_application, erpx:tool-erpnext_reject_leave_application, erpx:tool-erpnext_get_leave_balance, erpx:skill-erpnext-leave-approval, erpx:prompt-hr_manager .
+
+erpx:feature-payroll a cp:Feature ;
+    rdfs:label "Salary set-up and payroll runs" ;
+    cp:realizedBy erpx:tool-erpnext_create_salary_component, erpx:tool-erpnext_create_salary_structure, erpx:tool-erpnext_assign_salary_structure, erpx:tool-erpnext_create_payroll_entry, erpx:tool-erpnext_fill_payroll_employees, erpx:tool-erpnext_create_salary_slips, erpx:tool-erpnext_submit_salary_slips, erpx:tool-erpnext_list_salary_slips, erpx:tool-erpnext_get_salary_slip, erpx:tool-erpnext_cancel_document, erpx:skill-erpnext-payroll-run, erpx:prompt-hr_manager .
+
+erpx:feature-businessOnboarding a cp:Feature ;
+    rdfs:label "Repeatable business onboarding with validation, dry run, apply and verify" ;
+    cp:realizedBy erpx:tool-erpnext_get_setup_status, erpx:tool-erpnext_list_timezones, erpx:tool-erpnext_list_chart_of_accounts_templates, erpx:tool-erpnext_plan_business_onboarding, erpx:tool-erpnext_apply_business_onboarding, erpx:tool-erpnext_verify_business_onboarding, erpx:tool-erpnext_complete_setup_wizard, erpx:tool-erpnext_create_company, erpx:tool-erpnext_create_fiscal_year, erpx:tool-erpnext_create_address, erpx:tool-erpnext_create_bank, erpx:tool-erpnext_create_bank_account, erpx:tool-erpnext_set_tax_id, erpx:skill-erpnext-business-onboarding, erpx:prompt-business_onboarding, erpx:prompt-erp_operator .
 
 erpx:feature-accountingReports a cp:Feature ;
     rdfs:label "Ledger and financial reports" ;
@@ -58,107 +84,338 @@ erpx:feature-knowledgeGraphIngest a cp:Feature ;
     rdfs:label "Native knowledge-graph ingestion of ERP records" ;
     cp:realizedBy erpx:tool-erpnext_ingest, erpx:prompt-erp_operator .
 
-erpx:tool-erpnext_list_documents a cp:Tool ;
-    rdfs:label "erpnext_list_documents" ;
-    cp:componentId "erpnext-mcp/erpnext_list_documents" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_add_employee_checkin a cp:Tool ;
+    rdfs:label "erpnext_add_employee_checkin" ;
+    cp:componentId "erpnext-mcp/erpnext_add_employee_checkin" ;
+    cp:operatesOn :Employee, :EmployeeCheckin ;
+    cp:produces :EmployeeCheckin .
 
-erpx:tool-erpnext_get_document a cp:Tool ;
-    rdfs:label "erpnext_get_document" ;
-    cp:componentId "erpnext-mcp/erpnext_get_document" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_add_holiday_list_weekly_offs a cp:Tool ;
+    rdfs:label "erpnext_add_holiday_list_weekly_offs" ;
+    cp:componentId "erpnext-mcp/erpnext_add_holiday_list_weekly_offs" ;
+    cp:operatesOn :HolidayList .
 
-erpx:tool-erpnext_create_document a cp:Tool ;
-    rdfs:label "erpnext_create_document" ;
-    cp:componentId "erpnext-mcp/erpnext_create_document" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_allocate_leave a cp:Tool ;
+    rdfs:label "erpnext_allocate_leave" ;
+    cp:componentId "erpnext-mcp/erpnext_allocate_leave" ;
+    cp:operatesOn :Employee, :LeaveType, :LeaveAllocation ;
+    cp:produces :LeaveAllocation .
 
-erpx:tool-erpnext_update_document a cp:Tool ;
-    rdfs:label "erpnext_update_document" ;
-    cp:componentId "erpnext-mcp/erpnext_update_document" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_apply_business_onboarding a cp:Tool ;
+    rdfs:label "erpnext_apply_business_onboarding" ;
+    cp:componentId "erpnext-mcp/erpnext_apply_business_onboarding" ;
+    cp:operatesOn :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType ;
+    cp:produces :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType .
 
-erpx:tool-erpnext_delete_document a cp:Tool ;
-    rdfs:label "erpnext_delete_document" ;
-    cp:componentId "erpnext-mcp/erpnext_delete_document" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_apply_leave a cp:Tool ;
+    rdfs:label "erpnext_apply_leave" ;
+    cp:componentId "erpnext-mcp/erpnext_apply_leave" ;
+    cp:operatesOn :Employee, :LeaveType, :LeaveApplication ;
+    cp:produces :LeaveApplication .
 
-erpx:tool-erpnext_get_count a cp:Tool ;
-    rdfs:label "erpnext_get_count" ;
-    cp:componentId "erpnext-mcp/erpnext_get_count" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_approve_leave_application a cp:Tool ;
+    rdfs:label "erpnext_approve_leave_application" ;
+    cp:componentId "erpnext-mcp/erpnext_approve_leave_application" ;
+    cp:operatesOn :LeaveApplication .
 
-erpx:tool-erpnext_get_value a cp:Tool ;
-    rdfs:label "erpnext_get_value" ;
-    cp:componentId "erpnext-mcp/erpnext_get_value" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
-
-erpx:tool-erpnext_set_value a cp:Tool ;
-    rdfs:label "erpnext_set_value" ;
-    cp:componentId "erpnext-mcp/erpnext_set_value" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
-
-erpx:tool-erpnext_rename_document a cp:Tool ;
-    rdfs:label "erpnext_rename_document" ;
-    cp:componentId "erpnext-mcp/erpnext_rename_document" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
-
-erpx:tool-erpnext_search_link a cp:Tool ;
-    rdfs:label "erpnext_search_link" ;
-    cp:componentId "erpnext-mcp/erpnext_search_link" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
-
-erpx:tool-erpnext_submit_document a cp:Tool ;
-    rdfs:label "erpnext_submit_document" ;
-    cp:componentId "erpnext-mcp/erpnext_submit_document" ;
-    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
-
-erpx:tool-erpnext_cancel_document a cp:Tool ;
-    rdfs:label "erpnext_cancel_document" ;
-    cp:componentId "erpnext-mcp/erpnext_cancel_document" ;
-    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
-
-erpx:tool-erpnext_make_mapped_document a cp:Tool ;
-    rdfs:label "erpnext_make_mapped_document" ;
-    cp:componentId "erpnext-mcp/erpnext_make_mapped_document" ;
-    cp:operatesOn :Lead, :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PurchaseInvoice ;
-    cp:produces :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PaymentEntry .
-
-erpx:tool-erpnext_run_document_method a cp:Tool ;
-    rdfs:label "erpnext_run_document_method" ;
-    cp:componentId "erpnext-mcp/erpnext_run_document_method" ;
-    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+erpx:tool-erpnext_assign_salary_structure a cp:Tool ;
+    rdfs:label "erpnext_assign_salary_structure" ;
+    cp:componentId "erpnext-mcp/erpnext_assign_salary_structure" ;
+    cp:operatesOn :Employee, :SalaryStructure, :SalaryStructureAssignment ;
+    cp:produces :SalaryStructureAssignment .
 
 erpx:tool-erpnext_call_method a cp:Tool ;
     rdfs:label "erpnext_call_method" ;
     cp:componentId "erpnext-mcp/erpnext_call_method" ;
     cp:operatesOn :DomainEntity .
 
+erpx:tool-erpnext_cancel_document a cp:Tool ;
+    rdfs:label "erpnext_cancel_document" ;
+    cp:componentId "erpnext-mcp/erpnext_cancel_document" ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
+
+erpx:tool-erpnext_close_follow_up a cp:Tool ;
+    rdfs:label "erpnext_close_follow_up" ;
+    cp:componentId "erpnext-mcp/erpnext_close_follow_up" ;
+    cp:operatesOn :FollowUpTodo .
+
+erpx:tool-erpnext_complete_setup_wizard a cp:Tool ;
+    rdfs:label "erpnext_complete_setup_wizard" ;
+    cp:componentId "erpnext-mcp/erpnext_complete_setup_wizard" ;
+    cp:operatesOn :Company, :FiscalYear, :LedgerAccount ;
+    cp:produces :Company, :FiscalYear .
+
+erpx:tool-erpnext_create_address a cp:Tool ;
+    rdfs:label "erpnext_create_address" ;
+    cp:componentId "erpnext-mcp/erpnext_create_address" ;
+    cp:operatesOn :ErpAddress, :Company, :Customer, :Supplier, :Lead ;
+    cp:produces :ErpAddress .
+
+erpx:tool-erpnext_create_bank a cp:Tool ;
+    rdfs:label "erpnext_create_bank" ;
+    cp:componentId "erpnext-mcp/erpnext_create_bank" ;
+    cp:operatesOn :ErpBank ;
+    cp:produces :ErpBank .
+
+erpx:tool-erpnext_create_bank_account a cp:Tool ;
+    rdfs:label "erpnext_create_bank_account" ;
+    cp:componentId "erpnext-mcp/erpnext_create_bank_account" ;
+    cp:operatesOn :ErpBankAccount, :ErpBank, :Company, :LedgerAccount ;
+    cp:produces :ErpBankAccount .
+
+erpx:tool-erpnext_create_company a cp:Tool ;
+    rdfs:label "erpnext_create_company" ;
+    cp:componentId "erpnext-mcp/erpnext_create_company" ;
+    cp:operatesOn :Company, :LedgerAccount ;
+    cp:produces :Company .
+
+erpx:tool-erpnext_create_department a cp:Tool ;
+    rdfs:label "erpnext_create_department" ;
+    cp:componentId "erpnext-mcp/erpnext_create_department" ;
+    cp:operatesOn :OrgUnit, :Company ;
+    cp:produces :OrgUnit .
+
+erpx:tool-erpnext_create_designation a cp:Tool ;
+    rdfs:label "erpnext_create_designation" ;
+    cp:componentId "erpnext-mcp/erpnext_create_designation" ;
+    cp:operatesOn :Designation ;
+    cp:produces :Designation .
+
+erpx:tool-erpnext_create_document a cp:Tool ;
+    rdfs:label "erpnext_create_document" ;
+    cp:componentId "erpnext-mcp/erpnext_create_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_create_employee a cp:Tool ;
+    rdfs:label "erpnext_create_employee" ;
+    cp:componentId "erpnext-mcp/erpnext_create_employee" ;
+    cp:operatesOn :Employee ;
+    cp:produces :Employee .
+
+erpx:tool-erpnext_create_fiscal_year a cp:Tool ;
+    rdfs:label "erpnext_create_fiscal_year" ;
+    cp:componentId "erpnext-mcp/erpnext_create_fiscal_year" ;
+    cp:operatesOn :FiscalYear ;
+    cp:produces :FiscalYear .
+
+erpx:tool-erpnext_create_follow_up a cp:Tool ;
+    rdfs:label "erpnext_create_follow_up" ;
+    cp:componentId "erpnext-mcp/erpnext_create_follow_up" ;
+    cp:operatesOn :FollowUpTodo, :Lead, :Opportunity, :Customer ;
+    cp:produces :FollowUpTodo .
+
+erpx:tool-erpnext_create_holiday_list a cp:Tool ;
+    rdfs:label "erpnext_create_holiday_list" ;
+    cp:componentId "erpnext-mcp/erpnext_create_holiday_list" ;
+    cp:operatesOn :HolidayList ;
+    cp:produces :HolidayList .
+
+erpx:tool-erpnext_create_lead a cp:Tool ;
+    rdfs:label "erpnext_create_lead" ;
+    cp:componentId "erpnext-mcp/erpnext_create_lead" ;
+    cp:operatesOn :Lead ;
+    cp:produces :Lead .
+
+erpx:tool-erpnext_create_leave_type a cp:Tool ;
+    rdfs:label "erpnext_create_leave_type" ;
+    cp:componentId "erpnext-mcp/erpnext_create_leave_type" ;
+    cp:operatesOn :LeaveType ;
+    cp:produces :LeaveType .
+
+erpx:tool-erpnext_create_opportunity_from_lead a cp:Tool ;
+    rdfs:label "erpnext_create_opportunity_from_lead" ;
+    cp:componentId "erpnext-mcp/erpnext_create_opportunity_from_lead" ;
+    cp:operatesOn :Lead, :Opportunity ;
+    cp:produces :Opportunity .
+
+erpx:tool-erpnext_create_opportunity_lost_reason a cp:Tool ;
+    rdfs:label "erpnext_create_opportunity_lost_reason" ;
+    cp:componentId "erpnext-mcp/erpnext_create_opportunity_lost_reason" ;
+    cp:operatesOn :OpportunityLostReason ;
+    cp:produces :OpportunityLostReason .
+
+erpx:tool-erpnext_create_opportunity_type a cp:Tool ;
+    rdfs:label "erpnext_create_opportunity_type" ;
+    cp:componentId "erpnext-mcp/erpnext_create_opportunity_type" ;
+    cp:operatesOn :OpportunityType ;
+    cp:produces :OpportunityType .
+
+erpx:tool-erpnext_create_payroll_entry a cp:Tool ;
+    rdfs:label "erpnext_create_payroll_entry" ;
+    cp:componentId "erpnext-mcp/erpnext_create_payroll_entry" ;
+    cp:operatesOn :PayrollEntry, :Company ;
+    cp:produces :PayrollEntry .
+
+erpx:tool-erpnext_create_salary_component a cp:Tool ;
+    rdfs:label "erpnext_create_salary_component" ;
+    cp:componentId "erpnext-mcp/erpnext_create_salary_component" ;
+    cp:operatesOn :SalaryComponent ;
+    cp:produces :SalaryComponent .
+
+erpx:tool-erpnext_create_salary_slips a cp:Tool ;
+    rdfs:label "erpnext_create_salary_slips" ;
+    cp:componentId "erpnext-mcp/erpnext_create_salary_slips" ;
+    cp:operatesOn :PayrollEntry ;
+    cp:produces :SalarySlip .
+
+erpx:tool-erpnext_create_salary_structure a cp:Tool ;
+    rdfs:label "erpnext_create_salary_structure" ;
+    cp:componentId "erpnext-mcp/erpnext_create_salary_structure" ;
+    cp:operatesOn :SalaryStructure, :SalaryComponent, :Company ;
+    cp:produces :SalaryStructure .
+
+erpx:tool-erpnext_create_sales_stage a cp:Tool ;
+    rdfs:label "erpnext_create_sales_stage" ;
+    cp:componentId "erpnext-mcp/erpnext_create_sales_stage" ;
+    cp:operatesOn :SalesStage ;
+    cp:produces :SalesStage .
+
+erpx:tool-erpnext_declare_opportunity_lost a cp:Tool ;
+    rdfs:label "erpnext_declare_opportunity_lost" ;
+    cp:componentId "erpnext-mcp/erpnext_declare_opportunity_lost" ;
+    cp:operatesOn :Opportunity, :OpportunityLostReason .
+
+erpx:tool-erpnext_delete_document a cp:Tool ;
+    rdfs:label "erpnext_delete_document" ;
+    cp:componentId "erpnext-mcp/erpnext_delete_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_fill_payroll_employees a cp:Tool ;
+    rdfs:label "erpnext_fill_payroll_employees" ;
+    cp:componentId "erpnext-mcp/erpnext_fill_payroll_employees" ;
+    cp:operatesOn :PayrollEntry, :Employee .
+
+erpx:tool-erpnext_get_count a cp:Tool ;
+    rdfs:label "erpnext_get_count" ;
+    cp:componentId "erpnext-mcp/erpnext_get_count" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
 erpx:tool-erpnext_get_doctype_meta a cp:Tool ;
     rdfs:label "erpnext_get_doctype_meta" ;
     cp:componentId "erpnext-mcp/erpnext_get_doctype_meta" ;
     cp:operatesOn :DomainEntity .
 
-erpx:tool-erpnext_run_report a cp:Tool ;
-    rdfs:label "erpnext_run_report" ;
-    cp:componentId "erpnext-mcp/erpnext_run_report" ;
-    cp:operatesOn :GLEntry, :LedgerAccount, :SalesInvoice, :PurchaseInvoice, :StockWarehouse, :Item ;
-    cp:produces :ErpReport .
+erpx:tool-erpnext_get_document a cp:Tool ;
+    rdfs:label "erpnext_get_document" ;
+    cp:componentId "erpnext-mcp/erpnext_get_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
 
-erpx:tool-erpnext_upload_file a cp:Tool ;
-    rdfs:label "erpnext_upload_file" ;
-    cp:componentId "erpnext-mcp/erpnext_upload_file" ;
-    cp:operatesOn :Document .
+erpx:tool-erpnext_get_employee a cp:Tool ;
+    rdfs:label "erpnext_get_employee" ;
+    cp:componentId "erpnext-mcp/erpnext_get_employee" ;
+    cp:operatesOn :Employee .
+
+erpx:tool-erpnext_get_holiday_list a cp:Tool ;
+    rdfs:label "erpnext_get_holiday_list" ;
+    cp:componentId "erpnext-mcp/erpnext_get_holiday_list" ;
+    cp:operatesOn :HolidayList .
+
+erpx:tool-erpnext_get_leave_balance a cp:Tool ;
+    rdfs:label "erpnext_get_leave_balance" ;
+    cp:componentId "erpnext-mcp/erpnext_get_leave_balance" ;
+    cp:operatesOn :Employee, :LeaveType, :LeaveAllocation .
+
+erpx:tool-erpnext_get_logged_user a cp:Tool ;
+    rdfs:label "erpnext_get_logged_user" ;
+    cp:componentId "erpnext-mcp/erpnext_get_logged_user" ;
+    cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_get_salary_slip a cp:Tool ;
+    rdfs:label "erpnext_get_salary_slip" ;
+    cp:componentId "erpnext-mcp/erpnext_get_salary_slip" ;
+    cp:operatesOn :SalarySlip .
+
+erpx:tool-erpnext_get_setup_status a cp:Tool ;
+    rdfs:label "erpnext_get_setup_status" ;
+    cp:componentId "erpnext-mcp/erpnext_get_setup_status" ;
+    cp:operatesOn :Company .
+
+erpx:tool-erpnext_get_value a cp:Tool ;
+    rdfs:label "erpnext_get_value" ;
+    cp:componentId "erpnext-mcp/erpnext_get_value" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
 
 erpx:tool-erpnext_get_version a cp:Tool ;
     rdfs:label "erpnext_get_version" ;
     cp:componentId "erpnext-mcp/erpnext_get_version" ;
     cp:operatesOn :DomainEntity .
 
-erpx:tool-erpnext_get_logged_user a cp:Tool ;
-    rdfs:label "erpnext_get_logged_user" ;
-    cp:componentId "erpnext-mcp/erpnext_get_logged_user" ;
+erpx:tool-erpnext_ingest a cp:Tool ;
+    rdfs:label "erpnext_ingest" ;
+    cp:componentId "erpnext-mcp/erpnext_ingest" ;
+    cp:operatesOn :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :Employee ;
+    cp:produces :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :Invoice, :Employee .
+
+erpx:tool-erpnext_list_attendance a cp:Tool ;
+    rdfs:label "erpnext_list_attendance" ;
+    cp:componentId "erpnext-mcp/erpnext_list_attendance" ;
+    cp:operatesOn :Attendance .
+
+erpx:tool-erpnext_list_chart_of_accounts_templates a cp:Tool ;
+    rdfs:label "erpnext_list_chart_of_accounts_templates" ;
+    cp:componentId "erpnext-mcp/erpnext_list_chart_of_accounts_templates" ;
+    cp:operatesOn :LedgerAccount .
+
+erpx:tool-erpnext_list_departments a cp:Tool ;
+    rdfs:label "erpnext_list_departments" ;
+    cp:componentId "erpnext-mcp/erpnext_list_departments" ;
+    cp:operatesOn :OrgUnit .
+
+erpx:tool-erpnext_list_designations a cp:Tool ;
+    rdfs:label "erpnext_list_designations" ;
+    cp:componentId "erpnext-mcp/erpnext_list_designations" ;
+    cp:operatesOn :Designation .
+
+erpx:tool-erpnext_list_documents a cp:Tool ;
+    rdfs:label "erpnext_list_documents" ;
+    cp:componentId "erpnext-mcp/erpnext_list_documents" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_list_employees a cp:Tool ;
+    rdfs:label "erpnext_list_employees" ;
+    cp:componentId "erpnext-mcp/erpnext_list_employees" ;
+    cp:operatesOn :Employee .
+
+erpx:tool-erpnext_list_follow_ups a cp:Tool ;
+    rdfs:label "erpnext_list_follow_ups" ;
+    cp:componentId "erpnext-mcp/erpnext_list_follow_ups" ;
+    cp:operatesOn :FollowUpTodo .
+
+erpx:tool-erpnext_list_leads a cp:Tool ;
+    rdfs:label "erpnext_list_leads" ;
+    cp:componentId "erpnext-mcp/erpnext_list_leads" ;
+    cp:operatesOn :Lead .
+
+erpx:tool-erpnext_list_opportunities a cp:Tool ;
+    rdfs:label "erpnext_list_opportunities" ;
+    cp:componentId "erpnext-mcp/erpnext_list_opportunities" ;
+    cp:operatesOn :Opportunity .
+
+erpx:tool-erpnext_list_opportunity_types a cp:Tool ;
+    rdfs:label "erpnext_list_opportunity_types" ;
+    cp:componentId "erpnext-mcp/erpnext_list_opportunity_types" ;
+    cp:operatesOn :OpportunityType .
+
+erpx:tool-erpnext_list_salary_slips a cp:Tool ;
+    rdfs:label "erpnext_list_salary_slips" ;
+    cp:componentId "erpnext-mcp/erpnext_list_salary_slips" ;
+    cp:operatesOn :SalarySlip .
+
+erpx:tool-erpnext_list_sales_stages a cp:Tool ;
+    rdfs:label "erpnext_list_sales_stages" ;
+    cp:componentId "erpnext-mcp/erpnext_list_sales_stages" ;
+    cp:operatesOn :SalesStage .
+
+erpx:tool-erpnext_list_timezones a cp:Tool ;
+    rdfs:label "erpnext_list_timezones" ;
+    cp:componentId "erpnext-mcp/erpnext_list_timezones" ;
     cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_log_communication a cp:Tool ;
+    rdfs:label "erpnext_log_communication" ;
+    cp:componentId "erpnext-mcp/erpnext_log_communication" ;
+    cp:operatesOn :ErpCommunication, :Lead, :Opportunity, :Customer ;
+    cp:produces :ErpCommunication .
 
 erpx:tool-erpnext_login a cp:Tool ;
     rdfs:label "erpnext_login" ;
@@ -170,11 +427,126 @@ erpx:tool-erpnext_logout a cp:Tool ;
     cp:componentId "erpnext-mcp/erpnext_logout" ;
     cp:operatesOn :DomainEntity .
 
-erpx:tool-erpnext_ingest a cp:Tool ;
-    rdfs:label "erpnext_ingest" ;
-    cp:componentId "erpnext-mcp/erpnext_ingest" ;
-    cp:operatesOn :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :Employee ;
-    cp:produces :Customer, :Supplier, :Item, :SalesOrder, :PurchaseOrder, :Invoice, :Employee .
+erpx:tool-erpnext_make_customer_from_lead a cp:Tool ;
+    rdfs:label "erpnext_make_customer_from_lead" ;
+    cp:componentId "erpnext-mcp/erpnext_make_customer_from_lead" ;
+    cp:operatesOn :Lead, :Customer ;
+    cp:produces :Customer .
+
+erpx:tool-erpnext_make_customer_from_opportunity a cp:Tool ;
+    rdfs:label "erpnext_make_customer_from_opportunity" ;
+    cp:componentId "erpnext-mcp/erpnext_make_customer_from_opportunity" ;
+    cp:operatesOn :Opportunity, :Customer ;
+    cp:produces :Customer .
+
+erpx:tool-erpnext_make_mapped_document a cp:Tool ;
+    rdfs:label "erpnext_make_mapped_document" ;
+    cp:componentId "erpnext-mcp/erpnext_make_mapped_document" ;
+    cp:operatesOn :Lead, :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PurchaseInvoice ;
+    cp:produces :Opportunity, :Quotation, :SalesOrder, :SalesInvoice, :PaymentEntry .
+
+erpx:tool-erpnext_mark_attendance a cp:Tool ;
+    rdfs:label "erpnext_mark_attendance" ;
+    cp:componentId "erpnext-mcp/erpnext_mark_attendance" ;
+    cp:operatesOn :Employee, :Attendance ;
+    cp:produces :Attendance .
+
+erpx:tool-erpnext_mark_bulk_attendance a cp:Tool ;
+    rdfs:label "erpnext_mark_bulk_attendance" ;
+    cp:componentId "erpnext-mcp/erpnext_mark_bulk_attendance" ;
+    cp:operatesOn :Employee, :Attendance ;
+    cp:produces :Attendance .
+
+erpx:tool-erpnext_plan_business_onboarding a cp:Tool ;
+    rdfs:label "erpnext_plan_business_onboarding" ;
+    cp:componentId "erpnext-mcp/erpnext_plan_business_onboarding" ;
+    cp:operatesOn :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType .
+
+erpx:tool-erpnext_qualify_lead a cp:Tool ;
+    rdfs:label "erpnext_qualify_lead" ;
+    cp:componentId "erpnext-mcp/erpnext_qualify_lead" ;
+    cp:operatesOn :Lead .
+
+erpx:tool-erpnext_reject_leave_application a cp:Tool ;
+    rdfs:label "erpnext_reject_leave_application" ;
+    cp:componentId "erpnext-mcp/erpnext_reject_leave_application" ;
+    cp:operatesOn :LeaveApplication .
+
+erpx:tool-erpnext_relieve_employee a cp:Tool ;
+    rdfs:label "erpnext_relieve_employee" ;
+    cp:componentId "erpnext-mcp/erpnext_relieve_employee" ;
+    cp:operatesOn :Employee .
+
+erpx:tool-erpnext_rename_document a cp:Tool ;
+    rdfs:label "erpnext_rename_document" ;
+    cp:componentId "erpnext-mcp/erpnext_rename_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_run_document_method a cp:Tool ;
+    rdfs:label "erpnext_run_document_method" ;
+    cp:componentId "erpnext-mcp/erpnext_run_document_method" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_run_report a cp:Tool ;
+    rdfs:label "erpnext_run_report" ;
+    cp:componentId "erpnext-mcp/erpnext_run_report" ;
+    cp:operatesOn :GLEntry, :LedgerAccount, :SalesInvoice, :PurchaseInvoice, :StockWarehouse, :Item ;
+    cp:produces :ErpReport .
+
+erpx:tool-erpnext_search_link a cp:Tool ;
+    rdfs:label "erpnext_search_link" ;
+    cp:componentId "erpnext-mcp/erpnext_search_link" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_set_tax_id a cp:Tool ;
+    rdfs:label "erpnext_set_tax_id" ;
+    cp:componentId "erpnext-mcp/erpnext_set_tax_id" ;
+    cp:operatesOn :Company, :Customer, :Supplier .
+
+erpx:tool-erpnext_set_value a cp:Tool ;
+    rdfs:label "erpnext_set_value" ;
+    cp:componentId "erpnext-mcp/erpnext_set_value" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_submit_document a cp:Tool ;
+    rdfs:label "erpnext_submit_document" ;
+    cp:componentId "erpnext-mcp/erpnext_submit_document" ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
+
+erpx:tool-erpnext_submit_salary_slips a cp:Tool ;
+    rdfs:label "erpnext_submit_salary_slips" ;
+    cp:componentId "erpnext-mcp/erpnext_submit_salary_slips" ;
+    cp:operatesOn :PayrollEntry, :SalarySlip .
+
+erpx:tool-erpnext_update_document a cp:Tool ;
+    rdfs:label "erpnext_update_document" ;
+    cp:componentId "erpnext-mcp/erpnext_update_document" ;
+    cp:operatesOn :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:tool-erpnext_update_employee a cp:Tool ;
+    rdfs:label "erpnext_update_employee" ;
+    cp:componentId "erpnext-mcp/erpnext_update_employee" ;
+    cp:operatesOn :Employee .
+
+erpx:tool-erpnext_update_lead a cp:Tool ;
+    rdfs:label "erpnext_update_lead" ;
+    cp:componentId "erpnext-mcp/erpnext_update_lead" ;
+    cp:operatesOn :Lead .
+
+erpx:tool-erpnext_update_opportunity_stage a cp:Tool ;
+    rdfs:label "erpnext_update_opportunity_stage" ;
+    cp:componentId "erpnext-mcp/erpnext_update_opportunity_stage" ;
+    cp:operatesOn :Opportunity, :SalesStage .
+
+erpx:tool-erpnext_upload_file a cp:Tool ;
+    rdfs:label "erpnext_upload_file" ;
+    cp:componentId "erpnext-mcp/erpnext_upload_file" ;
+    cp:operatesOn :Document .
+
+erpx:tool-erpnext_verify_business_onboarding a cp:Tool ;
+    rdfs:label "erpnext_verify_business_onboarding" ;
+    cp:componentId "erpnext-mcp/erpnext_verify_business_onboarding" ;
+    cp:operatesOn :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType .
 
 erpx:skill-erpnext-order-to-cash a cp:Skill ;
     rdfs:label "erpnext-order-to-cash" ;
@@ -194,7 +566,12 @@ erpx:skill-erpnext-inventory a cp:Skill ;
 erpx:skill-erpnext-crm-pipeline a cp:Skill ;
     rdfs:label "erpnext-crm-pipeline" ;
     cp:componentId "erpnext-mcp/skill/erpnext-crm-pipeline" ;
-    cp:appliesTo :Lead, :Opportunity, :Quotation .
+    cp:appliesTo :Lead, :Opportunity, :SalesStage, :OpportunityType, :OpportunityLostReason, :Quotation, :Customer .
+
+erpx:skill-erpnext-lead-nurturing a cp:Skill ;
+    rdfs:label "erpnext-lead-nurturing" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-lead-nurturing" ;
+    cp:appliesTo :Lead, :Opportunity, :ErpCommunication, :FollowUpTodo, :SalesStage, :Customer .
 
 erpx:skill-erpnext-projects a cp:Skill ;
     rdfs:label "erpnext-projects" ;
@@ -204,12 +581,32 @@ erpx:skill-erpnext-projects a cp:Skill ;
 erpx:skill-erpnext-hr a cp:Skill ;
     rdfs:label "erpnext-hr" ;
     cp:componentId "erpnext-mcp/skill/erpnext-hr" ;
-    cp:appliesTo :Employee, :OrgUnit .
+    cp:appliesTo :Employee, :OrgUnit, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveApplication, :SalarySlip .
+
+erpx:skill-erpnext-hire-to-retire a cp:Skill ;
+    rdfs:label "erpnext-hire-to-retire" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-hire-to-retire" ;
+    cp:appliesTo :Employee, :OrgUnit, :Designation, :HolidayList, :LeaveAllocation, :SalaryStructureAssignment, :Attendance .
+
+erpx:skill-erpnext-leave-approval a cp:Skill ;
+    rdfs:label "erpnext-leave-approval" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-leave-approval" ;
+    cp:appliesTo :LeaveType, :LeaveAllocation, :LeaveApplication, :Employee .
+
+erpx:skill-erpnext-payroll-run a cp:Skill ;
+    rdfs:label "erpnext-payroll-run" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-payroll-run" ;
+    cp:appliesTo :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
 erpx:skill-erpnext-accounting a cp:Skill ;
     rdfs:label "erpnext-accounting" ;
     cp:componentId "erpnext-mcp/skill/erpnext-accounting" ;
     cp:appliesTo :LedgerAccount, :GLEntry, :FiscalYear, :ErpReport .
+
+erpx:skill-erpnext-business-onboarding a cp:Skill ;
+    rdfs:label "erpnext-business-onboarding" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-business-onboarding" ;
+    cp:appliesTo :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType .
 
 erpx:skill-erpnext-agent-operations a cp:Skill ;
     rdfs:label "erpnext-agent-operations" ;
@@ -224,4 +621,19 @@ erpx:skill-erpnext-agent-development a cp:Skill ;
 erpx:prompt-erp_operator a cp:Prompt ;
     rdfs:label "erp_operator" ;
     cp:componentId "erpnext-mcp/prompt/erp_operator" ;
-    cp:appliesTo :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue .
+    cp:appliesTo :Customer, :Supplier, :Company, :Item, :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :StockWarehouse, :LedgerAccount, :GLEntry, :FiscalYear, :Lead, :Opportunity, :Project, :ProjectTask, :Employee, :OrgUnit, :ErpNextIssue, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :ErpAddress, :ErpBank, :ErpBankAccount .
+
+erpx:prompt-hr_manager a cp:Prompt ;
+    rdfs:label "hr_manager" ;
+    cp:componentId "erpnext-mcp/prompt/hr_manager" ;
+    cp:appliesTo :Employee, :OrgUnit, :Designation, :HolidayList, :Attendance, :EmployeeCheckin, :LeaveType, :LeaveAllocation, :LeaveApplication, :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
+
+erpx:prompt-sales_rep a cp:Prompt ;
+    rdfs:label "sales_rep" ;
+    cp:componentId "erpnext-mcp/prompt/sales_rep" ;
+    cp:appliesTo :Lead, :Opportunity, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :Customer, :Quotation .
+
+erpx:prompt-business_onboarding a cp:Prompt ;
+    rdfs:label "business_onboarding" ;
+    cp:componentId "erpnext-mcp/prompt/business_onboarding" ;
+    cp:appliesTo :Company, :FiscalYear, :LedgerAccount, :ErpAddress, :ErpBank, :ErpBankAccount, :HolidayList, :OrgUnit, :Designation, :SalesStage, :OpportunityType .
