@@ -137,6 +137,108 @@
     rdfs:label "ERPNext Issue" ;
     rdfs:comment "A customer support issue (Frappe Issue doctype); core declares it equivalent to :Incident." .
 
+# --- HR, CRM pipeline and onboarding classes (2.5.0) ---
+
+:Designation a owl:Class ;
+    rdfs:label "Designation" ;
+    rdfs:comment "A job title an employee holds, shared by every company (Frappe Designation doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:HolidayList a owl:Class ;
+    rdfs:label "Holiday List" ;
+    rdfs:comment "A calendar of holidays and weekly offs that attendance, leave and payroll respect (Frappe Holiday List doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:Attendance a owl:Class ;
+    rdfs:label "Attendance" ;
+    rdfs:comment "One employee's attendance status for one day (HR app Attendance doctype); submittable." ;
+    rdfs:subClassOf :Event .
+
+:EmployeeCheckin a owl:Class ;
+    rdfs:label "Employee Check-in" ;
+    rdfs:comment "One check-in or check-out log of an employee (HR app Employee Checkin doctype)." ;
+    rdfs:subClassOf :Event .
+
+:LeaveType a owl:Class ;
+    rdfs:label "Leave Type" ;
+    rdfs:comment "A kind of leave with its limits: annual, sick, without pay (HR app Leave Type doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:LeaveAllocation a owl:Class ;
+    rdfs:label "Leave Allocation" ;
+    rdfs:comment "Leave days of a type granted to an employee for a period (HR app Leave Allocation doctype); submittable." ;
+    rdfs:subClassOf :Document .
+
+:LeaveApplication a owl:Class ;
+    rdfs:label "Leave Application" ;
+    rdfs:comment "An employee's request for leave and the approver's decision (HR app Leave Application doctype); submittable once Approved or Rejected." ;
+    rdfs:subClassOf :Document .
+
+:SalaryComponent a owl:Class ;
+    rdfs:label "Salary Component" ;
+    rdfs:comment "An earning or deduction line of pay (HR app Salary Component doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:SalaryStructure a owl:Class ;
+    rdfs:label "Salary Structure" ;
+    rdfs:comment "A pay template of earnings and deductions for a company (HR app Salary Structure doctype); submittable." ;
+    rdfs:subClassOf :Document .
+
+:SalaryStructureAssignment a owl:Class ;
+    rdfs:label "Salary Structure Assignment" ;
+    rdfs:comment "A salary structure and base pay assigned to an employee from a date (HR app doctype); submittable." ;
+    rdfs:subClassOf :Document .
+
+:PayrollEntry a owl:Class ;
+    rdfs:label "Payroll Entry" ;
+    rdfs:comment "A company's pay run for one period that creates and submits the salary slips (HR app Payroll Entry doctype); submittable." ;
+    rdfs:subClassOf :PayrollRecord .
+
+:SalarySlip a owl:Class ;
+    rdfs:label "Salary Slip" ;
+    rdfs:comment "One employee's pay for one period with gross, deductions and net pay (HR app Salary Slip doctype); submittable." ;
+    rdfs:subClassOf :PayrollRecord .
+
+:SalesStage a owl:Class ;
+    rdfs:label "Sales Stage" ;
+    rdfs:comment "A stage of the sales pipeline an opportunity moves through (Frappe Sales Stage doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:OpportunityType a owl:Class ;
+    rdfs:label "Opportunity Type" ;
+    rdfs:comment "A kind of opportunity: sales, support, maintenance (Frappe Opportunity Type doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:OpportunityLostReason a owl:Class ;
+    rdfs:label "Opportunity Lost Reason" ;
+    rdfs:comment "A reason an opportunity was lost (Frappe Opportunity Lost Reason doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
+:ErpCommunication a owl:Class ;
+    rdfs:label "ERP Communication" ;
+    rdfs:comment "A logged call, meeting or message about a lead, opportunity or customer (Frappe Communication doctype); a record, not a sent message." ;
+    rdfs:subClassOf :Message .
+
+:FollowUpTodo a owl:Class ;
+    rdfs:label "Follow-up ToDo" ;
+    rdfs:comment "A dated follow-up assigned to a user about a record (Frappe ToDo doctype)." ;
+    rdfs:subClassOf :WorkItem .
+
+:ErpAddress a owl:Class ;
+    rdfs:label "ERP Address" ;
+    rdfs:comment "A postal address of the company or a party, linked to it (Frappe Address doctype)." ;
+    rdfs:subClassOf :Place .
+
+:ErpBank a owl:Class ;
+    rdfs:label "Bank" ;
+    rdfs:comment "A bank the company or a party holds accounts with (Frappe Bank doctype)." ;
+    rdfs:subClassOf :Organization .
+
+:ErpBankAccount a owl:Class ;
+    rdfs:label "ERP Bank Account" ;
+    rdfs:comment "A bank account of the company or a party; a company account names its ledger (Frappe Bank Account doctype)." ;
+    rdfs:subClassOf :DomainEntity .
+
 # --- links (owl:ObjectProperty) ---
 
 :orderedBy a owl:ObjectProperty ;
@@ -237,6 +339,84 @@
     rdfs:comment "Amount of an Invoice still unpaid (outstanding_amount); 0 once fully allocated." ;
     rdfs:range xsd:float .
 
+:designatedAs a owl:ObjectProperty ;
+    rdfs:label "designated as" ;
+    rdfs:comment "Links an Employee to the Designation (job title) they hold." ;
+    rdfs:domain :Employee ;
+    rdfs:range :Designation .
+
+:followsHolidayList a owl:ObjectProperty ;
+    rdfs:label "follows holiday list" ;
+    rdfs:comment "Links an Employee or Company to the HolidayList its attendance and leave respect (holiday_list / default_holiday_list)." ;
+    rdfs:range :HolidayList .
+
+:recordedFor a owl:ObjectProperty ;
+    rdfs:label "recorded for" ;
+    rdfs:comment "Links an Attendance, EmployeeCheckin, LeaveAllocation, LeaveApplication, SalaryStructureAssignment or SalarySlip to the Employee it concerns (employee)." ;
+    rdfs:range :Employee .
+
+:ofLeaveType a owl:ObjectProperty ;
+    rdfs:label "of leave type" ;
+    rdfs:comment "Links a LeaveAllocation or LeaveApplication to its LeaveType." ;
+    rdfs:range :LeaveType .
+
+:assignsStructure a owl:ObjectProperty ;
+    rdfs:label "assigns structure" ;
+    rdfs:comment "Links a SalaryStructureAssignment to the SalaryStructure it assigns." ;
+    rdfs:domain :SalaryStructureAssignment ;
+    rdfs:range :SalaryStructure .
+
+:hasComponent a owl:ObjectProperty ;
+    rdfs:label "has component" ;
+    rdfs:comment "Links a SalaryStructure or SalarySlip to a SalaryComponent in its earnings or deductions." ;
+    rdfs:range :SalaryComponent .
+
+:paidInRun a owl:ObjectProperty ;
+    rdfs:label "paid in run" ;
+    rdfs:comment "Links a SalarySlip to the PayrollEntry that created it (payroll_entry)." ;
+    rdfs:domain :SalarySlip ;
+    rdfs:range :PayrollEntry .
+
+:inSalesStage a owl:ObjectProperty ;
+    rdfs:label "in sales stage" ;
+    rdfs:comment "Links an Opportunity to its current SalesStage (sales_stage)." ;
+    rdfs:domain :Opportunity ;
+    rdfs:range :SalesStage .
+
+:ofOpportunityType a owl:ObjectProperty ;
+    rdfs:label "of opportunity type" ;
+    rdfs:comment "Links an Opportunity to its OpportunityType." ;
+    rdfs:domain :Opportunity ;
+    rdfs:range :OpportunityType .
+
+:lostBecause a owl:ObjectProperty ;
+    rdfs:label "lost because" ;
+    rdfs:comment "Links a lost Opportunity to each OpportunityLostReason recorded for it." ;
+    rdfs:domain :Opportunity ;
+    rdfs:range :OpportunityLostReason .
+
+:aboutRecord a owl:ObjectProperty ;
+    rdfs:label "about record" ;
+    rdfs:comment "Links an ErpCommunication or FollowUpTodo to the Lead, Opportunity or Customer it is about (reference_doctype / reference_name)." ;
+    rdfs:range :DomainEntity .
+
+:addressOf a owl:ObjectProperty ;
+    rdfs:label "address of" ;
+    rdfs:comment "Links an ErpAddress to the Company or party it belongs to (links.link_name)." ;
+    rdfs:domain :ErpAddress .
+
+:heldAtBank a owl:ObjectProperty ;
+    rdfs:label "held at bank" ;
+    rdfs:comment "Links an ErpBankAccount to its ErpBank." ;
+    rdfs:domain :ErpBankAccount ;
+    rdfs:range :ErpBank .
+
+:taxId a owl:DatatypeProperty ;
+    rdfs:label "tax ID" ;
+    rdfs:comment "Tax, VAT or employer identification number of a Company, Customer or Supplier (tax_id)." ;
+    rdfs:range xsd:string .
+
+
 # --- fields (owl:DatatypeProperty) ---
 
 :grandTotal a owl:DatatypeProperty ;
@@ -262,6 +442,8 @@
 <http://knuckles.team/kg/erpnext> a owl:Ontology ;
     rdfs:label "ERPNext/Frappe ERP Ontology" ;
     rdfs:comment """ERP entities sourced from an ERPNext (Frappe) instance — customers,
-suppliers, items, sales and purchase orders, invoices, employees and org units — with
-their ordering, supply, line-item and billing relationships, federated into the
+suppliers, items, sales and purchase orders, invoices, the CRM pipeline (leads,
+opportunities, stages, communications, follow-ups), HR (employees, departments,
+designations, holiday lists, attendance, leave, salary and payroll) and the company
+set-up (fiscal year, address, bank) — with their relationships, federated into the
 scion-sdk knowledge-graph hub over the enterprise layer.""" .

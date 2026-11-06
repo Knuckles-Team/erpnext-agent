@@ -39,6 +39,7 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 - **FR-005**: Every ontology class rolls up to medulla core by subclassing. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005`.
 - **FR-006**: The ontology records the served surface and its links. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006`.
 - **FR-007**: The ontology locates each class's data and how medulla federates it. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007`.
+- **FR-008**: Each business role has a complete agent-definition prompt. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008`.
 
 ## Success Criteria
 
@@ -61,3 +62,4 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 | FR-005 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005` | [plan.md](plan.md) | T-005 | [test-spec.md](test-spec.md) |
 | FR-006 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006` | [plan.md](plan.md) | T-006 | [test-spec.md](test-spec.md) |
 | FR-007 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007` | [plan.md](plan.md) | T-007 | [test-spec.md](test-spec.md) |
+| FR-008 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008` | [plan.md](plan.md) | T-008 | [test-spec.md](test-spec.md) |

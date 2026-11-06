@@ -208,3 +208,111 @@ erp:employeeAccess a ac:AccessContract ;
 
 erp:employeeNameBinding a ac:PropertyBinding ;
     ac:contract erp:employeeAccess ; ac:property erp:employeeName ; ac:field "employee_name" .
+
+erp:opportunityAccess a ac:AccessContract ;
+    ac:classIri erp:Opportunity ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Opportunity" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "low" .
+
+erp:opportunityLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:opportunityAccess ; ac:property rdfs:label ; ac:field "party_name" .
+
+erp:orgUnitAccess a ac:AccessContract ;
+    ac:classIri erp:OrgUnit ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Department" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 3600 ;
+    ac:costHint "low" .
+
+erp:orgUnitLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:orgUnitAccess ; ac:property rdfs:label ; ac:field "department_name" .
+
+erp:designationAccess a ac:AccessContract ;
+    ac:classIri erp:Designation ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Designation" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 3600 ;
+    ac:costHint "low" .
+
+erp:designationLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:designationAccess ; ac:property rdfs:label ; ac:field "designation_name" .
+
+erp:holidayListAccess a ac:AccessContract ;
+    ac:classIri erp:HolidayList ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Holiday List" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 3600 ;
+    ac:costHint "low" .
+
+erp:holidayListLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:holidayListAccess ; ac:property rdfs:label ; ac:field "holiday_list_name" .
+
+erp:attendanceAccess a ac:AccessContract ;
+    ac:classIri erp:Attendance ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Attendance" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:attendanceLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:attendanceAccess ; ac:property rdfs:label ; ac:field "employee_name" .
+
+erp:leaveApplicationAccess a ac:AccessContract ;
+    ac:classIri erp:LeaveApplication ;
+    ac:sourceId "erpnext-agent" ;
+    ac:entity "Leave Application" ;
+    ac:keyField "name" ;
+    ac:accessKind "mcp_tool" ;
+    ac:operation "erpnext_list_documents" ;
+    ac:parameter "doctype", "filters", "fields", "limit_page_length", "limit_start" ;
+    ac:pagination "offset" ;
+    ac:pushdown "filter", "limit" ;
+    ac:authRef "env://ERPNEXT_TOKEN" ;
+    ac:rateLimitPerMinute 60 ;
+    ac:freshnessSeconds 300 ;
+    ac:costHint "medium" .
+
+erp:leaveApplicationLabelBinding a ac:PropertyBinding ;
+    ac:contract erp:leaveApplicationAccess ; ac:property rdfs:label ; ac:field "employee_name" .

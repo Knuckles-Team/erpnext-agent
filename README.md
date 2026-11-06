@@ -164,31 +164,94 @@ _Auto-generated from the live MCP server — do not edit by hand._
 
 | MCP Tool | Kind | Description |
 |----------|------|-------------|
+| `erpnext_add_employee_checkin` | write | Log an employee check-in or check-out (``log_type`` IN or OUT). |
+| `erpnext_add_holiday_list_weekly_offs` | write | Add every <weekday> between the list's dates as a weekly-off holiday. |
+| `erpnext_allocate_leave` | write | Allocate leave days of a type to an employee for a period, then submit. |
+| `erpnext_apply_business_onboarding` | write | Apply an approved onboarding plan: create only what is missing, then verify. |
+| `erpnext_apply_leave` | write | File a Leave Application (status Open, awaiting the approver). |
+| `erpnext_approve_leave_application` | write | Approve an open Leave Application: status Approved, then submit. |
+| `erpnext_assign_salary_structure` | write | Assign a Salary Structure to an employee from a date with a base pay, then submit. |
 | `erpnext_call_method` | write | Execute dotted path whitelisted RPC methods (covers 100% of custom functions). |
 | `erpnext_cancel_document` | write | Cancel a submitted document (docstatus 1 -> 2), reversing its postings. |
+| `erpnext_close_follow_up` | write | Close a follow-up ToDo once it is done. |
+| `erpnext_complete_setup_wizard` | write | Complete the site's one-time setup wizard: first company, books and regional settings. |
+| `erpnext_create_address` | write | Create an Address linked to a Company, Customer, Supplier or Lead. |
+| `erpnext_create_bank` | write | Create a Bank master record. |
+| `erpnext_create_bank_account` | write | Create a Bank Account; a company account names its GL ledger in ``account``. |
+| `erpnext_create_company` | write | Create a Company with its chart of accounts from a template (an extra or test company). |
+| `erpnext_create_department` | write | Create a Department of a company (named "<department> - <abbr>"). |
+| `erpnext_create_designation` | write | Create a Designation (job title), shared by every company. |
 | `erpnext_create_document` | write | Create a new document resource. |
+| `erpnext_create_employee` | write | Hire: create an Active Employee of a company. |
+| `erpnext_create_fiscal_year` | write | Create a Fiscal Year, optionally limited to some companies. |
+| `erpnext_create_follow_up` | write | Schedule a follow-up ToDo on a Lead, Opportunity or Customer for a user. |
+| `erpnext_create_holiday_list` | write | Create a Holiday List with dated holidays, optionally adding a weekly off. |
+| `erpnext_create_lead` | write | Capture a Lead (a prospect not yet qualified) for our company. |
+| `erpnext_create_leave_type` | write | Create a Leave Type (annual, sick, leave without pay, ...). |
+| `erpnext_create_opportunity_from_lead` | write | Raise an Opportunity from a Lead and save it. |
+| `erpnext_create_opportunity_lost_reason` | write | Create an Opportunity Lost Reason (price, timing, competitor, ...). |
+| `erpnext_create_opportunity_type` | write | Create an Opportunity Type (Sales, Support, Maintenance, ...). |
+| `erpnext_create_payroll_entry` | write | Create a draft Payroll Entry for a company and pay period. |
+| `erpnext_create_salary_component` | write | Create a Salary Component; ``component_type`` is Earning or Deduction. |
+| `erpnext_create_salary_slips` | write | Create the draft salary slips of a Payroll Entry. |
+| `erpnext_create_salary_structure` | write | Create a Salary Structure from earning and deduction rows, then submit. |
+| `erpnext_create_sales_stage` | write | Create a Sales Stage of the pipeline (Prospecting, Proposal, ...). |
+| `erpnext_declare_opportunity_lost` | write | Mark an Opportunity Lost with its reasons (each an Opportunity Lost Reason). |
 | `erpnext_delete_document` | write | Delete a specific document resource. |
+| `erpnext_fill_payroll_employees` | write | Fill a draft Payroll Entry with every employee its filters select, and save. |
 | `erpnext_get_count` | read | Count the documents of a DocType that match the filters. |
 | `erpnext_get_doctype_meta` | read | Describe a DocType's fields: name, type, label, link target and whether required. |
 | `erpnext_get_document` | read | Get a document resource by name. |
+| `erpnext_get_employee` | read | Read one Employee record. |
+| `erpnext_get_holiday_list` | read | Read a Holiday List with its holidays. |
+| `erpnext_get_leave_balance` | read | Read an employee's remaining leave days of a type on a date. |
 | `erpnext_get_logged_user` | read | Get the user that is logged in. |
+| `erpnext_get_salary_slip` | read | Read one Salary Slip with its earnings and deductions. |
+| `erpnext_get_setup_status` | read | Report whether the setup wizard is complete (per app) and list the companies. |
 | `erpnext_get_value` | read | Read selected field values of the first document matching the filters. |
 | `erpnext_get_version` | read | Get installed app versions. |
 | `erpnext_ingest` | write | Natively ingest an ERPNext DocType into medulla as typed nodes. |
+| `erpnext_list_attendance` | read | List attendance records by employee, company and date range. |
+| `erpnext_list_chart_of_accounts_templates` | read | List the chart-of-accounts templates offered for a country (plus Standard). |
+| `erpnext_list_departments` | read | List departments, optionally of one company. |
+| `erpnext_list_designations` | read | List designations (job titles). |
 | `erpnext_list_documents` | read | List document resources with pagination, filters, and selected fields. |
+| `erpnext_list_employees` | read | List employees of a company, by status and department. |
+| `erpnext_list_follow_ups` | read | List follow-up ToDos by referenced record, assignee and status. |
+| `erpnext_list_leads` | read | List leads by status, qualification and company. |
+| `erpnext_list_opportunities` | read | List opportunities by status, sales stage and company. |
+| `erpnext_list_opportunity_types` | read | List Opportunity Types. |
+| `erpnext_list_salary_slips` | read | List salary slips by payroll entry or employee. |
+| `erpnext_list_sales_stages` | read | List the pipeline's Sales Stages. |
+| `erpnext_list_timezones` | read | List the time zones the server accepts. |
+| `erpnext_log_communication` | write | Record a call, meeting or message against a Lead, Opportunity or Customer. |
 | `erpnext_login` | write | Authenticate yourself. |
 | `erpnext_logout` | read | Logout from current session. |
+| `erpnext_make_customer_from_lead` | write | Convert a Lead into a Customer and save it. |
+| `erpnext_make_customer_from_opportunity` | write | Create the Customer of a won Opportunity and save it. |
 | `erpnext_make_mapped_document` | write | Build the next document of a business flow from a source document. |
+| `erpnext_mark_attendance` | write | Mark one employee's attendance for a day and submit it. |
+| `erpnext_mark_bulk_attendance` | write | Mark (and submit) the same attendance status for many employees on one day. |
+| `erpnext_plan_business_onboarding` | read | Dry run: validate an onboarding spec and list what exists and what would be created. |
+| `erpnext_qualify_lead` | write | Set a Lead's qualification: Unqualified, In Process or Qualified. |
+| `erpnext_reject_leave_application` | write | Reject an open Leave Application: status Rejected, then submit. |
+| `erpnext_relieve_employee` | write | Retire or separate an employee: set the relieving date and status Left. |
 | `erpnext_rename_document` | write | Rename a document, updating every link to it; optionally merge into an existing one. |
 | `erpnext_run_document_method` | write | Run a whitelisted controller method of one document. |
 | `erpnext_run_report` | read | Run a query or script report and return its columns and rows. |
 | `erpnext_search_link` | read | Find documents of a DocType whose name or title fields match the text. |
+| `erpnext_set_tax_id` | write | Set the tax ID of a Company, Customer or Supplier. |
 | `erpnext_set_value` | write | Set one field of a document and save it (runs the DocType's validation). |
 | `erpnext_submit_document` | write | Submit a saved draft (docstatus 0 -> 1), posting its ledger entries. |
+| `erpnext_submit_salary_slips` | write | Submit every draft salary slip of a submitted Payroll Entry. |
 | `erpnext_update_document` | write | Update a specific document resource. |
+| `erpnext_update_employee` | write | Change fields of an Employee (department, designation, contact, ...). |
+| `erpnext_update_lead` | write | Change fields of a Lead (status, contact details, notes, ...). |
+| `erpnext_update_opportunity_stage` | write | Move an Opportunity to a Sales Stage, with its win probability. |
 | `erpnext_upload_file` | write | Upload a file, optionally attaching it to a document. |
+| `erpnext_verify_business_onboarding` | read | Check that every record of an onboarding spec exists as specified. |
 
-_23 typed tool(s), one per Frappe operation._
+_86 typed tool(s), one per Frappe operation._
 <!-- MCP-TOOLS-TABLE:END -->
 
 ### MCP Configuration Examples

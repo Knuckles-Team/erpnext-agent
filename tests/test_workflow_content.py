@@ -10,16 +10,50 @@ from fastmcp import Client
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ROOT / "erpnext_agent" / "skills"
-PROMPT = ROOT / "erpnext_agent" / "prompts" / "erp_operator.json"
+PROMPTS = ROOT / "erpnext_agent" / "prompts"
+PROMPT = PROMPTS / "erp_operator.json"
 WORKFLOWS = {
     "erpnext-order-to-cash",
     "erpnext-procure-to-pay",
     "erpnext-inventory",
     "erpnext-crm-pipeline",
+    "erpnext-lead-nurturing",
     "erpnext-projects",
     "erpnext-hr",
+    "erpnext-hire-to-retire",
+    "erpnext-leave-approval",
+    "erpnext-payroll-run",
     "erpnext-accounting",
+    "erpnext-business-onboarding",
 }
+ROLE_PROMPTS = {
+    "hr_manager": {
+        "erpnext-hr",
+        "erpnext-hire-to-retire",
+        "erpnext-leave-approval",
+        "erpnext-payroll-run",
+    },
+    "sales_rep": {
+        "erpnext-lead-nurturing",
+        "erpnext-crm-pipeline",
+        "erpnext-order-to-cash",
+    },
+    "business_onboarding": {
+        "erpnext-business-onboarding",
+        "erpnext-hr",
+        "erpnext-crm-pipeline",
+        "erpnext-accounting",
+    },
+}
+AGENT_SECTIONS = (
+    "Goal:",
+    "Skills",
+    "Tools you use:",
+    "Data you read:",
+    "Data you write:",
+    "Guardrails:",
+    "Expected outputs:",
+)
 TOOL_TOKEN = re.compile(r"`(erpnext_(?!agent`)[a-z_]+)`")
 
 
@@ -60,3 +94,40 @@ def test_operator_prompt_names_served_tools_and_shipped_workflow_skills(monkeypa
     assert set(prompt["tools"]) <= tools
     assert set(prompt["skills"]) == WORKFLOWS
     assert "erpnext_agent_resource" not in PROMPT.read_text(encoding="utf-8")
+
+
+@pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008")
+def test_role_prompts_are_complete_agent_definitions(monkeypatch):
+    tools, _ = _served(monkeypatch)
+    for name, skills in {"erp_operator": WORKFLOWS, **ROLE_PROMPTS}.items():
+        prompt = json.loads((PROMPTS / f"{name}.json").read_text(encoding="utf-8"))
+        directive = prompt["instructions"]["core_directive"]
+        for section in AGENT_SECTIONS:
+            assert section in directive, (name, section)
+        assert set(prompt["skills"]) == skills, name
+        assert set(prompt["tools"]) <= tools, (name, set(prompt["tools"]) - tools)
+        for tool in prompt["tools"]:
+            assert tool in directive, (name, tool)
+        for skill in prompt["skills"]:
+            assert (SKILLS / skill / "SKILL.md").is_file(), (name, skill)
+            assert skill in directive, (name, skill)
+        assert prompt["instructions"]["guardrails"], name
+
+
+@pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R003")
+def test_onboarding_skill_ships_its_input_schema():
+    import yaml
+
+    spec = yaml.safe_load(
+        (
+            SKILLS
+            / "erpnext-business-onboarding"
+            / "references"
+            / "onboarding-spec.yaml"
+        ).read_text(encoding="utf-8")
+    )
+    for key in ("name", "abbr", "country", "currency", "chart_of_accounts"):
+        assert key in spec["company"], key
+    assert {"start_date", "end_date"} <= set(spec["fiscal_year"])
+    assert spec["mode"] in ("auto", "setup_wizard", "company")
+    assert {"time_zone", "address", "bank", "hr", "crm"} <= set(spec)

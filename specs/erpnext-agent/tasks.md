@@ -11,3 +11,6 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [x] T005 [US1] CONN-ERPNEXT-AGENT-R005 Every Frappe business operation is its own typed tool.
 - [x] T006 [US1] CONN-ERPNEXT-AGENT-R006 A refused call returns the server's reason.
 - [x] T007 [US1] CONN-ERPNEXT-AGENT-R007 Every access contract names a served tool and only its parameters.
+- [x] T008 [US1] CONN-ERPNEXT-AGENT-R008 Every HR operation is its own typed tool.
+- [x] T009 [US1] CONN-ERPNEXT-AGENT-R009 Every CRM operation is its own typed tool.
+- [x] T010 [US1] CONN-ERPNEXT-AGENT-R010 Business onboarding is validated, dry-run first, idempotent and verified.

@@ -28,6 +28,51 @@
         "status": "Synthetic content used only for contract validation.",
         "transaction_date": "2000-01-01T00:00:00Z"
       }
+    },
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "erpnext-employees",
+      "record": {
+        "acl_public": false,
+        "designation": "Synthetic content used only for contract validation.",
+        "employee_name": "Synthetic certification record",
+        "modified": "2000-01-01T00:00:00Z",
+        "name": "fixture-record"
+      }
+    },
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "erpnext-leads",
+      "record": {
+        "acl_public": false,
+        "lead_name": "Synthetic certification record",
+        "modified": "2000-01-01T00:00:00Z",
+        "name": "fixture-record",
+        "status": "Synthetic content used only for contract validation."
+      }
+    },
+    {
+      "expected": {
+        "acl_state": "quarantine",
+        "id": "fixture-record",
+        "title": "Synthetic certification record"
+      },
+      "preset": "erpnext-opportunities",
+      "record": {
+        "acl_public": false,
+        "modified": "2000-01-01T00:00:00Z",
+        "name": "fixture-record",
+        "party_name": "Synthetic certification record",
+        "sales_stage": "Synthetic content used only for contract validation."
+      }
     }
   ],
   "schema_version": "1"
