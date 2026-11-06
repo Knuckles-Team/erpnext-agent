@@ -62,6 +62,7 @@ The version the `erpnext_agent` package reports at runtime (`erpnext_agent.__ver
 - **FR-008**: Every HR operation is its own typed tool. Rows: `CONN-ERPNEXT-AGENT-R008`.
 - **FR-009**: Every CRM operation is its own typed tool. Rows: `CONN-ERPNEXT-AGENT-R009`.
 - **FR-010**: Business onboarding is validated, dry-run first, idempotent and verified. Rows: `CONN-ERPNEXT-AGENT-R010`.
+- **FR-011**: Document lifecycle is one explicit state machine. Rows: `CONN-ERPNEXT-AGENT-R011`, `CONN-ERPNEXT-AGENT-R011.1`, `CONN-ERPNEXT-AGENT-R011.2`, `CONN-ERPNEXT-AGENT-R011.3`, `CONN-ERPNEXT-AGENT-R011.4`, `CONN-ERPNEXT-AGENT-R011.5`, `CONN-ERPNEXT-AGENT-R011.6`.
 
 ## Success Criteria
 
@@ -92,3 +93,4 @@ The version the `erpnext_agent` package reports at runtime (`erpnext_agent.__ver
 | FR-008 | `CONN-ERPNEXT-AGENT-R008` | [plan.md](plan.md) | T-008 | [test-spec.md](test-spec.md) |
 | FR-009 | `CONN-ERPNEXT-AGENT-R009` | [plan.md](plan.md) | T-009 | [test-spec.md](test-spec.md) |
 | FR-010 | `CONN-ERPNEXT-AGENT-R010` | [plan.md](plan.md) | T-010 | [test-spec.md](test-spec.md) |
+| FR-011 | `CONN-ERPNEXT-AGENT-R011`, `CONN-ERPNEXT-AGENT-R011.1`, `CONN-ERPNEXT-AGENT-R011.2`, `CONN-ERPNEXT-AGENT-R011.3`, `CONN-ERPNEXT-AGENT-R011.4`, `CONN-ERPNEXT-AGENT-R011.5`, `CONN-ERPNEXT-AGENT-R011.6` | [plan.md](plan.md) | T-011 | [test-spec.md](test-spec.md) |
