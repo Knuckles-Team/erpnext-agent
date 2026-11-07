@@ -33,7 +33,7 @@ def _labels(triples, cls: str) -> set[str]:
 
 
 def _served_tools(monkeypatch) -> set[str]:
-    from scion_sdk._connector_serve import build_server
+    from scion_sdk.connector import build_server
 
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     monkeypatch.setenv("AUTH_TYPE", "none")

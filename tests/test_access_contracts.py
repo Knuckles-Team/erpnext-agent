@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _served_server(monkeypatch):
-    from scion_sdk._connector_serve import build_server
+    from scion_sdk.connector import build_server
 
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     monkeypatch.setenv("AUTH_TYPE", "none")
