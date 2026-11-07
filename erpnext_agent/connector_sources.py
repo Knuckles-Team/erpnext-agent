@@ -132,7 +132,7 @@ SCHEMA_VERSION = 2
 
 FIELD_SETS = {
     "fields_1": {
-        "docStatus": "xsd:integer",
+        "documentState": "xsd:string",
         "employeeName": "xsd:string",
         "grandTotal": "xsd:float",
         "postingDate": "xsd:date",

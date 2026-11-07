@@ -36,6 +36,15 @@ All reports run with `erpnext_run_report` (`report_name`, `filters`) and return
   `["account","debit","credit","party"]`.
 - Fiscal years: `erpnext_list_documents` `Fiscal Year`.
 
+## Document lifecycle
+Legal moves: Draft -submit-> Submitted -cancel-> Cancelled -amend-> a new Draft
+(`erpnext_amend_document`, which sets `amended_from`). Every other move is
+refused before it reaches ERPNext with `STATE_TRANSITION_REFUSED` and one reason:
+`NotDraft`, `NotSubmittable`, `NotSubmitted`, `HasSubmittedLinks` (cancel the
+linked documents first), `StaleDocument` (re-read the document and pass its
+current `modified` to `erpnext_cancel_document`), `NotCancelled` or
+`UnknownDocstatus`. To correct a cancelled document, amend it; do not recreate it.
+
 ## Gotchas
 - A report's filter names come from the report itself; when one is refused the
   error names the missing filter.

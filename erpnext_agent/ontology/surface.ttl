@@ -132,11 +132,13 @@ erpx:tool-erpnext_call_method a cp:Tool ;
 erpx:tool-erpnext_amend_document a cp:Tool ;
     rdfs:label "erpnext_amend_document" ;
     cp:componentId "erpnext-mcp/erpnext_amend_document" ;
+    :firesTransition :AmendTransition ;
     cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
 
 erpx:tool-erpnext_cancel_document a cp:Tool ;
     rdfs:label "erpnext_cancel_document" ;
     cp:componentId "erpnext-mcp/erpnext_cancel_document" ;
+    :firesTransition :CancelTransition ;
     cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
 erpx:tool-erpnext_close_follow_up a cp:Tool ;
@@ -516,6 +518,7 @@ erpx:tool-erpnext_set_value a cp:Tool ;
 erpx:tool-erpnext_submit_document a cp:Tool ;
     rdfs:label "erpnext_submit_document" ;
     cp:componentId "erpnext-mcp/erpnext_submit_document" ;
+    :firesTransition :SubmitTransition ;
     cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
 erpx:tool-erpnext_submit_salary_slips a cp:Tool ;

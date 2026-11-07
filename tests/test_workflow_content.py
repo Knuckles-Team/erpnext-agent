@@ -131,3 +131,18 @@ def test_onboarding_skill_ships_its_input_schema():
     assert {"start_date", "end_date"} <= set(spec["fiscal_year"])
     assert spec["mode"] in ("auto", "setup_wizard", "company")
     assert {"time_zone", "address", "bank", "hr", "crm"} <= set(spec)
+
+
+@pytest.mark.spec("CONNECTOR-CONTENT-R009.3")
+def test_lifecycle_guidance_names_amend_and_every_refusal_reason():
+    from erpnext_agent.lifecycle import RefusalReason
+
+    texts = [
+        (SKILLS / f"erpnext-{k}" / "SKILL.md").read_text(encoding="utf-8")
+        for k in ("order-to-cash", "procure-to-pay", "accounting")
+    ]
+    texts.append(PROMPT.read_text(encoding="utf-8"))
+    for text in texts:
+        assert "erpnext_amend_document" in text
+        for reason in RefusalReason:
+            assert reason.value in text, reason

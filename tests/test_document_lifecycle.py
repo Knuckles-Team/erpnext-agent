@@ -300,3 +300,15 @@ def test_served_submit_of_a_draft_reaches_the_server_once(monkeypatch):
         {"doctype": "Sales Invoice", "name": "SINV-1"},
     )
     assert len(fake.writes) == 1
+
+
+@pytest.mark.spec("CONN-ERPNEXT-AGENT-R011.6")
+def test_only_the_guarded_submit_posts_frappe_client_submit():
+    root = Path(__file__).resolve().parents[1] / "erpnext_agent"
+    holders = {
+        p.name
+        for p in root.rglob("*.py")
+        if "frappe.client.submit" in p.read_text(encoding="utf-8")
+        and '/api/method/frappe.client.submit"' in p.read_text(encoding="utf-8")
+    }
+    assert holders <= {"api_client_resource.py"}

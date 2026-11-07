@@ -62,10 +62,19 @@ items, prices, taxes and links carry over and the chain stays traceable.
 ## Corrections
 - A submitted document cannot be edited. `erpnext_cancel_document` reverses it
   (cancel the payment before the invoice, the invoice before the order); then
-  amend by creating a new document.
+  amend it with `erpnext_amend_document`.
 - A refused call returns the server's reason, for example
   `API error: 417 LinkValidationError: Could not find Customer: X`. Fix the field
   it names and retry; do not retry unchanged.
+
+## Document lifecycle
+Legal moves: Draft -submit-> Submitted -cancel-> Cancelled -amend-> a new Draft
+(`erpnext_amend_document`, which sets `amended_from`). Every other move is
+refused before it reaches ERPNext with `STATE_TRANSITION_REFUSED` and one reason:
+`NotDraft`, `NotSubmittable`, `NotSubmitted`, `HasSubmittedLinks` (cancel the
+linked documents first), `StaleDocument` (re-read the document and pass its
+current `modified` to `erpnext_cancel_document`), `NotCancelled` or
+`UnknownDocstatus`. To correct a cancelled document, amend it; do not recreate it.
 
 ## Never
 - Never send the invoice by email to a real customer from a test run.
