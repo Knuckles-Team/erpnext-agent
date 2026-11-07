@@ -103,7 +103,7 @@ async def test_ingest_sales_order_maps_customer_and_items(ingest):
     records = {record.record_id: record.payload for record in request.records}
     so = records["erpnext:salesorder:SO-2026-0001"]
     assert so["grandTotal"] == 1250.5
-    assert so["docStatus"] == 1
+    assert so["documentState"] == "Submitted"
     assert so["postingDate"] == "2026-07-04"
     assert "erpnext:customer:Acme_Corp" in records
     assert "erpnext:item:WIDGET-1" in records

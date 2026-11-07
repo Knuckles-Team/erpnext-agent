@@ -75,7 +75,7 @@ Every other pair is refused with `IllegalTransition` before the write request. L
 
 Terminal states: none. The persisted field is the Frappe `docstatus` integer; `documentState` in the graph mirror is derived from it. `DOCUMENT_LIFECYCLE` is the SDK descriptor built from the same table (R011.7); `execute_governed` refuses an illegal governed write before the API call. Entry point to attach point: `erpnext_agent:connector` -> `Api.submit_document` -> `transition` (erpnext_agent/lifecycle.py) -> `ApiClientBase.request` (erpnext_agent/api/api_client_base.py). Wiring row R011.6 and hot-path proof R011.6 test it.
 
-Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, six members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: SCION-GOVERNED-WRITEBACK-R007, SCION-CONNECTOR-CONTROL-R917 and, pending on a medulla branch, MEDULLA-ORCH-VOCAB-R811.
+Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, seven members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: SCION-GOVERNED-WRITEBACK-R007, SCION-CONNECTOR-CONTROL-R917 and, pending on a medulla branch, MEDULLA-ORCH-VOCAB-R811.
 
 ## Phase 2: Task approach
 

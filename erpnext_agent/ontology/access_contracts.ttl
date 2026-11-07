@@ -63,7 +63,7 @@ erp:purchaseOrderTotalBinding a ac:PropertyBinding ;
     ac:contract erp:purchaseOrderAccess ; ac:property erp:grandTotal ; ac:field "grand_total" .
 
 erp:purchaseOrderStatusBinding a ac:PropertyBinding ;
-    ac:contract erp:purchaseOrderAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+    ac:contract erp:purchaseOrderAccess ; ac:property erp:documentState ; ac:field "docstatus" .
 
 erp:customerAccess a ac:AccessContract ;
     ac:classIri erp:Customer ;
@@ -105,7 +105,7 @@ erp:salesInvoiceOutstandingBinding a ac:PropertyBinding ;
     ac:contract erp:salesInvoiceAccess ; ac:property erp:outstandingAmount ; ac:field "outstanding_amount" .
 
 erp:salesInvoiceStatusBinding a ac:PropertyBinding ;
-    ac:contract erp:salesInvoiceAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+    ac:contract erp:salesInvoiceAccess ; ac:property erp:documentState ; ac:field "docstatus" .
 
 erp:salesInvoicePostingBinding a ac:PropertyBinding ;
     ac:contract erp:salesInvoiceAccess ; ac:property erp:postingDate ; ac:field "posting_date" .
@@ -132,7 +132,7 @@ erp:purchaseInvoiceOutstandingBinding a ac:PropertyBinding ;
     ac:contract erp:purchaseInvoiceAccess ; ac:property erp:outstandingAmount ; ac:field "outstanding_amount" .
 
 erp:purchaseInvoiceStatusBinding a ac:PropertyBinding ;
-    ac:contract erp:purchaseInvoiceAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+    ac:contract erp:purchaseInvoiceAccess ; ac:property erp:documentState ; ac:field "docstatus" .
 
 erp:paymentEntryAccess a ac:AccessContract ;
     ac:classIri erp:PaymentEntry ;
@@ -150,7 +150,7 @@ erp:paymentEntryAccess a ac:AccessContract ;
     ac:costHint "medium" .
 
 erp:paymentEntryStatusBinding a ac:PropertyBinding ;
-    ac:contract erp:paymentEntryAccess ; ac:property erp:docStatus ; ac:field "docstatus" .
+    ac:contract erp:paymentEntryAccess ; ac:property erp:documentState ; ac:field "docstatus" .
 
 erp:paymentEntryPostingBinding a ac:PropertyBinding ;
     ac:contract erp:paymentEntryAccess ; ac:property erp:postingDate ; ac:field "posting_date" .

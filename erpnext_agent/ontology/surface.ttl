@@ -18,11 +18,11 @@ erpx:connector a cp:Connector ;
 
 erpx:feature-orderToCash a cp:Feature ;
     rdfs:label "Order to cash: quote, order, bill and collect from customers" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_amend_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
 
 erpx:feature-procureToPay a cp:Feature ;
     rdfs:label "Procure to pay: book and pay supplier bills" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_call_method, erpx:tool-erpnext_get_count, erpx:skill-erpnext-procure-to-pay, erpx:prompt-erp_operator .
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_amend_document, erpx:tool-erpnext_call_method, erpx:tool-erpnext_get_count, erpx:skill-erpnext-procure-to-pay, erpx:prompt-erp_operator .
 
 erpx:feature-inventory a cp:Feature ;
     rdfs:label "Item catalog and stock movements" ;
@@ -78,7 +78,7 @@ erpx:feature-recordMaintenance a cp:Feature ;
 
 erpx:feature-session a cp:Feature ;
     rdfs:label "Session and identity" ;
-    cp:realizedBy erpx:tool-erpnext_login, erpx:tool-erpnext_logout, erpx:tool-erpnext_get_logged_user, erpx:prompt-erp_operator .
+    cp:realizedBy erpx:tool-erpnext_login, erpx:tool-erpnext_logout, erpx:tool-erpnext_get_logged_user, erpx:skill-erpnext-session, erpx:prompt-erp_operator .
 
 erpx:feature-knowledgeGraphIngest a cp:Feature ;
     rdfs:label "Native knowledge-graph ingestion of ERP records" ;
@@ -129,9 +129,16 @@ erpx:tool-erpnext_call_method a cp:Tool ;
     cp:componentId "erpnext-mcp/erpnext_call_method" ;
     cp:operatesOn :DomainEntity .
 
+erpx:tool-erpnext_amend_document a cp:Tool ;
+    rdfs:label "erpnext_amend_document" ;
+    cp:componentId "erpnext-mcp/erpnext_amend_document" ;
+    :firesTransition :AmendTransition ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
+
 erpx:tool-erpnext_cancel_document a cp:Tool ;
     rdfs:label "erpnext_cancel_document" ;
     cp:componentId "erpnext-mcp/erpnext_cancel_document" ;
+    :firesTransition :CancelTransition ;
     cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
 erpx:tool-erpnext_close_follow_up a cp:Tool ;
@@ -511,6 +518,7 @@ erpx:tool-erpnext_set_value a cp:Tool ;
 erpx:tool-erpnext_submit_document a cp:Tool ;
     rdfs:label "erpnext_submit_document" ;
     cp:componentId "erpnext-mcp/erpnext_submit_document" ;
+    :firesTransition :SubmitTransition ;
     cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry, :Attendance, :LeaveAllocation, :LeaveApplication, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
 erpx:tool-erpnext_submit_salary_slips a cp:Tool ;
@@ -598,6 +606,11 @@ erpx:skill-erpnext-payroll-run a cp:Skill ;
     cp:componentId "erpnext-mcp/skill/erpnext-payroll-run" ;
     cp:appliesTo :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
+erpx:skill-erpnext-session a cp:Skill ;
+    rdfs:label "erpnext-session" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-session" ;
+    cp:appliesTo :DomainEntity .
+
 erpx:skill-erpnext-accounting a cp:Skill ;
     rdfs:label "erpnext-accounting" ;
     cp:componentId "erpnext-mcp/skill/erpnext-accounting" ;
@@ -632,6 +645,11 @@ erpx:prompt-sales_rep a cp:Prompt ;
     rdfs:label "sales_rep" ;
     cp:componentId "erpnext-mcp/prompt/sales_rep" ;
     cp:appliesTo :Lead, :Opportunity, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :Customer, :Quotation .
+
+erpx:prompt-erpnext-mcp-operator a cp:Prompt ;
+    rdfs:label "erpnext-mcp-operator" ;
+    cp:componentId "erpnext-mcp/prompt/erpnext-mcp-operator" ;
+    cp:appliesTo :DomainEntity .
 
 erpx:prompt-business_onboarding a cp:Prompt ;
     rdfs:label "business_onboarding" ;

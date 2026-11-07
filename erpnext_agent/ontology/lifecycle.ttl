@@ -1,0 +1,122 @@
+@prefix : <http://knuckles.team/kg#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# The Frappe document lifecycle as one state machine (constitution Article XXXI).
+# Every class extends a medulla core state-machine class by rdfs:subClassOf; there
+# is no owl:imports. The states, events and transitions equal the code machine in
+# erpnext_agent/lifecycle.py (checked by tests/test_lifecycle_ontology.py).
+
+:DocumentLifecycle a owl:Class ;
+    rdfs:label "document lifecycle" ;
+    rdfs:comment "The Frappe document lifecycle machine: Draft, Submitted, Cancelled. The stored field is docstatus (0, 1, 2)." ;
+    rdfs:subClassOf :StateMachine .
+
+:DocumentLifecycleState a owl:Class ;
+    rdfs:label "document lifecycle state" ;
+    rdfs:comment "A state of the document lifecycle machine." ;
+    rdfs:subClassOf :State .
+
+:DraftState a owl:Class ;
+    rdfs:label "draft" ;
+    rdfs:comment "docstatus 0: saved, not posted. Editable." ;
+    rdfs:subClassOf :DocumentLifecycleState .
+
+:SubmittedState a owl:Class ;
+    rdfs:label "submitted" ;
+    rdfs:comment "docstatus 1: posted to the ledger. Read-only." ;
+    rdfs:subClassOf :DocumentLifecycleState .
+
+:CancelledState a owl:Class ;
+    rdfs:label "cancelled" ;
+    rdfs:comment "docstatus 2: postings reversed. Amend starts a new Draft." ;
+    rdfs:subClassOf :DocumentLifecycleState .
+
+:SaveEvent a owl:Class ;
+    rdfs:label "save" ;
+    rdfs:subClassOf :TransitionEvent .
+
+:SubmitEvent a owl:Class ;
+    rdfs:label "submit" ;
+    rdfs:subClassOf :TransitionEvent .
+
+:CancelEvent a owl:Class ;
+    rdfs:label "cancel" ;
+    rdfs:subClassOf :TransitionEvent .
+
+:AmendEvent a owl:Class ;
+    rdfs:label "amend" ;
+    rdfs:subClassOf :TransitionEvent .
+
+:SubmittableGuard a owl:Class ;
+    rdfs:label "doctype is submittable" ;
+    rdfs:subClassOf :TransitionGuard .
+
+:NoSubmittedLinksGuard a owl:Class ;
+    rdfs:label "no submitted linked documents" ;
+    rdfs:subClassOf :TransitionGuard .
+
+:FreshModifiedGuard a owl:Class ;
+    rdfs:label "modified stamp is current" ;
+    rdfs:subClassOf :TransitionGuard .
+
+:SaveTransition a owl:Class ;
+    rdfs:label "save a draft" ;
+    rdfs:subClassOf :Transition ;
+    :fromState :DraftState ;
+    :toState :DraftState ;
+    :firedBy :SaveEvent .
+
+:SubmitTransition a owl:Class ;
+    rdfs:label "submit a draft" ;
+    rdfs:comment "Fired by erpnext_submit_document." ;
+    rdfs:subClassOf :Transition ;
+    :fromState :DraftState ;
+    :toState :SubmittedState ;
+    :firedBy :SubmitEvent ;
+    :guardedBy :SubmittableGuard .
+
+:CancelTransition a owl:Class ;
+    rdfs:label "cancel a submitted document" ;
+    rdfs:comment "Fired by erpnext_cancel_document." ;
+    rdfs:subClassOf :Transition ;
+    :fromState :SubmittedState ;
+    :toState :CancelledState ;
+    :firedBy :CancelEvent ;
+    :guardedBy :NoSubmittedLinksGuard, :FreshModifiedGuard .
+
+:AmendTransition a owl:Class ;
+    rdfs:label "amend a cancelled document" ;
+    rdfs:comment "Fired by erpnext_amend_document; creates a new Draft with amended_from set." ;
+    rdfs:subClassOf :Transition ;
+    :fromState :CancelledState ;
+    :toState :DraftState ;
+    :firedBy :AmendEvent .
+
+:NotDraftRefused a owl:Class ;
+    rdfs:label "refused: not a draft" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:NotSubmittableRefused a owl:Class ;
+    rdfs:label "refused: doctype is not submittable" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:NotSubmittedRefused a owl:Class ;
+    rdfs:label "refused: not submitted" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:HasSubmittedLinksRefused a owl:Class ;
+    rdfs:label "refused: has submitted linked documents" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:StaleDocumentRefused a owl:Class ;
+    rdfs:label "refused: stale modified stamp" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:NotCancelledRefused a owl:Class ;
+    rdfs:label "refused: not cancelled" ;
+    rdfs:subClassOf :TransitionRefused .
+
+:UnknownDocstatusRefused a owl:Class ;
+    rdfs:label "refused: docstatus outside 0, 1, 2" ;
+    rdfs:subClassOf :TransitionRefused .

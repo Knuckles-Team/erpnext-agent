@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2026-11-07
+
+### Added
+- Document lifecycle state machine (`erpnext_agent/lifecycle.py`): Draft, Submitted, Cancelled with
+  Save, Submit, Cancel and Amend. `erpnext_submit_document` and `erpnext_cancel_document` now refuse an
+  illegal move (`STATE_TRANSITION_REFUSED`, reasons NotDraft, NotSubmittable, NotSubmitted,
+  HasSubmittedLinks, StaleDocument, NotCancelled) before any write request. Cancel takes an optional
+  `modified` stamp. New tool `erpnext_amend_document`. Graph nodes carry `documentState`, not `docStatus`.
+- Surface backfill: tool-use contracts for all 87 tools, operator prompt and four role prompts as agent definitions, `erpnext-session` skill, scion-sdk >=0.9.1.
+
 ## [2.5.0] - 2026-11-06
 
 ### Added

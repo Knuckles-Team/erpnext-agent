@@ -11,6 +11,7 @@ from erpnext_agent.api._docs import compact as _merge
 from erpnext_agent.api._docs import data_of as _data
 from erpnext_agent.api.api_client_resource import Api as ResourceApi
 from erpnext_agent.api.api_client_resource import _doc_path
+from erpnext_agent.lifecycle import DocumentState, state_of
 
 _ATTENDANCE_TOOL = (
     "hrms.hr.doctype.employee_attendance_tool.employee_attendance_tool"
@@ -282,9 +283,7 @@ class ApiHr(ResourceApi):
         created = _data(self.request("POST", _doc_path("Attendance"), data=doc))
         if not submit:
             return created
-        return self.request(
-            "POST", "/api/method/frappe.client.submit", data={"doc": created}
-        )
+        return self.submit_document("Attendance", created["name"])
 
     def mark_bulk_attendance(
         self,
@@ -391,9 +390,7 @@ class ApiHr(ResourceApi):
         created = _data(self.request("POST", _doc_path("Leave Allocation"), data=doc))
         if not submit:
             return created
-        return self.request(
-            "POST", "/api/method/frappe.client.submit", data={"doc": created}
-        )
+        return self.submit_document("Leave Allocation", created["name"])
 
     def apply_leave(
         self,
@@ -443,9 +440,7 @@ class ApiHr(ResourceApi):
     def _decide_leave(self, name: str, status: str) -> dict:
         path = _doc_path("Leave Application", name)
         saved = _data(self.request("PUT", path, data={"status": status}))
-        return self.request(
-            "POST", "/api/method/frappe.client.submit", data={"doc": saved}
-        )
+        return self.submit_document("Leave Application", saved["name"])
 
     def get_leave_balance(self, employee: str, leave_type: str, date: str) -> dict:
         """Read an employee's remaining leave days of a type on a date.
@@ -514,9 +509,7 @@ class ApiHr(ResourceApi):
         created = _data(self.request("POST", _doc_path("Salary Structure"), data=doc))
         if not submit:
             return created
-        return self.request(
-            "POST", "/api/method/frappe.client.submit", data={"doc": created}
-        )
+        return self.submit_document("Salary Structure", created["name"])
 
     def assign_salary_structure(
         self,
@@ -552,9 +545,7 @@ class ApiHr(ResourceApi):
         )
         if not submit:
             return created
-        return self.request(
-            "POST", "/api/method/frappe.client.submit", data={"doc": created}
-        )
+        return self.submit_document("Salary Structure Assignment", created["name"])
 
     def create_payroll_entry(
         self,
@@ -624,10 +615,8 @@ class ApiHr(ResourceApi):
         POST /api/method/frappe.client.submit or run_doc_method create_salary_slips
         """
         doc = _data(self.request("GET", _doc_path("Payroll Entry", name)))
-        if int(doc.get("docstatus", 0)) == 0:
-            return self.request(
-                "POST", "/api/method/frappe.client.submit", data={"doc": doc}
-            )
+        if state_of(doc) is DocumentState.Draft:
+            return self.submit_document("Payroll Entry", name)
         return self.run_document_method("Payroll Entry", name, "create_salary_slips")
 
     def submit_salary_slips(self, name: str) -> dict:

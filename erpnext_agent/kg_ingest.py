@@ -23,6 +23,8 @@ from scion_sdk.ingest import (
     current_ingest,
 )
 
+from erpnext_agent.lifecycle import state_of
+
 _SOURCE = connector_name("erpnext_agent")
 _DOMAIN = "erpnext"
 
@@ -30,6 +32,13 @@ _BINDING = IngestBinding(connector=_SOURCE, stream=_DOMAIN)
 
 _ENTITY_RESERVED_KEYS = frozenset({"id", "node_type"})
 _RELATIONSHIP_RESERVED_KEYS = frozenset({"source", "target", "relationship"})
+
+
+def _document_state(record: dict[str, Any]) -> str | None:
+    """The lifecycle state derived from the server's ``docstatus`` (None if unread)."""
+    if record.get("docstatus") is None:
+        return None
+    return state_of(record).value
 
 
 def _to_entity(record: dict[str, Any]) -> Entity:
@@ -191,7 +200,7 @@ def _order(
         "node_type": cls,
         "name": name,
         "grandTotal": record.get("grand_total") or record.get("rounded_total"),
-        "docStatus": record.get("docstatus"),
+        "documentState": _document_state(record),
         "postingDate": record.get("transaction_date") or record.get("posting_date"),
         "status": record.get("status"),
         "currency": record.get("currency"),

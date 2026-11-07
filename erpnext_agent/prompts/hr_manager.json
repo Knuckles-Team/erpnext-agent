@@ -115,5 +115,79 @@
     "erpnext_get_document",
     "erpnext_get_count",
     "erpnext_get_value"
-  ]
+  ],
+  "agent": {
+    "kind": "business-role",
+    "business_role": "hr-manager",
+    "tools": [
+      "erpnext_create_employee",
+      "erpnext_update_employee",
+      "erpnext_get_employee",
+      "erpnext_list_employees",
+      "erpnext_relieve_employee",
+      "erpnext_create_department",
+      "erpnext_list_departments",
+      "erpnext_create_designation",
+      "erpnext_list_designations",
+      "erpnext_create_holiday_list",
+      "erpnext_add_holiday_list_weekly_offs",
+      "erpnext_get_holiday_list",
+      "erpnext_mark_attendance",
+      "erpnext_mark_bulk_attendance",
+      "erpnext_list_attendance",
+      "erpnext_add_employee_checkin",
+      "erpnext_create_leave_type",
+      "erpnext_allocate_leave",
+      "erpnext_apply_leave",
+      "erpnext_approve_leave_application",
+      "erpnext_reject_leave_application",
+      "erpnext_get_leave_balance",
+      "erpnext_create_salary_component",
+      "erpnext_create_salary_structure",
+      "erpnext_assign_salary_structure",
+      "erpnext_create_payroll_entry",
+      "erpnext_fill_payroll_employees",
+      "erpnext_create_salary_slips",
+      "erpnext_submit_salary_slips",
+      "erpnext_list_salary_slips",
+      "erpnext_get_salary_slip",
+      "erpnext_cancel_document",
+      "erpnext_get_version",
+      "erpnext_get_doctype_meta",
+      "erpnext_search_link",
+      "erpnext_list_documents",
+      "erpnext_get_document",
+      "erpnext_get_count",
+      "erpnext_get_value"
+    ],
+    "skills": [
+      "erpnext-hr",
+      "erpnext-hire-to-retire",
+      "erpnext-leave-approval",
+      "erpnext-payroll-run"
+    ],
+    "data": {
+      "reads": [
+        "erpnext-employees"
+      ],
+      "writes": [
+        "erpnext-employees"
+      ]
+    },
+    "guardrails": {
+      "approval_required": [
+        "erpnext_relieve_employee",
+        "erpnext_create_payroll_entry",
+        "erpnext_create_salary_slips",
+        "erpnext_submit_salary_slips",
+        "erpnext_cancel_document"
+      ],
+      "never": [
+        "Never delete an employee or a submitted document: relieve the employee, cancel the document"
+      ]
+    },
+    "outputs": [
+      "a short summary per action with the record names (HR-EMP-..., HR-LAP-..., HR-PRUN-...), their status and the verification read-back; for leave, the remaining balance; for payroll, slip count and totals."
+    ]
+  }
 }

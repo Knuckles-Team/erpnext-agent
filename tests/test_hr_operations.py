@@ -7,7 +7,46 @@ import pytest
 
 from erpnext_agent.api_client import Api
 
-SUBMIT = ("POST", "/api/method/frappe.client.submit")
+
+class _Store:
+    """Stateful transport: create returns a Draft, submit flips docstatus to 1."""
+
+    def __init__(self, names=None):
+        self.docs: dict[tuple[str, str], dict] = {}
+        self.calls: list[tuple[str, str]] = []
+        self.submits: list[str] = []
+        self.names = names or {}
+
+    def __call__(self, method, endpoint, params=None, data=None, files=None):
+        from urllib.parse import unquote
+
+        self.calls.append((method, endpoint))
+        if endpoint.startswith("/api/resource/"):
+            parts = [
+                unquote(p) for p in endpoint.removeprefix("/api/resource/").split("/")
+            ]
+            dt = parts[0]
+            if method == "POST":
+                name = self.names.get(dt, "NEW-1")
+                self.docs[(dt, name)] = {
+                    **data,
+                    "doctype": dt,
+                    "name": name,
+                    "docstatus": 0,
+                }
+                return {"data": dict(self.docs[(dt, name)])}
+            doc = self.docs[(dt, parts[1])]
+            if method == "PUT":
+                doc.update(data)
+            return {"data": dict(doc)}
+        if endpoint.endswith("getdoctype"):
+            return {"docs": [{"name": params["doctype"], "is_submittable": 1}]}
+        if endpoint == "/api/method/frappe.client.submit":
+            doc = data["doc"]
+            self.docs[(doc["doctype"], doc["name"])]["docstatus"] = 1
+            self.submits.append(f"{doc['doctype']}/{doc['name']}")
+            return {"message": {}}
+        raise AssertionError(endpoint)
 
 
 def _client() -> Api:
@@ -112,13 +151,10 @@ def test_department_designation_and_holiday_list():
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R008")
 def test_attendance_mark_bulk_and_list():
     client = _client()
-    draft = {"name": "HR-ATT-1", "docstatus": 0}
-    with patch.object(
-        client, "request", side_effect=[{"data": draft}, {"message": {}}]
-    ) as req:
+    store = _Store({"Attendance": "HR-ATT-1"})
+    with patch.object(client, "request", side_effect=store):
         client.mark_attendance("E1", "2026-01-05", "Present", company="C")
-    assert _calls(req) == [("POST", "/api/resource/Attendance"), SUBMIT]
-    assert req.call_args_list[1].kwargs == {"data": {"doc": draft}}
+    assert store.submits == ["Attendance/HR-ATT-1"]
     with patch.object(client, "request") as req:
         client.mark_bulk_attendance(["E1", "E2"], "2026-01-06", "Absent")
         args, kwargs = req.call_args
@@ -167,24 +203,25 @@ def test_leave_type_allocation_application_and_decision():
             ".get_leave_balance_on",
             params={"employee": "E1", "leave_type": "zz Annual", "date": "2026-02-01"},
         )
-    alloc = {"name": "HR-LAL-1"}
-    with patch.object(client, "request", side_effect=[{"data": alloc}, {}]) as req:
+    store = _Store({"Leave Allocation": "HR-LAL-1"})
+    with patch.object(client, "request", side_effect=store):
         client.allocate_leave("E1", "zz Annual", "2026-01-01", "2026-12-31", 20)
-    assert _calls(req) == [("POST", "/api/resource/Leave%20Allocation"), SUBMIT]
-    assert req.call_args_list[0].kwargs["data"]["new_leaves_allocated"] == 20
+    assert store.submits == ["Leave Allocation/HR-LAL-1"]
+    assert store.docs[("Leave Allocation", "HR-LAL-1")]["new_leaves_allocated"] == 20
     for decide, status in (
         (client.approve_leave_application, "Approved"),
         (client.reject_leave_application, "Rejected"),
     ):
-        saved = {"name": "HR-LAP-1", "status": status}
-        with patch.object(client, "request", side_effect=[{"data": saved}, {}]) as req:
+        store = _Store()
+        store.docs[("Leave Application", "HR-LAP-1")] = {
+            "doctype": "Leave Application",
+            "name": "HR-LAP-1",
+            "docstatus": 0,
+        }
+        with patch.object(client, "request", side_effect=store):
             decide("HR-LAP-1")
-        assert _calls(req) == [
-            ("PUT", "/api/resource/Leave%20Application/HR-LAP-1"),
-            SUBMIT,
-        ]
-        assert req.call_args_list[0].kwargs == {"data": {"status": status}}
-        assert req.call_args_list[1].kwargs == {"data": {"doc": saved}}
+        assert store.submits == ["Leave Application/HR-LAP-1"]
+        assert store.docs[("Leave Application", "HR-LAP-1")]["status"] == status
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R008")
@@ -202,24 +239,16 @@ def test_salary_component_structure_and_assignment():
                 "depends_on_payment_days": 1,
             },
         )
-    with patch.object(
-        client, "request", side_effect=[{"data": {"name": "S"}}, {}]
-    ) as req:
+    store = _Store({"Salary Structure": "S", "Salary Structure Assignment": "A"})
+    with patch.object(client, "request", side_effect=store):
         client.create_salary_structure(
             "S", "C", "USD", [{"salary_component": "zz Basic", "amount": 100}]
         )
-    assert _calls(req) == [("POST", "/api/resource/Salary%20Structure"), SUBMIT]
-    sent = req.call_args_list[0].kwargs["data"]
-    assert sent["__newname"] == "S" and sent["is_active"] == "Yes"
-    with patch.object(
-        client, "request", side_effect=[{"data": {"name": "A"}}, {}]
-    ) as req:
         client.assign_salary_structure("E1", "S", "2026-01-01", 1000, "C", "USD")
-    assert _calls(req) == [
-        ("POST", "/api/resource/Salary%20Structure%20Assignment"),
-        SUBMIT,
-    ]
-    assert req.call_args_list[0].kwargs["data"]["base"] == 1000
+    assert store.submits == ["Salary Structure/S", "Salary Structure Assignment/A"]
+    sent = store.docs[("Salary Structure", "S")]
+    assert sent["__newname"] == "S" and sent["is_active"] == "Yes"
+    assert store.docs[("Salary Structure Assignment", "A")]["base"] == 1000
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R008")
@@ -257,9 +286,11 @@ def test_payroll_entry_fill_create_and_submit_slips():
         "employees": rows,
         "number_of_employees": 2,
     }
-    with patch.object(client, "request", side_effect=[{"data": entry}, {}]) as req:
+    store = _Store()
+    store.docs[("Payroll Entry", "HR-PRUN-1")] = {**entry, "doctype": "Payroll Entry"}
+    with patch.object(client, "request", side_effect=store):
         client.create_salary_slips("HR-PRUN-1")
-    assert _calls(req)[1] == SUBMIT
+    assert store.submits == ["Payroll Entry/HR-PRUN-1"]
     submitted = {**entry, "docstatus": 1}
     with patch.object(client, "request", side_effect=[{"data": submitted}, {}]) as req:
         client.create_salary_slips("HR-PRUN-1")

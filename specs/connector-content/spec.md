@@ -40,6 +40,7 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 - **FR-006**: The ontology records the served surface and its links. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006`.
 - **FR-007**: The ontology locates each class's data and how medulla federates it. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007`.
 - **FR-008**: Each business role has a complete agent-definition prompt. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008`.
+- **FR-010**: The surface is complete. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010`.
 - **FR-009**: The document lifecycle machine is described in the ontology. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.1`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3`.
 
 ## Success Criteria
@@ -65,3 +66,4 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 | FR-007 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007` | [plan.md](plan.md) | T-007 | [test-spec.md](test-spec.md) |
 | FR-008 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008` | [plan.md](plan.md) | T-008 | [test-spec.md](test-spec.md) |
 | FR-009 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.1`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3` | [plan.md](plan.md) | T-009 | [test-spec.md](test-spec.md) |
+| FR-010 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010` | [plan.md](plan.md) | T-012 | [test-spec.md](test-spec.md) |

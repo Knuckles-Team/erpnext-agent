@@ -36,6 +36,15 @@ Supplier → (Purchase Order, optional) → Purchase Invoice → Payment Entry.
 5. **Wrong bill**: `erpnext_cancel_document` (cancel the payment first if one is
    allocated), then book a corrected invoice.
 
+## Document lifecycle
+Legal moves: Draft -submit-> Submitted -cancel-> Cancelled -amend-> a new Draft
+(`erpnext_amend_document`, which sets `amended_from`). Every other move is
+refused before it reaches ERPNext with `STATE_TRANSITION_REFUSED` and one reason:
+`NotDraft`, `NotSubmittable`, `NotSubmitted`, `HasSubmittedLinks` (cancel the
+linked documents first), `StaleDocument` (re-read the document and pass its
+current `modified` to `erpnext_cancel_document`), `NotCancelled` or
+`UnknownDocstatus`. To correct a cancelled document, amend it; do not recreate it.
+
 ## Verify
 - `erpnext_get_value` `Purchase Invoice` `["outstanding_amount", "status"]`.
 - `erpnext_run_report` `Accounts Payable` with `company` and `report_date`.
