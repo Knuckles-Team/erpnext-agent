@@ -4,6 +4,26 @@ from typing import Any
 from urllib.parse import quote
 
 from erpnext_agent.api.api_client_base import ApiClientBase
+from erpnext_agent.lifecycle import (
+    DocumentEvent,
+    DocumentState,
+    Guards,
+    state_of,
+    transition,
+)
+
+_AMEND_DROP = {"name", "docstatus", "modified", "creation", "amended_from"}
+_AMEND_ROW_DROP = {
+    "name",
+    "docstatus",
+    "modified",
+    "creation",
+    "parent",
+    "parenttype",
+    "parentfield",
+    "owner",
+    "modified_by",
+}
 
 
 def _doc_path(doctype: str, name: str | None = None) -> str:
@@ -100,30 +120,103 @@ class Api(ApiClientBase):
                 params[key] = value
         return params
 
+    def _read_for_transition(self, doctype: str, name: str) -> dict:
+        doc = self.request("GET", _doc_path(doctype, name))
+        current = doc.get("data", doc) if isinstance(doc, dict) else doc
+        return current if isinstance(current, dict) else {}
+
     def submit_document(self, doctype: str, name: str) -> dict:
         """Submit a saved draft (docstatus 0 -> 1), posting its ledger entries.
 
         POST /api/method/frappe.client.submit
 
-        Reads the current draft first so the submit carries its latest
-        ``modified`` stamp (Frappe refuses a stale document).
+        Refused before the POST unless the document is a Draft of a
+        submittable doctype (explicit document lifecycle machine). The draft is
+        read first so the submit carries its latest ``modified`` stamp.
         """
-        doc = self.request("GET", _doc_path(doctype, name))
-        current = doc.get("data", doc) if isinstance(doc, dict) else doc
+        current = self._read_for_transition(doctype, name)
+        state = state_of({"doctype": doctype, "name": name, **current})
+        guards = Guards(doctype=doctype, name=name)
+        if state is DocumentState.Draft:
+            meta = self.get_doctype_meta(doctype)
+            guards = Guards(
+                doctype=doctype,
+                name=name,
+                is_submittable=bool(int(meta.get("is_submittable") or 0)),
+            )
+        transition(state, DocumentEvent.Submit, guards)
         return self.request(
             "POST", "/api/method/frappe.client.submit", data={"doc": current}
         )
 
-    def cancel_document(self, doctype: str, name: str) -> dict:
+    def cancel_document(
+        self, doctype: str, name: str, modified: str | None = None
+    ) -> dict:
         """Cancel a submitted document (docstatus 1 -> 2), reversing its postings.
 
         POST /api/method/frappe.client.cancel
+
+        Refused before the POST unless the document is Submitted, has no
+        submitted linked documents and, when ``modified`` (the stamp the caller
+        read) is given, is still at that stamp.
         """
+        current = self._read_for_transition(doctype, name)
+        state = state_of({"doctype": doctype, "name": name, **current})
+        links: list = []
+        if state is DocumentState.Submitted:
+            links = self._submitted_links(doctype, name)
+        transition(
+            state,
+            DocumentEvent.Cancel,
+            Guards(
+                doctype=doctype,
+                name=name,
+                submitted_links=links,
+                expected_modified=modified,
+                server_modified=current.get("modified"),
+            ),
+        )
         return self.request(
             "POST",
             "/api/method/frappe.client.cancel",
             data={"doctype": doctype, "name": name},
         )
+
+    def _submitted_links(self, doctype: str, name: str) -> list[dict]:
+        raw = self.request(
+            "GET",
+            "/api/method/frappe.desk.form.linked_with.get_submitted_linked_docs",
+            params={"doctype": doctype, "name": name},
+        )
+        msg = raw.get("message", raw) if isinstance(raw, dict) else raw
+        docs = msg.get("docs", []) if isinstance(msg, dict) else (msg or [])
+        return [d for d in docs if isinstance(d, dict)]
+
+    def amend_document(self, doctype: str, name: str) -> dict:
+        """Amend a cancelled document: create a new Draft with ``amended_from`` set.
+
+        POST /api/resource/<doctype>
+
+        Refused before the POST unless the document is Cancelled.
+        """
+        current = self._read_for_transition(doctype, name)
+        state = state_of({"doctype": doctype, "name": name, **current})
+        transition(state, DocumentEvent.Amend, Guards(doctype=doctype, name=name))
+        draft = {k: v for k, v in current.items() if k not in _AMEND_DROP}
+        draft = {
+            k: (
+                [
+                    {kk: vv for kk, vv in row.items() if kk not in _AMEND_ROW_DROP}
+                    for row in v
+                    if isinstance(row, dict)
+                ]
+                if isinstance(v, list) and v and all(isinstance(r, dict) for r in v)
+                else v
+            )
+            for k, v in draft.items()
+        }
+        draft["amended_from"] = name
+        return self.request("POST", _doc_path(doctype), data=draft)
 
     def get_count(self, doctype: str, filters: list | dict | None = None) -> dict:
         """Count the documents of a DocType that match the filters.

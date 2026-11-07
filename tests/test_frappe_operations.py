@@ -17,25 +17,30 @@ def _client() -> Api:
 def test_submit_reads_the_current_draft_then_submits_it():
     client = _client()
     draft = {"doctype": "Sales Invoice", "name": "SINV-1", "modified": "t"}
+    meta = {"docs": [{"name": "Sales Invoice", "is_submittable": 1}]}
     with patch.object(
-        client, "request", side_effect=[{"data": draft}, {"message": {}}]
+        client, "request", side_effect=[{"data": draft}, meta, {"message": {}}]
     ) as req:
         client.submit_document("Sales Invoice", "SINV-1")
     assert req.call_args_list[0].args == ("GET", "/api/resource/Sales%20Invoice/SINV-1")
-    assert req.call_args_list[1].args == ("POST", "/api/method/frappe.client.submit")
-    assert req.call_args_list[1].kwargs == {"data": {"doc": draft}}
+    assert req.call_args_list[-1].args == ("POST", "/api/method/frappe.client.submit")
+    assert req.call_args_list[-1].kwargs == {"data": {"doc": draft}}
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-R005")
 def test_lifecycle_and_value_operations_map_to_frappe_client():
     client = _client()
-    with patch.object(client, "request") as req:
+    submitted = {"data": {"docstatus": 1, "modified": "t"}}
+    with patch.object(
+        client, "request", side_effect=[submitted, {"message": {"docs": []}}, {}]
+    ) as req:
         client.cancel_document("Payment Entry", "PAY-1")
         req.assert_called_with(
             "POST",
             "/api/method/frappe.client.cancel",
             data={"doctype": "Payment Entry", "name": "PAY-1"},
         )
+    with patch.object(client, "request") as req:
         client.get_count("Employee", {"company": "C"})
         req.assert_called_with(
             "GET",
@@ -173,3 +178,21 @@ def test_refusal_carries_the_server_reason_not_the_traceback():
         str(frappe_error(502, "<html>bad gateway</html>"))
         == "API error: 502: no server message"
     )
+
+
+@pytest.mark.spec("CONN-ERPNEXT-AGENT-R011.4")
+def test_amend_is_served_as_its_own_tool(monkeypatch):
+    import asyncio
+
+    from fastmcp import Client
+    from scion_sdk._connector_serve import build_server
+
+    monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
+    monkeypatch.setenv("AUTH_TYPE", "none")
+    _, mcp = build_server("erpnext_agent", command_args=["--transport", "stdio"])
+
+    async def names():
+        async with Client(mcp) as c:
+            return {t.name for t in await c.list_tools()}
+
+    assert "erpnext_amend_document" in asyncio.run(names())

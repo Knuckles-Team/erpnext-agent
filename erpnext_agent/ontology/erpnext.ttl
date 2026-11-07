@@ -429,6 +429,11 @@
     rdfs:comment "Frappe submission state: 0=Draft, 1=Submitted, 2=Cancelled (docstatus)." ;
     rdfs:range xsd:integer .
 
+:documentState a owl:DatatypeProperty ;
+    rdfs:label "document state" ;
+    rdfs:comment "Document lifecycle state derived from Frappe docstatus: Draft (0), Submitted (1) or Cancelled (2)." ;
+    rdfs:range xsd:string .
+
 :postingDate a owl:DatatypeProperty ;
     rdfs:label "posting date" ;
     rdfs:comment "Accounting posting/transaction date of an Invoice or order (posting_date / transaction_date)." ;

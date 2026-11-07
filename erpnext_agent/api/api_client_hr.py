@@ -11,6 +11,7 @@ from erpnext_agent.api._docs import compact as _merge
 from erpnext_agent.api._docs import data_of as _data
 from erpnext_agent.api.api_client_resource import Api as ResourceApi
 from erpnext_agent.api.api_client_resource import _doc_path
+from erpnext_agent.lifecycle import DocumentState, state_of
 
 _ATTENDANCE_TOOL = (
     "hrms.hr.doctype.employee_attendance_tool.employee_attendance_tool"
@@ -624,7 +625,7 @@ class ApiHr(ResourceApi):
         POST /api/method/frappe.client.submit or run_doc_method create_salary_slips
         """
         doc = _data(self.request("GET", _doc_path("Payroll Entry", name)))
-        if int(doc.get("docstatus", 0)) == 0:
+        if state_of(doc) is DocumentState.Draft:
             return self.request(
                 "POST", "/api/method/frappe.client.submit", data={"doc": doc}
             )

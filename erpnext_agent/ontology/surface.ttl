@@ -18,11 +18,11 @@ erpx:connector a cp:Connector ;
 
 erpx:feature-orderToCash a cp:Feature ;
     rdfs:label "Order to cash: quote, order, bill and collect from customers" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_make_mapped_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_amend_document, erpx:tool-erpnext_get_value, erpx:tool-erpnext_call_method, erpx:tool-erpnext_upload_file, erpx:skill-erpnext-order-to-cash, erpx:prompt-erp_operator, erpx:prompt-sales_rep .
 
 erpx:feature-procureToPay a cp:Feature ;
     rdfs:label "Procure to pay: book and pay supplier bills" ;
-    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_call_method, erpx:tool-erpnext_get_count, erpx:skill-erpnext-procure-to-pay, erpx:prompt-erp_operator .
+    cp:realizedBy erpx:tool-erpnext_create_document, erpx:tool-erpnext_submit_document, erpx:tool-erpnext_cancel_document, erpx:tool-erpnext_amend_document, erpx:tool-erpnext_call_method, erpx:tool-erpnext_get_count, erpx:skill-erpnext-procure-to-pay, erpx:prompt-erp_operator .
 
 erpx:feature-inventory a cp:Feature ;
     rdfs:label "Item catalog and stock movements" ;
@@ -128,6 +128,11 @@ erpx:tool-erpnext_call_method a cp:Tool ;
     rdfs:label "erpnext_call_method" ;
     cp:componentId "erpnext-mcp/erpnext_call_method" ;
     cp:operatesOn :DomainEntity .
+
+erpx:tool-erpnext_amend_document a cp:Tool ;
+    rdfs:label "erpnext_amend_document" ;
+    cp:componentId "erpnext-mcp/erpnext_amend_document" ;
+    cp:operatesOn :Quotation, :SalesOrder, :PurchaseOrder, :SalesInvoice, :PurchaseInvoice, :PaymentEntry, :StockEntry .
 
 erpx:tool-erpnext_cancel_document a cp:Tool ;
     rdfs:label "erpnext_cancel_document" ;
