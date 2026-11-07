@@ -26,3 +26,9 @@ compares the parsed contracts with the served synthetic supplier and purchase-or
 ## Rows awaiting bound tests
 - `CONN-ERPNEXT-AGENT-R003`: planned proof `tests/test_access_contracts.py::test_supplier_rows_match_recorded_response`. Expected: rows read through the declared supplier contract equal the recorded response rows with key name and label supplier_name. Refusal: a row missing the key field name fails the comparison.
 - `CONN-ERPNEXT-AGENT-R004`: planned proof `tests/test_access_contracts.py::test_supplier_and_purchase_order_fields_match_recorded_fixture`. Expected: the served tool returns exactly the contract fields for the recorded Supplier and Purchase Order rows. Refusal: a field outside the pinned contract set in the recorded row fails the exact-fields assertion.
+
+## Adoption of scion-sdk 0.10.0 (`CONN-ERPNEXT-AGENT-R012`)
+
+| Requirement | Test | Observation |
+|---|---|---|
+| `CONN-ERPNEXT-AGENT-R012` | `tests/test_scion_sdk_0_10_imports.py::test_every_scion_sdk_import_resolves_on_the_pinned_release` | Every `scion_sdk` import resolves on the pinned release; a removed path fails the test. |
