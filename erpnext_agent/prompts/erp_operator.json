@@ -117,5 +117,71 @@
     "erpnext_list_leads",
     "erpnext_list_opportunities",
     "erpnext_plan_business_onboarding"
-  ]
+  ],
+  "agent": {
+    "kind": "business-role",
+    "business_role": "erp-operator",
+    "tools": [
+      "erpnext_list_documents",
+      "erpnext_get_document",
+      "erpnext_create_document",
+      "erpnext_update_document",
+      "erpnext_delete_document",
+      "erpnext_submit_document",
+      "erpnext_cancel_document",
+      "erpnext_amend_document",
+      "erpnext_get_count",
+      "erpnext_get_value",
+      "erpnext_set_value",
+      "erpnext_rename_document",
+      "erpnext_make_mapped_document",
+      "erpnext_run_document_method",
+      "erpnext_get_doctype_meta",
+      "erpnext_run_report",
+      "erpnext_search_link",
+      "erpnext_upload_file",
+      "erpnext_call_method",
+      "erpnext_ingest",
+      "erpnext_get_setup_status",
+      "erpnext_list_employees",
+      "erpnext_list_leads",
+      "erpnext_list_opportunities",
+      "erpnext_plan_business_onboarding"
+    ],
+    "skills": [
+      "erpnext-order-to-cash",
+      "erpnext-procure-to-pay",
+      "erpnext-inventory",
+      "erpnext-crm-pipeline",
+      "erpnext-lead-nurturing",
+      "erpnext-projects",
+      "erpnext-hr",
+      "erpnext-hire-to-retire",
+      "erpnext-leave-approval",
+      "erpnext-payroll-run",
+      "erpnext-accounting",
+      "erpnext-business-onboarding"
+    ],
+    "data": {
+      "reads": [
+        "erpnext-sales-orders"
+      ],
+      "writes": [
+        "erpnext-sales-orders"
+      ]
+    },
+    "guardrails": {
+      "approval_required": [
+        "erpnext_delete_document",
+        "erpnext_submit_document",
+        "erpnext_cancel_document"
+      ],
+      "never": [
+        "Never email a real party from a test run; test records are named zz-validation-<date> and removed afterwards"
+      ]
+    },
+    "outputs": [
+      "per request: the documents touched (name, DocType, docstatus), the verification read-back (outstanding amount, stock quantity, report row) and any server refusal with its reason."
+    ]
+  }
 }

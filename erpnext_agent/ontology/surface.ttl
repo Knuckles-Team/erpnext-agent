@@ -78,7 +78,7 @@ erpx:feature-recordMaintenance a cp:Feature ;
 
 erpx:feature-session a cp:Feature ;
     rdfs:label "Session and identity" ;
-    cp:realizedBy erpx:tool-erpnext_login, erpx:tool-erpnext_logout, erpx:tool-erpnext_get_logged_user, erpx:prompt-erp_operator .
+    cp:realizedBy erpx:tool-erpnext_login, erpx:tool-erpnext_logout, erpx:tool-erpnext_get_logged_user, erpx:skill-erpnext-session, erpx:prompt-erp_operator .
 
 erpx:feature-knowledgeGraphIngest a cp:Feature ;
     rdfs:label "Native knowledge-graph ingestion of ERP records" ;
@@ -606,6 +606,11 @@ erpx:skill-erpnext-payroll-run a cp:Skill ;
     cp:componentId "erpnext-mcp/skill/erpnext-payroll-run" ;
     cp:appliesTo :SalaryComponent, :SalaryStructure, :SalaryStructureAssignment, :PayrollEntry, :SalarySlip .
 
+erpx:skill-erpnext-session a cp:Skill ;
+    rdfs:label "erpnext-session" ;
+    cp:componentId "erpnext-mcp/skill/erpnext-session" ;
+    cp:appliesTo :DomainEntity .
+
 erpx:skill-erpnext-accounting a cp:Skill ;
     rdfs:label "erpnext-accounting" ;
     cp:componentId "erpnext-mcp/skill/erpnext-accounting" ;
@@ -640,6 +645,11 @@ erpx:prompt-sales_rep a cp:Prompt ;
     rdfs:label "sales_rep" ;
     cp:componentId "erpnext-mcp/prompt/sales_rep" ;
     cp:appliesTo :Lead, :Opportunity, :SalesStage, :OpportunityType, :OpportunityLostReason, :ErpCommunication, :FollowUpTodo, :Customer, :Quotation .
+
+erpx:prompt-erpnext-mcp-operator a cp:Prompt ;
+    rdfs:label "erpnext-mcp-operator" ;
+    cp:componentId "erpnext-mcp/prompt/erpnext-mcp-operator" ;
+    cp:appliesTo :DomainEntity .
 
 erpx:prompt-business_onboarding a cp:Prompt ;
     rdfs:label "business_onboarding" ;

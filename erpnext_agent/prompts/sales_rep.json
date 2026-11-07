@@ -98,5 +98,65 @@
     "erpnext_get_document",
     "erpnext_get_count",
     "erpnext_get_value"
-  ]
+  ],
+  "agent": {
+    "kind": "business-role",
+    "business_role": "sales-rep",
+    "tools": [
+      "erpnext_create_lead",
+      "erpnext_update_lead",
+      "erpnext_qualify_lead",
+      "erpnext_list_leads",
+      "erpnext_create_opportunity_from_lead",
+      "erpnext_update_opportunity_stage",
+      "erpnext_declare_opportunity_lost",
+      "erpnext_create_opportunity_lost_reason",
+      "erpnext_list_opportunities",
+      "erpnext_make_customer_from_lead",
+      "erpnext_make_customer_from_opportunity",
+      "erpnext_create_sales_stage",
+      "erpnext_list_sales_stages",
+      "erpnext_create_opportunity_type",
+      "erpnext_list_opportunity_types",
+      "erpnext_log_communication",
+      "erpnext_create_follow_up",
+      "erpnext_list_follow_ups",
+      "erpnext_close_follow_up",
+      "erpnext_make_mapped_document",
+      "erpnext_create_document",
+      "erpnext_submit_document",
+      "erpnext_get_doctype_meta",
+      "erpnext_search_link",
+      "erpnext_list_documents",
+      "erpnext_get_document",
+      "erpnext_get_count",
+      "erpnext_get_value"
+    ],
+    "skills": [
+      "erpnext-lead-nurturing",
+      "erpnext-crm-pipeline",
+      "erpnext-order-to-cash"
+    ],
+    "data": {
+      "reads": [
+        "erpnext-leads",
+        "erpnext-opportunities"
+      ],
+      "writes": [
+        "erpnext-leads",
+        "erpnext-opportunities"
+      ]
+    },
+    "guardrails": {
+      "approval_required": [
+        "erpnext_submit_document"
+      ],
+      "never": [
+        "Never email, message or call a real prospect from the agent; log the touch and leave sending to a person unless the owner approved an outbound channel"
+      ]
+    },
+    "outputs": [
+      "pipeline summary (open leads, qualified leads, opportunities by stage with amounts and expected close), the actions taken with record names, and the next follow-ups due."
+    ]
+  }
 }

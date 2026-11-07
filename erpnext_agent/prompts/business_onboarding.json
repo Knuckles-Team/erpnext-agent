@@ -96,5 +96,61 @@
     "erpnext_get_document",
     "erpnext_get_count",
     "erpnext_get_value"
-  ]
+  ],
+  "agent": {
+    "kind": "business-role",
+    "business_role": "business-onboarding",
+    "tools": [
+      "erpnext_get_setup_status",
+      "erpnext_list_timezones",
+      "erpnext_list_chart_of_accounts_templates",
+      "erpnext_plan_business_onboarding",
+      "erpnext_apply_business_onboarding",
+      "erpnext_verify_business_onboarding",
+      "erpnext_complete_setup_wizard",
+      "erpnext_create_company",
+      "erpnext_create_fiscal_year",
+      "erpnext_create_address",
+      "erpnext_create_bank",
+      "erpnext_create_bank_account",
+      "erpnext_set_tax_id",
+      "erpnext_create_holiday_list",
+      "erpnext_create_department",
+      "erpnext_create_designation",
+      "erpnext_create_sales_stage",
+      "erpnext_create_opportunity_type",
+      "erpnext_get_doctype_meta",
+      "erpnext_search_link",
+      "erpnext_list_documents",
+      "erpnext_get_document",
+      "erpnext_get_count",
+      "erpnext_get_value"
+    ],
+    "skills": [
+      "erpnext-business-onboarding",
+      "erpnext-hr",
+      "erpnext-crm-pipeline",
+      "erpnext-accounting"
+    ],
+    "data": {
+      "reads": [
+        "erpnext-employees"
+      ],
+      "writes": []
+    },
+    "guardrails": {
+      "approval_required": [
+        "erpnext_apply_business_onboarding",
+        "erpnext_complete_setup_wizard"
+      ],
+      "never": [
+        "Never apply without an approved dry run of the same spec",
+        "Never complete the site's setup wizard (erpnext_complete_setup_wizard or mode setup_wizard) without the owner's real legal details and explicit approval; use mode company for extra or test companies",
+        "Never invent legal names, tax IDs or bank numbers"
+      ]
+    },
+    "outputs": [
+      "the validated spec, the dry-run plan table (step, record, status), the applied steps, and the verification result (verified true, nothing missing)."
+    ]
+  }
 }
