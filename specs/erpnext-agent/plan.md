@@ -77,6 +77,16 @@ Terminal states: none. The persisted field is the Frappe `docstatus` integer; `d
 
 Types: `DocumentState` (StrEnum, three members), `DocumentEvent` (StrEnum, four members), `RefusalReason` (StrEnum, seven members), `IllegalTransition` (error with doctype, name, state, event, reason). The module carries no I/O. Cross-repo dependencies: SCION-GOVERNED-WRITEBACK-R007, SCION-CONNECTOR-CONTROL-R917 and, pending on a medulla branch, MEDULLA-ORCH-VOCAB-R811.
 
+### Adoption of scion-sdk 0.10.0 (CONN-ERPNEXT-AGENT-R012)
+
+- Owner. This repository, the import lines named in `CONN-ERPNEXT-AGENT-R012`. The paths belong to scion-sdk.
+- Cohesion. The import edits, the pin and the lock change together and sit in one change.
+- Dependency direction. The connector imports public modules of the SDK units; no import points to a private module.
+- Interface depth. The connector uses the public surface only.
+- Special cases. None. Every removed path takes the same replacement, with no alias.
+- State. None.
+- Environment. None. The pin is package metadata, not environment code.
+
 ## Phase 2: Task approach
 
 `tasks.md` holds one task line per row, producer first.
