@@ -26,13 +26,15 @@ def _t():
 
 def _subs(triples, parent):
     return {
-        s.removeprefix(CONNECTOR_NS) for s, p, o in triples if p == SUB and o == K + parent
+        s.removeprefix(CONNECTOR_NS)
+        for s, p, o in triples
+        if p == SUB and o in (K + parent, CONNECTOR_NS + parent)
     }
 
 
 def _val(triples, s, p):
     return {
-        o.removeprefix(K)
+        o.removeprefix(K).removeprefix(CONNECTOR_NS)
         for a, b, o in triples
         if a == CONNECTOR_NS + s and b in (K + p, CONNECTOR_NS + p)
     }

@@ -68,10 +68,19 @@ def test_every_class_rolls_up_to_core_by_subclassing_never_import():
             supers.setdefault(s, set()).add(o)
     for s, p, o in triples:
         if p == RDF_TYPE and o == OWL_CLASS:
-            local = s.removeprefix(CORE_NAMESPACE)
+            local = s.rsplit("#", 1)[-1]
             if local in core_reused:
                 continue
-            assert any(u.startswith(CORE_NAMESPACE) for u in supers.get(s, ())), local
+            todo, seen, reached = [s], set(), False
+            while todo and not reached:
+                cur = todo.pop()
+                if cur in seen:
+                    continue
+                seen.add(cur)
+                for u in supers.get(cur, ()):
+                    reached = reached or u.startswith(CORE_NAMESPACE)
+                    todo.append(u)
+            assert reached, local
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006")
