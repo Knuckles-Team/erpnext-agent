@@ -1,4 +1,4 @@
-@prefix ac: <https://knuckles-team.github.io/scion-sdk/access#> .
+@prefix ac: <https://knuckles-team.github.io/agent-connector-sdk/access#> .
 @prefix erp: <http://knuckles.team/kg#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
