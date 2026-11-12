@@ -1,4 +1,4 @@
-"""Epistemic-graph typed-node ingestion -- Wire-First coverage for erpnext-agent.
+"""Medulla typed-node ingestion -- Wire-First coverage for erpnext-agent.
 
 Exercises the real ``ingest_entities`` / ``ingest_doctype`` seam against a fake
 ``scion_sdk.ingest`` transport (no engine required). The real SDK request

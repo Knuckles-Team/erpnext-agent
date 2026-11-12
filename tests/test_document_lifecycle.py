@@ -249,7 +249,7 @@ def test_no_module_outside_lifecycle_compares_docstatus_with_an_integer():
 
 
 def _call(monkeypatch, fake, tool, args):
-    from scion_sdk._connector_serve import build_server
+    from scion_sdk.connector import build_server
 
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     monkeypatch.setenv("AUTH_TYPE", "none")

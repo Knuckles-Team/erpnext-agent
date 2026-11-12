@@ -185,7 +185,7 @@ def test_amend_is_served_as_its_own_tool(monkeypatch):
     import asyncio
 
     from fastmcp import Client
-    from scion_sdk._connector_serve import build_server
+    from scion_sdk.connector import build_server
 
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     monkeypatch.setenv("AUTH_TYPE", "none")
