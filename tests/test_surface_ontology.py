@@ -17,8 +17,8 @@ SKILLS = ROOT / "erpnext_agent" / "skills"
 PROMPTS = ROOT / "erpnext_agent" / "prompts"
 RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
-CP = "http://knuckles.team/kg/connector-pack#"
-VG = "http://knuckles.team/kg/virtual-graph#"
+CP = "https://knuckles-team.github.io/ontology/connector-pack#"
+VG = "https://knuckles-team.github.io/ontology/virtual-graph#"
 OWL_CLASS = "http://www.w3.org/2002/07/owl#Class"
 OWL_IMPORTS = "http://www.w3.org/2002/07/owl#imports"
 
@@ -109,8 +109,8 @@ def test_every_domain_class_has_a_live_virtual_authority():
     served = {o for s, p, o in fed if p == VG + "authorityFor" and s in authorities}
     # Abstract parents (Invoice) and computed outputs (ErpReport) have no own records.
     assert classes - served == {
-        CORE_NAMESPACE + "Invoice",
-        CORE_NAMESPACE + "ErpReport",
+        "https://knuckles-team.github.io/ontology/connector/erpnext#Invoice",
+        "https://knuckles-team.github.io/ontology/connector/erpnext#ErpReport",
     }
     for authority in authorities:
         mapping = {

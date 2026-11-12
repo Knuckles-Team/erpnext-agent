@@ -12,7 +12,8 @@ from erpnext_agent.lifecycle import (
     RefusalReason,
 )
 
-K = "http://knuckles.team/kg#"
+K = "https://knuckles-team.github.io/ontology/core#"
+CONNECTOR_NS = "https://knuckles-team.github.io/ontology/connector/erpnext#"
 SUB = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
 TTL = (
     Path(__file__).resolve().parents[1] / "erpnext_agent" / "ontology" / "lifecycle.ttl"
@@ -24,11 +25,17 @@ def _t():
 
 
 def _subs(triples, parent):
-    return {s.removeprefix(K) for s, p, o in triples if p == SUB and o == K + parent}
+    return {
+        s.removeprefix(CONNECTOR_NS) for s, p, o in triples if p == SUB and o == K + parent
+    }
 
 
 def _val(triples, s, p):
-    return {o.removeprefix(K) for a, b, o in triples if a == K + s and b == K + p}
+    return {
+        o.removeprefix(K)
+        for a, b, o in triples
+        if a == CONNECTOR_NS + s and b in (K + p, CONNECTOR_NS + p)
+    }
 
 
 @pytest.mark.spec("CONNECTOR-CONTENT-R009.1")
@@ -55,7 +62,7 @@ def test_ontology_states_and_transitions_equal_the_code_machine():
     }
     assert _subs(t, "TransitionEvent") == {f"{e.value}Event" for e in DocumentEvent}
     assert _subs(t, "Transition") == {f"{e.value}Transition" for e in DocumentEvent}
-    assert _subs(t, "TransitionRefused") == {f"{r.value}Refused" for r in RefusalReason}
+    assert _subs(t, "RefusalCode") == {f"{r.value}Refused" for r in RefusalReason}
     for (state, event), target in TRANSITIONS.items():
         name = f"{event.value}Transition"
         assert _val(t, name, "fromState") == {f"{state.value}State"}
