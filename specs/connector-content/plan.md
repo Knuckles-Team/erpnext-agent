@@ -57,7 +57,7 @@ The repository pre-commit hooks apply: `ruff-format`, `connector-standard`, `sec
 ## Production caller chain
 
 1. `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001`: the erpnext-mcp console script (scion_sdk.cli:serve) loads the scion_sdk.connector entry point erpnext_agent:connector (erpnext_agent/__init__.py:89), and the SDK build_server serves the packaged skills, ontology and prompts as resources and prompts.
-2. `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`: (planned) the connector manifest generator in the pipelines repo (pipelines_hooks/connector/generate.py) reads erpnext_agent/connector_sources.py and the ontology, and writes connector_manifest.yml at the repo root, which does not exist yet; the manifest is consumed by the connector manifest gate.
+2. `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`: `erpnext_agent/connector_sources.py` `SCHEMA_MAPPINGS` maps the Supplier, Item, PurchaseOrder and Customer doctypes to the medulla core classes Supplier, SupplyChainItem, PurchaseOrder and Customer; the consumer is MEDULLA-CQ-XSRC-R002.7.
 3. `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008`: the `scion_sdk.prompt_providers` entry point (`erpnext-agent = erpnext_agent.prompts`) serves each JSON prompt under erpnext_agent/prompts/ as an MCP prompt whose text is `instructions.core_directive` (scion_sdk.mcp._content_prompts); erpnext_agent/ontology/surface.ttl links the prompt to its skills and tools by feature.
 4. `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`: the `scion_sdk.ontology_providers` entry point federates erpnext_agent/ontology/lifecycle.ttl with the other ontology files; the same entry point serves surface.ttl, and the SDK serves the amended skills and the `erp_operator` prompt.
 

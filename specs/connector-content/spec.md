@@ -23,17 +23,17 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 **Acceptance Scenarios**:
 
 1. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` (default content) is exercised, **Then** `resources/list` includes `skill://` and `ontology://`; `prompts/list` includes each packaged prompt.
-2. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` (resolve the manifest ontology classes for supplier, item, purchase order and customer) is exercised, **Then** resolve the manifest ontology classes for supplier, item, purchase order and customer.
+2. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` (resolve the ontology classes for supplier, item, purchase order and customer) is exercised, **Then** resolve the ontology classes for supplier, item, purchase order and customer.
 
 ### Edge Cases
 
 - If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` is not met, its proving test fails: default content.
-- If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` is not met, its proving test fails: resolve the manifest ontology classes for supplier, item, purchase order and customer.
+- If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` is not met, its proving test fails: resolve the ontology classes for supplier, item, purchase order and customer.
 
 ## Requirements
 
 - **FR-001**: Default content. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001`.
-- **FR-002**: Resolve the manifest ontology classes for supplier, item, purchase order and customer. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`.
+- **FR-002**: Resolve the ontology classes for supplier, item, purchase order and customer. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`.
 - **FR-003**: Proven business workflows ship as served skills. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R003`.
 - **FR-004**: The operator prompt names the served tools and the workflow skills. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R004`.
 - **FR-005**: Every ontology class rolls up to medulla core by subclassing. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005`.
@@ -46,7 +46,7 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 ## Success Criteria
 
 - **SC-001**: `resources/list` includes `skill://` and `ontology://`; `prompts/list` includes each packaged prompt. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001`.
-- **SC-002**: Resolve the manifest ontology classes for supplier, item, purchase order and customer. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`.
+- **SC-002**: Resolve the ontology classes for supplier, item, purchase order and customer. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`.
 
 ## Assumptions
 
