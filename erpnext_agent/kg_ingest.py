@@ -1,4 +1,4 @@
-"""Epistemic-graph ingestion for ERPNext / Frappe records.
+"""Medulla ingestion for ERPNext / Frappe records.
 
 CONCEPT:AU-KG.ingest.enterprise-source-extractor. Connector-specific mappers emit
 canonical node_type nodes and relationship edges. ``scion_sdk.ingest`` --

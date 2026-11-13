@@ -1,6 +1,6 @@
-@prefix : <http://knuckles.team/kg#> .
-@prefix vg: <http://knuckles.team/kg/virtual-graph#> .
-@prefix erpx: <http://knuckles.team/kg/erpnext#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/erpnext#> .
+@prefix vg: <https://knuckles-team.github.io/ontology/virtual-graph#> .
+@prefix erpx: <https://knuckles-team.github.io/ontology/connector/erpnext#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 

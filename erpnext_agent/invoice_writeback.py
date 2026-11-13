@@ -20,11 +20,11 @@ from medulla.generated.write_back import (
     WriteBackOutcome,
 )
 from scion_erp_guard.bindings import _request
+from scion_sdk.ports.writeback_models import DryRunObservation, SourceSnapshot
 from scion_sdk.writeback.errors import (
     ChangeSetValidationError,
     OutcomeUncertainError,
 )
-from scion_sdk.writeback.models import DryRunObservation, SourceSnapshot
 
 from erpnext_agent.invoice_guard_client import InvoiceGuardClient, InvoiceGuardOutcome
 

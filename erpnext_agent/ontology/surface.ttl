@@ -1,6 +1,7 @@
-@prefix : <http://knuckles.team/kg#> .
-@prefix cp: <http://knuckles.team/kg/connector-pack#> .
-@prefix erpx: <http://knuckles.team/kg/erpnext#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/erpnext#> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
+@prefix cp: <https://knuckles-team.github.io/ontology/connector-pack#> .
+@prefix erpx: <https://knuckles-team.github.io/ontology/connector/erpnext#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Connector surface of erpnext-mcp in the medulla connector-pack vocabulary:
@@ -127,7 +128,7 @@ erpx:tool-erpnext_assign_salary_structure a cp:Tool ;
 erpx:tool-erpnext_call_method a cp:Tool ;
     rdfs:label "erpnext_call_method" ;
     cp:componentId "erpnext-mcp/erpnext_call_method" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_amend_document a cp:Tool ;
     rdfs:label "erpnext_amend_document" ;
@@ -300,7 +301,7 @@ erpx:tool-erpnext_get_count a cp:Tool ;
 erpx:tool-erpnext_get_doctype_meta a cp:Tool ;
     rdfs:label "erpnext_get_doctype_meta" ;
     cp:componentId "erpnext-mcp/erpnext_get_doctype_meta" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_get_document a cp:Tool ;
     rdfs:label "erpnext_get_document" ;
@@ -325,7 +326,7 @@ erpx:tool-erpnext_get_leave_balance a cp:Tool ;
 erpx:tool-erpnext_get_logged_user a cp:Tool ;
     rdfs:label "erpnext_get_logged_user" ;
     cp:componentId "erpnext-mcp/erpnext_get_logged_user" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_get_salary_slip a cp:Tool ;
     rdfs:label "erpnext_get_salary_slip" ;
@@ -345,7 +346,7 @@ erpx:tool-erpnext_get_value a cp:Tool ;
 erpx:tool-erpnext_get_version a cp:Tool ;
     rdfs:label "erpnext_get_version" ;
     cp:componentId "erpnext-mcp/erpnext_get_version" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_ingest a cp:Tool ;
     rdfs:label "erpnext_ingest" ;
@@ -416,7 +417,7 @@ erpx:tool-erpnext_list_sales_stages a cp:Tool ;
 erpx:tool-erpnext_list_timezones a cp:Tool ;
     rdfs:label "erpnext_list_timezones" ;
     cp:componentId "erpnext-mcp/erpnext_list_timezones" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_log_communication a cp:Tool ;
     rdfs:label "erpnext_log_communication" ;
@@ -427,12 +428,12 @@ erpx:tool-erpnext_log_communication a cp:Tool ;
 erpx:tool-erpnext_login a cp:Tool ;
     rdfs:label "erpnext_login" ;
     cp:componentId "erpnext-mcp/erpnext_login" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_logout a cp:Tool ;
     rdfs:label "erpnext_logout" ;
     cp:componentId "erpnext-mcp/erpnext_logout" ;
-    cp:operatesOn :DomainEntity .
+    cp:operatesOn core:DomainEntity .
 
 erpx:tool-erpnext_make_customer_from_lead a cp:Tool ;
     rdfs:label "erpnext_make_customer_from_lead" ;
@@ -549,7 +550,7 @@ erpx:tool-erpnext_update_opportunity_stage a cp:Tool ;
 erpx:tool-erpnext_upload_file a cp:Tool ;
     rdfs:label "erpnext_upload_file" ;
     cp:componentId "erpnext-mcp/erpnext_upload_file" ;
-    cp:operatesOn :Document .
+    cp:operatesOn core:Document .
 
 erpx:tool-erpnext_verify_business_onboarding a cp:Tool ;
     rdfs:label "erpnext_verify_business_onboarding" ;
@@ -609,7 +610,7 @@ erpx:skill-erpnext-payroll-run a cp:Skill ;
 erpx:skill-erpnext-session a cp:Skill ;
     rdfs:label "erpnext-session" ;
     cp:componentId "erpnext-mcp/skill/erpnext-session" ;
-    cp:appliesTo :DomainEntity .
+    cp:appliesTo core:DomainEntity .
 
 erpx:skill-erpnext-accounting a cp:Skill ;
     rdfs:label "erpnext-accounting" ;
@@ -624,12 +625,12 @@ erpx:skill-erpnext-business-onboarding a cp:Skill ;
 erpx:skill-erpnext-agent-operations a cp:Skill ;
     rdfs:label "erpnext-agent-operations" ;
     cp:componentId "erpnext-mcp/skill/erpnext-agent-operations" ;
-    cp:appliesTo :DomainEntity .
+    cp:appliesTo core:DomainEntity .
 
 erpx:skill-erpnext-agent-development a cp:Skill ;
     rdfs:label "erpnext-agent-development" ;
     cp:componentId "erpnext-mcp/skill/erpnext-agent-development" ;
-    cp:appliesTo :DomainEntity .
+    cp:appliesTo core:DomainEntity .
 
 erpx:prompt-erp_operator a cp:Prompt ;
     rdfs:label "erp_operator" ;
@@ -649,7 +650,7 @@ erpx:prompt-sales_rep a cp:Prompt ;
 erpx:prompt-erpnext-mcp-operator a cp:Prompt ;
     rdfs:label "erpnext-mcp-operator" ;
     cp:componentId "erpnext-mcp/prompt/erpnext-mcp-operator" ;
-    cp:appliesTo :DomainEntity .
+    cp:appliesTo core:DomainEntity .
 
 erpx:prompt-business_onboarding a cp:Prompt ;
     rdfs:label "business_onboarding" ;

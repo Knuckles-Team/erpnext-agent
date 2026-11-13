@@ -15,7 +15,7 @@ from typing import Any, Literal
 
 from scion_erp_guard.bindings import _identity, _request
 from scion_sdk.http.bodies import aread_bounded
-from scion_sdk.http.client import create_async_http_client
+from scion_sdk.http.client import build_http_client
 from scion_sdk.http.options import HttpClientOptions
 from scion_sdk.writeback.errors import OutcomeUncertainError
 
@@ -91,7 +91,7 @@ class InvoiceGuardClient:
 
     async def _post(self, method: str, data: dict[str, Any]) -> object:
         try:
-            async with create_async_http_client(self._options) as client:
+            async with build_http_client(self._options, async_=True) as client:
                 async with client.stream(
                     "POST",
                     f"/api/method/scion_erp_guard.api.{method}",

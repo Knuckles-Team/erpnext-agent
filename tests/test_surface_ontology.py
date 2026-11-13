@@ -17,8 +17,8 @@ SKILLS = ROOT / "erpnext_agent" / "skills"
 PROMPTS = ROOT / "erpnext_agent" / "prompts"
 RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 SUBCLASS = "http://www.w3.org/2000/01/rdf-schema#subClassOf"
-CP = "http://knuckles.team/kg/connector-pack#"
-VG = "http://knuckles.team/kg/virtual-graph#"
+CP = "https://knuckles-team.github.io/ontology/connector-pack#"
+VG = "https://knuckles-team.github.io/ontology/virtual-graph#"
 OWL_CLASS = "http://www.w3.org/2002/07/owl#Class"
 OWL_IMPORTS = "http://www.w3.org/2002/07/owl#imports"
 
@@ -68,10 +68,19 @@ def test_every_class_rolls_up_to_core_by_subclassing_never_import():
             supers.setdefault(s, set()).add(o)
     for s, p, o in triples:
         if p == RDF_TYPE and o == OWL_CLASS:
-            local = s.removeprefix(CORE_NAMESPACE)
+            local = s.rsplit("#", 1)[-1]
             if local in core_reused:
                 continue
-            assert any(u.startswith(CORE_NAMESPACE) for u in supers.get(s, ())), local
+            todo, seen, reached = [s], set(), False
+            while todo and not reached:
+                cur = todo.pop()
+                if cur in seen:
+                    continue
+                seen.add(cur)
+                for u in supers.get(cur, ()):
+                    reached = reached or u.startswith(CORE_NAMESPACE)
+                    todo.append(u)
+            assert reached, local
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006")
@@ -109,8 +118,8 @@ def test_every_domain_class_has_a_live_virtual_authority():
     served = {o for s, p, o in fed if p == VG + "authorityFor" and s in authorities}
     # Abstract parents (Invoice) and computed outputs (ErpReport) have no own records.
     assert classes - served == {
-        CORE_NAMESPACE + "Invoice",
-        CORE_NAMESPACE + "ErpReport",
+        "https://knuckles-team.github.io/ontology/connector/erpnext#Invoice",
+        "https://knuckles-team.github.io/ontology/connector/erpnext#ErpReport",
     }
     for authority in authorities:
         mapping = {

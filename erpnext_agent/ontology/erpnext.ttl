@@ -1,11 +1,12 @@
 @prefix fibo-fi: <https://spec.edmcouncil.org/fibo/ontology/FBC/FinancialInstruments/FinancialInstruments/> .
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
 @prefix fibo-org: <https://spec.edmcouncil.org/fibo/ontology/FND/Organizations/Organizations/> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix dc: <http://purl.org/dc/terms/> .
-@prefix : <http://knuckles.team/kg#> .
+@prefix : <https://knuckles-team.github.io/ontology/connector/erpnext#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -26,40 +27,44 @@
 # their own classes below.
 
 :Customer a owl:Class ;
+    rdfs:subClassOf core:Customer ;
     rdfs:label "Customer" ;
     rdfs:comment "A party that buys from the company (Frappe Customer doctype)." .
 
 :Supplier a owl:Class ;
+    rdfs:subClassOf core:Supplier ;
     rdfs:label "Supplier" ;
     rdfs:comment "A party the company buys from (Frappe Supplier doctype)." .
 
 :Company a owl:Class ;
+    rdfs:subClassOf core:Company ;
     rdfs:label "Company" ;
     rdfs:comment "The legal entity whose books a document posts to (Frappe Company doctype)." .
 
 :Item a owl:Class ;
     rdfs:label "Item" ;
     rdfs:comment "A sellable/stockable product or service (Frappe Item doctype)." ;
-    rdfs:subClassOf :SupplyChainItem .
+    rdfs:subClassOf core:SupplyChainItem .
 
 :Quotation a owl:Class ;
     rdfs:label "Quotation" ;
     rdfs:comment "A priced offer to a customer or lead (Frappe Quotation doctype); submittable." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :SalesOrder a owl:Class ;
     rdfs:label "Sales Order" ;
     rdfs:comment "A confirmed customer order (Frappe Sales Order doctype); submittable." ;
-    rdfs:subClassOf :Order .
+    rdfs:subClassOf core:Order .
 
 :PurchaseOrder a owl:Class ;
+    rdfs:subClassOf core:PurchaseOrder ;
     rdfs:label "Purchase Order" ;
     rdfs:comment "A confirmed order placed on a supplier (Frappe Purchase Order doctype)." .
 
 :Invoice a owl:Class ;
     rdfs:label "Invoice" ;
     rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :SalesInvoice a owl:Class ;
     rdfs:label "Sales Invoice" ;
@@ -67,73 +72,77 @@
     rdfs:subClassOf :Invoice .
 
 :PurchaseInvoice a owl:Class ;
+    rdfs:subClassOf core:PurchaseInvoice ;
     rdfs:label "Purchase Invoice" ;
     rdfs:comment "A supplier bill booked against payables (Frappe Purchase Invoice doctype)." .
 
 :PaymentEntry a owl:Class ;
     rdfs:label "Payment Entry" ;
     rdfs:comment "Money received from a customer or paid to a supplier, allocated against invoices (Frappe Payment Entry doctype); submittable." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :StockEntry a owl:Class ;
     rdfs:label "Stock Entry" ;
     rdfs:comment "A stock movement: material receipt, issue, transfer or manufacture (Frappe Stock Entry doctype); submitting it writes the stock ledger." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :StockWarehouse a owl:Class ;
     rdfs:label "Stock Warehouse" ;
     rdfs:comment "A physical or logical stock location of a company (Frappe Warehouse doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :LedgerAccount a owl:Class ;
     rdfs:label "Ledger Account" ;
     rdfs:comment "One account of a company's chart of accounts (Frappe Account doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :GLEntry a owl:Class ;
     rdfs:label "GL Entry" ;
     rdfs:comment "One general-ledger posting a submitted document wrote (Frappe GL Entry doctype); read-only." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :FiscalYear a owl:Class ;
     rdfs:label "Fiscal Year" ;
     rdfs:comment "An accounting period with start and end dates (Frappe Fiscal Year doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :Lead a owl:Class ;
     rdfs:label "Lead" ;
     rdfs:comment "A prospective customer not yet qualified (Frappe Lead doctype)." ;
-    rdfs:subClassOf :BusinessActor .
+    rdfs:subClassOf core:BusinessActor .
 
 :Opportunity a owl:Class ;
+    rdfs:subClassOf core:Opportunity ;
     rdfs:label "Opportunity" ;
     rdfs:comment "A qualified sales opportunity from a lead or customer (Frappe Opportunity doctype)." .
 
 :Project a owl:Class ;
     rdfs:label "Project" ;
     rdfs:comment "A body of billable or internal work with tasks and costing (Frappe Project doctype)." ;
-    rdfs:subClassOf :WorkItem .
+    rdfs:subClassOf core:WorkItem .
 
 :ProjectTask a owl:Class ;
     rdfs:label "Project Task" ;
     rdfs:comment "One unit of project work (Frappe Task doctype)." ;
-    rdfs:subClassOf :WorkItem .
+    rdfs:subClassOf core:WorkItem .
 
 :Employee a owl:Class ;
+    rdfs:subClassOf core:Employee ;
     rdfs:label "Employee" ;
     rdfs:comment "A person employed by a company (Frappe Employee doctype)." .
 
 :OrgUnit a owl:Class ;
     rdfs:label "Organizational Unit" ;
     rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." ;
-    rdfs:subClassOf :Department .
+    rdfs:subClassOf core:Department .
 
 :ErpReport a owl:Class ;
     rdfs:label "ERP Report" ;
     rdfs:comment "A query or script report computed by the ERP (Frappe Report doctype), such as General Ledger or Accounts Receivable." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :ErpNextIssue a owl:Class ;
+    rdfs:subClassOf core:ErpNextIssue ;
     rdfs:label "ERPNext Issue" ;
     rdfs:comment "A customer support issue (Frappe Issue doctype); core declares it equivalent to :Incident." .
 
@@ -142,102 +151,102 @@
 :Designation a owl:Class ;
     rdfs:label "Designation" ;
     rdfs:comment "A job title an employee holds, shared by every company (Frappe Designation doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :HolidayList a owl:Class ;
     rdfs:label "Holiday List" ;
     rdfs:comment "A calendar of holidays and weekly offs that attendance, leave and payroll respect (Frappe Holiday List doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :Attendance a owl:Class ;
     rdfs:label "Attendance" ;
     rdfs:comment "One employee's attendance status for one day (HR app Attendance doctype); submittable." ;
-    rdfs:subClassOf :Event .
+    rdfs:subClassOf core:Event .
 
 :EmployeeCheckin a owl:Class ;
     rdfs:label "Employee Check-in" ;
     rdfs:comment "One check-in or check-out log of an employee (HR app Employee Checkin doctype)." ;
-    rdfs:subClassOf :Event .
+    rdfs:subClassOf core:Event .
 
 :LeaveType a owl:Class ;
     rdfs:label "Leave Type" ;
     rdfs:comment "A kind of leave with its limits: annual, sick, without pay (HR app Leave Type doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :LeaveAllocation a owl:Class ;
     rdfs:label "Leave Allocation" ;
     rdfs:comment "Leave days of a type granted to an employee for a period (HR app Leave Allocation doctype); submittable." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :LeaveApplication a owl:Class ;
     rdfs:label "Leave Application" ;
     rdfs:comment "An employee's request for leave and the approver's decision (HR app Leave Application doctype); submittable once Approved or Rejected." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :SalaryComponent a owl:Class ;
     rdfs:label "Salary Component" ;
     rdfs:comment "An earning or deduction line of pay (HR app Salary Component doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :SalaryStructure a owl:Class ;
     rdfs:label "Salary Structure" ;
     rdfs:comment "A pay template of earnings and deductions for a company (HR app Salary Structure doctype); submittable." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :SalaryStructureAssignment a owl:Class ;
     rdfs:label "Salary Structure Assignment" ;
     rdfs:comment "A salary structure and base pay assigned to an employee from a date (HR app doctype); submittable." ;
-    rdfs:subClassOf :Document .
+    rdfs:subClassOf core:Document .
 
 :PayrollEntry a owl:Class ;
     rdfs:label "Payroll Entry" ;
     rdfs:comment "A company's pay run for one period that creates and submits the salary slips (HR app Payroll Entry doctype); submittable." ;
-    rdfs:subClassOf :PayrollRecord .
+    rdfs:subClassOf core:PayrollRecord .
 
 :SalarySlip a owl:Class ;
     rdfs:label "Salary Slip" ;
     rdfs:comment "One employee's pay for one period with gross, deductions and net pay (HR app Salary Slip doctype); submittable." ;
-    rdfs:subClassOf :PayrollRecord .
+    rdfs:subClassOf core:PayrollRecord .
 
 :SalesStage a owl:Class ;
     rdfs:label "Sales Stage" ;
     rdfs:comment "A stage of the sales pipeline an opportunity moves through (Frappe Sales Stage doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :OpportunityType a owl:Class ;
     rdfs:label "Opportunity Type" ;
     rdfs:comment "A kind of opportunity: sales, support, maintenance (Frappe Opportunity Type doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :OpportunityLostReason a owl:Class ;
     rdfs:label "Opportunity Lost Reason" ;
     rdfs:comment "A reason an opportunity was lost (Frappe Opportunity Lost Reason doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 :ErpCommunication a owl:Class ;
     rdfs:label "ERP Communication" ;
     rdfs:comment "A logged call, meeting or message about a lead, opportunity or customer (Frappe Communication doctype); a record, not a sent message." ;
-    rdfs:subClassOf :Message .
+    rdfs:subClassOf core:Message .
 
 :FollowUpTodo a owl:Class ;
     rdfs:label "Follow-up ToDo" ;
     rdfs:comment "A dated follow-up assigned to a user about a record (Frappe ToDo doctype)." ;
-    rdfs:subClassOf :WorkItem .
+    rdfs:subClassOf core:WorkItem .
 
 :ErpAddress a owl:Class ;
     rdfs:label "ERP Address" ;
     rdfs:comment "A postal address of the company or a party, linked to it (Frappe Address doctype)." ;
-    rdfs:subClassOf :Place .
+    rdfs:subClassOf core:Place .
 
 :ErpBank a owl:Class ;
     rdfs:label "Bank" ;
     rdfs:comment "A bank the company or a party holds accounts with (Frappe Bank doctype)." ;
-    rdfs:subClassOf :Organization .
+    rdfs:subClassOf core:Organization .
 
 :ErpBankAccount a owl:Class ;
     rdfs:label "ERP Bank Account" ;
     rdfs:comment "A bank account of the company or a party; a company account names its ledger (Frappe Bank Account doctype)." ;
-    rdfs:subClassOf :DomainEntity .
+    rdfs:subClassOf core:DomainEntity .
 
 # --- links (owl:ObjectProperty) ---
 
@@ -398,7 +407,7 @@
 :aboutRecord a owl:ObjectProperty ;
     rdfs:label "about record" ;
     rdfs:comment "Links an ErpCommunication or FollowUpTodo to the Lead, Opportunity or Customer it is about (reference_doctype / reference_name)." ;
-    rdfs:range :DomainEntity .
+    rdfs:range core:DomainEntity .
 
 :addressOf a owl:ObjectProperty ;
     rdfs:label "address of" ;
@@ -439,7 +448,7 @@
     rdfs:domain :Employee ;
     rdfs:range xsd:string .
 
-<http://knuckles.team/kg/erpnext> a owl:Ontology ;
+<https://knuckles-team.github.io/ontology/connector/erpnext> a owl:Ontology ;
     rdfs:label "ERPNext/Frappe ERP Ontology" ;
     rdfs:comment """ERP entities sourced from an ERPNext (Frappe) instance — customers,
 suppliers, items, sales and purchase orders, invoices, the CRM pipeline (leads,
@@ -447,3 +456,6 @@ opportunities, stages, communications, follow-ups), HR (employees, departments,
 designations, holiday lists, attendance, leave, salary and payroll) and the company
 set-up (fiscal year, address, bank) — with their relationships, federated into the
 scion-sdk knowledge-graph hub over the enterprise layer.""" .
+
+<https://knuckles-team.github.io/ontology/connector/erpnext#firesTransition> a <http://www.w3.org/2002/07/owl#ObjectProperty> ;
+    <http://www.w3.org/2000/01/rdf-schema#label> "firesTransition" .

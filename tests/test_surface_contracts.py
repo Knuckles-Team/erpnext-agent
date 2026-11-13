@@ -13,7 +13,7 @@ PROMPTS = Path(__file__).resolve().parents[1] / "erpnext_agent" / "prompts"
 
 
 def _tools(monkeypatch) -> set[str]:
-    from scion_sdk._connector_serve import build_server
+    from scion_sdk.connector import build_server
 
     monkeypatch.setenv("ERPNEXT_URL", "https://service.invalid")
     monkeypatch.setenv("AUTH_TYPE", "none")
