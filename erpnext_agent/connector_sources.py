@@ -142,7 +142,7 @@ FIELD_SETS = {
 SCHEMA_MAPPINGS = {
     "Customer": {
         "field_sets": ["fields_1"],
-        "ontology_class": None,
+        "ontology_class": "Customer",
     },
     "Employee": {
         "field_sets": ["fields_1"],
@@ -158,7 +158,7 @@ SCHEMA_MAPPINGS = {
     },
     "Item": {
         "field_sets": ["fields_1"],
-        "ontology_class": None,
+        "ontology_class": "SupplyChainItem",
     },
     "OrgUnit": {
         "field_sets": ["fields_1"],
@@ -166,7 +166,7 @@ SCHEMA_MAPPINGS = {
     },
     "PurchaseOrder": {
         "field_sets": ["fields_1"],
-        "ontology_class": None,
+        "ontology_class": "PurchaseOrder",
     },
     "SalesOrder": {
         "field_sets": ["fields_1"],
@@ -174,7 +174,7 @@ SCHEMA_MAPPINGS = {
     },
     "Supplier": {
         "field_sets": ["fields_1"],
-        "ontology_class": None,
+        "ontology_class": "Supplier",
     },
 }
 

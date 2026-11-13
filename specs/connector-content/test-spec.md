@@ -5,7 +5,7 @@ Governing spec: [spec.md](spec.md).
 | Test ID | Requirement | Proving test | Expected observation |
 |---|---|---|---|
 | T-001 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` | `tests/test_default_content_surfaces.py` | The listings include the packaged skills, ontology and prompts. |
-| T-002 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` | connector ontology certification | The connector manifest gate passes; none of the four is `UNRESOLVED`. |
+| T-002 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` | `tests/test_schema_mappings.py::test_four_doctypes_map_to_core_classes` | `SCHEMA_MAPPINGS` maps the four doctypes to the medulla core classes. |
 | T-003 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R003` | `tests/test_workflow_content.py::test_workflow_skills_are_served_and_name_only_served_tools` | Each workflow skill is a served `skill://` resource and names only served tools. |
 | T-004 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R004` | `tests/test_workflow_content.py::test_operator_prompt_names_served_tools_and_shipped_workflow_skills` | The prompt's tools are served and its skills are the workflow set. |
 | T-005 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R005` | `tests/test_surface_ontology.py::test_every_class_rolls_up_to_core_by_subclassing_never_import` | No orphan class; no `owl:imports`. |
