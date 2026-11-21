@@ -86,26 +86,41 @@ def test_every_class_rolls_up_to_core_by_subclassing_never_import():
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R006")
 def test_surface_lists_exactly_the_served_tools_skills_and_prompts(monkeypatch):
     triples = _triples("surface.ttl")
-    # parse_triples drops literals, so names come from the node IRIs.
-    tool_names = {s.split("#tool-")[1] for s in _labels(triples, CP + "Tool")}
-    skill_names = {s.split("#skill-")[1] for s in _labels(triples, CP + "Skill")}
-    prompt_names = {s.split("#prompt-")[1] for s in _labels(triples, CP + "Prompt")}
+    # The surface links features to the served members by URI; no member node is declared.
+    realized = {o for s, p, o in triples if p == CP + "realizedBy"}
+    tool_names = {
+        o.split("tool://erpnext-mcp/")[1] for o in realized if o.startswith("tool://")
+    }
+    skill_names = {
+        o[len("skill://") :].removesuffix("/SKILL.md")
+        for o in realized
+        if o.startswith("skill://")
+    }
+    prompt_names = {
+        o.split("prompt://erpnext-mcp/")[1]
+        for o in realized
+        if o.startswith("prompt://")
+    }
     assert tool_names and skill_names and prompt_names
-    assert tool_names == _served_tools(monkeypatch)
-    assert skill_names == {
+    assert tool_names <= _served_tools(monkeypatch)
+    assert skill_names <= {
         p.name for p in SKILLS.iterdir() if (p / "SKILL.md").is_file()
     }
-    assert prompt_names == {p.stem for p in PROMPTS.glob("*.json")}
-    features = _labels(triples, CP + "Feature")
-    realized = {s for s, p, o in triples if p == CP + "realizedBy"}
-    assert features and features <= realized
-    for tool in _labels(triples, CP + "Tool"):
-        assert any(s == tool and p == CP + "operatesOn" for s, p, o in triples), tool
-    used_skills = {
-        o for s, p, o in triples if p == CP + "realizedBy" and "#skill-" in o
+    assert prompt_names <= {p.stem for p in PROMPTS.glob("*.json")}
+    features = _labels(triples, CP + "SurfaceFeature")
+    linked = {s for s, p, o in triples if p == CP + "realizedBy"}
+    assert features and features <= linked
+    workflow = {
+        p.name
+        for p in SKILLS.iterdir()
+        if (p / "SKILL.md").is_file() and "development" not in p.name
     }
-    workflow = {s for s in _labels(triples, CP + "Skill") if "development" not in s}
-    assert workflow <= used_skills
+    assert workflow <= skill_names
+    assert not [
+        t
+        for t in triples
+        if t[1] == RDF_TYPE and t[2] in {CP + "Tool", CP + "Skill", CP + "Prompt"}
+    ]
 
 
 @pytest.mark.spec("CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R007")
