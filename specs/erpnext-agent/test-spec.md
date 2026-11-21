@@ -32,3 +32,10 @@ compares the parsed contracts with the served synthetic supplier and purchase-or
 | Requirement | Test | Observation |
 |---|---|---|
 | `CONN-ERPNEXT-AGENT-R012` | `tests/test_scion_sdk_0_10_imports.py::test_every_scion_sdk_import_resolves_on_the_pinned_release` | Every `scion_sdk` import resolves on the pinned release; a removed path fails the test. |
+
+## Access proxy headers and named instances
+
+| Requirement | Test | Observation |
+|---|---|---|
+| `CONN-ERPNEXT-AGENT-R013` | `tests/test_api_client_headers.py::test_proxy_headers_and_site_host_are_sent_with_the_frappe_credential` | The listener receives the proxy headers, the site host and the Frappe credential; empty settings send none of them. |
+| `CONN-ERPNEXT-AGENT-R014` | `tests/test_instances.py::test_two_instances_use_their_own_credentials_headers_and_nodes` | Each listener sees only its own credential, headers and site host; nodes carry the instance name. |
