@@ -17,3 +17,4 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [ ] T011 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2 The ontology states equal the code enum and replace the raw docStatus.
 - [ ] T012 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3 Surface, skills and prompts name the amend tool and the refusals.
 - [ ] T013 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010 The surface is complete: contracts, agent-definition prompts, session skill.
+- [x] T014 [US1] CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011 Pack extends only the core ontology.

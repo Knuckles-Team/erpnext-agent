@@ -1,3 +1,5 @@
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
+@prefix cat: <https://knuckles-team.github.io/ontology/catalog#> .
 @prefix : <https://knuckles-team.github.io/ontology/connector/erpnext#> .
 @prefix vg: <https://knuckles-team.github.io/ontology/virtual-graph#> .
 @prefix erpx: <https://knuckles-team.github.io/ontology/connector/erpnext#> .
@@ -31,7 +33,7 @@ erpx:contract a vg:MetadataContract ;
 
 erpx:customerMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :Customer ;
+    vg:mapsOntologyClass core:Customer ;
     vg:mapsEntity "Customer" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:customerLabelPair ;
@@ -43,7 +45,7 @@ erpx:customerLabelPair a vg:PredicateFieldPair ;
 
 erpx:customerAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :Customer ;
+    vg:authorityFor core:Customer ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:customerMapping ;
     vg:authorityContract "mcp" ;
@@ -53,7 +55,7 @@ erpx:customerAuthority a vg:SourceAuthority ;
 
 erpx:supplierMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :Supplier ;
+    vg:mapsOntologyClass core:Supplier ;
     vg:mapsEntity "Supplier" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:supplierLabelPair ;
@@ -65,7 +67,7 @@ erpx:supplierLabelPair a vg:PredicateFieldPair ;
 
 erpx:supplierAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :Supplier ;
+    vg:authorityFor core:Supplier ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:supplierMapping ;
     vg:authorityContract "mcp" ;
@@ -75,7 +77,7 @@ erpx:supplierAuthority a vg:SourceAuthority ;
 
 erpx:companyMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :Company ;
+    vg:mapsOntologyClass core:Company ;
     vg:mapsEntity "Company" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:companyLabelPair ;
@@ -87,7 +89,7 @@ erpx:companyLabelPair a vg:PredicateFieldPair ;
 
 erpx:companyAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :Company ;
+    vg:authorityFor core:Company ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:companyMapping ;
     vg:authorityContract "mcp" ;
@@ -163,7 +165,7 @@ erpx:salesOrderAuthority a vg:SourceAuthority ;
 
 erpx:purchaseOrderMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :PurchaseOrder ;
+    vg:mapsOntologyClass core:PurchaseOrder ;
     vg:mapsEntity "Purchase Order" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:purchaseOrderLabelPair ;
@@ -175,7 +177,7 @@ erpx:purchaseOrderLabelPair a vg:PredicateFieldPair ;
 
 erpx:purchaseOrderAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :PurchaseOrder ;
+    vg:authorityFor core:PurchaseOrder ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:purchaseOrderMapping ;
     vg:authorityContract "mcp" ;
@@ -207,7 +209,7 @@ erpx:salesInvoiceAuthority a vg:SourceAuthority ;
 
 erpx:purchaseInvoiceMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :PurchaseInvoice ;
+    vg:mapsOntologyClass core:PurchaseInvoice ;
     vg:mapsEntity "Purchase Invoice" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:purchaseInvoiceLabelPair ;
@@ -219,7 +221,7 @@ erpx:purchaseInvoiceLabelPair a vg:PredicateFieldPair ;
 
 erpx:purchaseInvoiceAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :PurchaseInvoice ;
+    vg:authorityFor core:PurchaseInvoice ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:purchaseInvoiceMapping ;
     vg:authorityContract "mcp" ;
@@ -384,7 +386,7 @@ erpx:leadAuthority a vg:SourceAuthority ;
 
 erpx:opportunityMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :Opportunity ;
+    vg:mapsOntologyClass core:Opportunity ;
     vg:mapsEntity "Opportunity" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:opportunityLabelPair ;
@@ -397,7 +399,7 @@ erpx:opportunityLabelPair a vg:PredicateFieldPair ;
 erpx:opportunityAuthority a vg:SourceAuthority ;
     rdfs:comment "ERPNext is the CRM of record (owner decision 2026-11-06)." ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :Opportunity ;
+    vg:authorityFor core:Opportunity ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:opportunityMapping ;
     vg:authorityContract "mcp" ;
@@ -453,7 +455,7 @@ erpx:projectTaskAuthority a vg:SourceAuthority ;
 
 erpx:employeeMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :Employee ;
+    vg:mapsOntologyClass core:Employee ;
     vg:mapsEntity "Employee" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:employeeLabelPair ;
@@ -465,7 +467,7 @@ erpx:employeeLabelPair a vg:PredicateFieldPair ;
 
 erpx:employeeAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :Employee ;
+    vg:authorityFor core:Employee ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:employeeMapping ;
     vg:authorityContract "mcp" ;
@@ -475,7 +477,7 @@ erpx:employeeAuthority a vg:SourceAuthority ;
 
 erpx:orgUnitMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :OrgUnit ;
+    vg:mapsOntologyClass cat:OrgUnit ;
     vg:mapsEntity "Department" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:orgUnitLabelPair ;
@@ -487,7 +489,7 @@ erpx:orgUnitLabelPair a vg:PredicateFieldPair ;
 
 erpx:orgUnitAuthority a vg:SourceAuthority ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :OrgUnit ;
+    vg:authorityFor cat:OrgUnit ;
     vg:authorityRank 1 ;
     vg:authorityMapping erpx:orgUnitMapping ;
     vg:authorityContract "mcp" ;
@@ -497,7 +499,7 @@ erpx:orgUnitAuthority a vg:SourceAuthority ;
 
 erpx:erpNextIssueMapping a vg:VirtualMapping ;
     vg:mapsContract erpx:contract ;
-    vg:mapsOntologyClass :ErpNextIssue ;
+    vg:mapsOntologyClass core:ErpNextIssue ;
     vg:mapsEntity "Issue" ;
     vg:keyField "name" ;
     vg:hasPredicateFieldPair erpx:erpNextIssueLabelPair ;
@@ -510,7 +512,7 @@ erpx:erpNextIssueLabelPair a vg:PredicateFieldPair ;
 erpx:erpNextIssueAuthority a vg:SourceAuthority ;
     rdfs:comment "An ITSM tool is rank 1 for incidents." ;
     vg:authoritativeSource erpx:source ;
-    vg:authorityFor :ErpNextIssue ;
+    vg:authorityFor core:ErpNextIssue ;
     vg:authorityRank 2 ;
     vg:authorityMapping erpx:erpNextIssueMapping ;
     vg:authorityContract "mcp" ;

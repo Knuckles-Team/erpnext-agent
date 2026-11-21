@@ -1,3 +1,5 @@
+@prefix core: <https://knuckles-team.github.io/ontology/core#> .
+@prefix cat: <https://knuckles-team.github.io/ontology/catalog#> .
 @prefix ac: <https://knuckles-team.github.io/ontology/access#> .
 @prefix : <https://knuckles-team.github.io/ontology/connector/erpnext#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -9,7 +11,7 @@
 # only reads this file.
 
 :supplierAccess a ac:AccessContract ;
-    ac:classIri :Supplier ;
+    ac:classIri core:Supplier ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Supplier" ;
     ac:keyField "name" ;
@@ -45,7 +47,7 @@
     ac:contract :itemAccess ; ac:property rdfs:label ; ac:field "item_name" .
 
 :purchaseOrderAccess a ac:AccessContract ;
-    ac:classIri :PurchaseOrder ;
+    ac:classIri core:PurchaseOrder ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Purchase Order" ;
     ac:keyField "name" ;
@@ -66,7 +68,7 @@
     ac:contract :purchaseOrderAccess ; ac:property :documentState ; ac:field "docstatus" .
 
 :customerAccess a ac:AccessContract ;
-    ac:classIri :Customer ;
+    ac:classIri core:Customer ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Customer" ;
     ac:keyField "name" ;
@@ -111,7 +113,7 @@
     ac:contract :salesInvoiceAccess ; ac:property :postingDate ; ac:field "posting_date" .
 
 :purchaseInvoiceAccess a ac:AccessContract ;
-    ac:classIri :PurchaseInvoice ;
+    ac:classIri core:PurchaseInvoice ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Purchase Invoice" ;
     ac:keyField "name" ;
@@ -192,7 +194,7 @@
     ac:contract :projectAccess ; ac:property rdfs:label ; ac:field "project_name" .
 
 :employeeAccess a ac:AccessContract ;
-    ac:classIri :Employee ;
+    ac:classIri core:Employee ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Employee" ;
     ac:keyField "name" ;
@@ -210,7 +212,7 @@
     ac:contract :employeeAccess ; ac:property :employeeName ; ac:field "employee_name" .
 
 :opportunityAccess a ac:AccessContract ;
-    ac:classIri :Opportunity ;
+    ac:classIri core:Opportunity ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Opportunity" ;
     ac:keyField "name" ;
@@ -228,7 +230,7 @@
     ac:contract :opportunityAccess ; ac:property rdfs:label ; ac:field "party_name" .
 
 :orgUnitAccess a ac:AccessContract ;
-    ac:classIri :OrgUnit ;
+    ac:classIri cat:OrgUnit ;
     ac:sourceId "erpnext-agent" ;
     ac:entity "Department" ;
     ac:keyField "name" ;

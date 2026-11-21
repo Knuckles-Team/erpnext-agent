@@ -12,34 +12,30 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # ERPNext / Frappe ERP ontology — parties, catalog, sales/purchase orders, invoices and HR.
+
 # All classes and properties live in the shared `:` (kg#) namespace; only the owl:Ontology
+
 # node gets the per-package IRI. Backs the erpnext-agent MCP tool surface (Frappe DocType
+
 # CRUD + the native `erpnext_ingest` KG tool). ERPNext docstatus (read as documentState, see lifecycle.ttl) is 0=Draft, 1=Submitted,
+
 # 2=Cancelled; monetary DocTypes carry grand_total; postings carry posting_date.
 
 # --- classes (owl:Class) ---
+
 # Every class rolls up to a medulla core class by rdfs:subClassOf (never owl:imports).
+
 # :Customer, :Supplier, :Employee, :Company, :PurchaseOrder, :PurchaseInvoice and
+
 # :Opportunity and :ErpNextIssue are core classes themselves (same IRI); the pack only
+
 # labels them.
+
 # Core :Account (brokerage), :Warehouse (data warehouse) and :Task (agent task) mean
+
 # something else, so the ERP ledger account, stock warehouse and project task get
+
 # their own classes below.
-
-:Customer a owl:Class ;
-    rdfs:subClassOf core:Customer ;
-    rdfs:label "Customer" ;
-    rdfs:comment "A party that buys from the company (Frappe Customer doctype)." .
-
-:Supplier a owl:Class ;
-    rdfs:subClassOf core:Supplier ;
-    rdfs:label "Supplier" ;
-    rdfs:comment "A party the company buys from (Frappe Supplier doctype)." .
-
-:Company a owl:Class ;
-    rdfs:subClassOf core:Company ;
-    rdfs:label "Company" ;
-    rdfs:comment "The legal entity whose books a document posts to (Frappe Company doctype)." .
 
 :Item a owl:Class ;
     rdfs:label "Item" ;
@@ -56,11 +52,6 @@
     rdfs:comment "A confirmed customer order (Frappe Sales Order doctype); submittable." ;
     rdfs:subClassOf core:Order .
 
-:PurchaseOrder a owl:Class ;
-    rdfs:subClassOf core:PurchaseOrder ;
-    rdfs:label "Purchase Order" ;
-    rdfs:comment "A confirmed order placed on a supplier (Frappe Purchase Order doctype)." .
-
 :Invoice a owl:Class ;
     rdfs:label "Invoice" ;
     rdfs:comment "A billing document (Frappe Sales Invoice / Purchase Invoice doctype)." ;
@@ -70,11 +61,6 @@
     rdfs:label "Sales Invoice" ;
     rdfs:comment "An invoice the company issues to a customer; submitting it posts receivable and income GL entries (Frappe Sales Invoice doctype)." ;
     rdfs:subClassOf :Invoice .
-
-:PurchaseInvoice a owl:Class ;
-    rdfs:subClassOf core:PurchaseInvoice ;
-    rdfs:label "Purchase Invoice" ;
-    rdfs:comment "A supplier bill booked against payables (Frappe Purchase Invoice doctype)." .
 
 :PaymentEntry a owl:Class ;
     rdfs:label "Payment Entry" ;
@@ -111,11 +97,6 @@
     rdfs:comment "A prospective customer not yet qualified (Frappe Lead doctype)." ;
     rdfs:subClassOf core:BusinessActor .
 
-:Opportunity a owl:Class ;
-    rdfs:subClassOf core:Opportunity ;
-    rdfs:label "Opportunity" ;
-    rdfs:comment "A qualified sales opportunity from a lead or customer (Frappe Opportunity doctype)." .
-
 :Project a owl:Class ;
     rdfs:label "Project" ;
     rdfs:comment "A body of billable or internal work with tasks and costing (Frappe Project doctype)." ;
@@ -126,25 +107,10 @@
     rdfs:comment "One unit of project work (Frappe Task doctype)." ;
     rdfs:subClassOf core:WorkItem .
 
-:Employee a owl:Class ;
-    rdfs:subClassOf core:Employee ;
-    rdfs:label "Employee" ;
-    rdfs:comment "A person employed by a company (Frappe Employee doctype)." .
-
-:OrgUnit a owl:Class ;
-    rdfs:label "Organizational Unit" ;
-    rdfs:comment "A department or organizational unit an employee belongs to (Frappe Department doctype)." ;
-    rdfs:subClassOf core:Department .
-
 :ErpReport a owl:Class ;
     rdfs:label "ERP Report" ;
     rdfs:comment "A query or script report computed by the ERP (Frappe Report doctype), such as General Ledger or Accounts Receivable." ;
     rdfs:subClassOf core:DomainEntity .
-
-:ErpNextIssue a owl:Class ;
-    rdfs:subClassOf core:ErpNextIssue ;
-    rdfs:label "ERPNext Issue" ;
-    rdfs:comment "A customer support issue (Frappe Issue doctype); core declares it equivalent to :Incident." .
 
 # --- HR, CRM pipeline and onboarding classes (2.5.0) ---
 
@@ -254,18 +220,7 @@
     rdfs:label "ordered by" ;
     rdfs:comment "Links a SalesOrder or sales Invoice to the Customer that placed it." ;
     rdfs:domain :SalesOrder ;
-    rdfs:range :Customer .
-
-:suppliedBy a owl:ObjectProperty ;
-    rdfs:label "supplied by" ;
-    rdfs:comment "Links a PurchaseOrder or purchase Invoice to the Supplier fulfilling it." ;
-    rdfs:domain :PurchaseOrder ;
-    rdfs:range :Supplier .
-
-:contains a owl:ObjectProperty ;
-    rdfs:label "contains" ;
-    rdfs:comment "Links a SalesOrder, PurchaseOrder, or Invoice to a line Item it includes." ;
-    rdfs:range :Item .
+    rdfs:range core:Customer .
 
 :billedOn a owl:ObjectProperty ;
     rdfs:label "billed on" ;
@@ -276,14 +231,7 @@
     rdfs:label "placed by" ;
     rdfs:comment "Links a sales order to the customer that placed it (alias of :orderedBy)." ;
     rdfs:domain :SalesOrder ;
-    rdfs:range :Customer .
-
-:memberOf a owl:ObjectProperty ;
-    rdfs:label "member of" ;
-    rdfs:comment "Links an employee to the organizational unit they belong to." ;
-    rdfs:domain :Employee ;
-    rdfs:range :OrgUnit .
-
+    rdfs:range core:Customer .
 
 :quotedTo a owl:ObjectProperty ;
     rdfs:label "quoted to" ;
@@ -311,7 +259,7 @@
 :bookedFor a owl:ObjectProperty ;
     rdfs:label "booked for" ;
     rdfs:comment "Links an ERP document, account or warehouse to the Company whose books it belongs to (company)." ;
-    rdfs:range :Company .
+    rdfs:range core:Company .
 
 :movesItem a owl:ObjectProperty ;
     rdfs:label "moves item" ;
@@ -328,7 +276,7 @@
 :convertedFrom a owl:ObjectProperty ;
     rdfs:label "converted from" ;
     rdfs:comment "Links an Opportunity to the Lead it was raised from (party_name when opportunity_from is Lead)." ;
-    rdfs:domain :Opportunity ;
+    rdfs:domain core:Opportunity ;
     rdfs:range :Lead .
 
 :taskOf a owl:ObjectProperty ;
@@ -340,8 +288,8 @@
 :employedBy a owl:ObjectProperty ;
     rdfs:label "employed by" ;
     rdfs:comment "Links an Employee to the Company that employs them." ;
-    rdfs:domain :Employee ;
-    rdfs:range :Company .
+    rdfs:domain core:Employee ;
+    rdfs:range core:Company .
 
 :outstandingAmount a owl:DatatypeProperty ;
     rdfs:label "outstanding amount" ;
@@ -351,7 +299,7 @@
 :designatedAs a owl:ObjectProperty ;
     rdfs:label "designated as" ;
     rdfs:comment "Links an Employee to the Designation (job title) they hold." ;
-    rdfs:domain :Employee ;
+    rdfs:domain core:Employee ;
     rdfs:range :Designation .
 
 :followsHolidayList a owl:ObjectProperty ;
@@ -362,7 +310,7 @@
 :recordedFor a owl:ObjectProperty ;
     rdfs:label "recorded for" ;
     rdfs:comment "Links an Attendance, EmployeeCheckin, LeaveAllocation, LeaveApplication, SalaryStructureAssignment or SalarySlip to the Employee it concerns (employee)." ;
-    rdfs:range :Employee .
+    rdfs:range core:Employee .
 
 :ofLeaveType a owl:ObjectProperty ;
     rdfs:label "of leave type" ;
@@ -389,19 +337,19 @@
 :inSalesStage a owl:ObjectProperty ;
     rdfs:label "in sales stage" ;
     rdfs:comment "Links an Opportunity to its current SalesStage (sales_stage)." ;
-    rdfs:domain :Opportunity ;
+    rdfs:domain core:Opportunity ;
     rdfs:range :SalesStage .
 
 :ofOpportunityType a owl:ObjectProperty ;
     rdfs:label "of opportunity type" ;
     rdfs:comment "Links an Opportunity to its OpportunityType." ;
-    rdfs:domain :Opportunity ;
+    rdfs:domain core:Opportunity ;
     rdfs:range :OpportunityType .
 
 :lostBecause a owl:ObjectProperty ;
     rdfs:label "lost because" ;
     rdfs:comment "Links a lost Opportunity to each OpportunityLostReason recorded for it." ;
-    rdfs:domain :Opportunity ;
+    rdfs:domain core:Opportunity ;
     rdfs:range :OpportunityLostReason .
 
 :aboutRecord a owl:ObjectProperty ;
@@ -425,7 +373,6 @@
     rdfs:comment "Tax, VAT or employer identification number of a Company, Customer or Supplier (tax_id)." ;
     rdfs:range xsd:string .
 
-
 # --- fields (owl:DatatypeProperty) ---
 
 :grandTotal a owl:DatatypeProperty ;
@@ -445,7 +392,7 @@
 
 :employeeName a owl:DatatypeProperty ;
     rdfs:label "employee name" ;
-    rdfs:domain :Employee ;
+    rdfs:domain core:Employee ;
     rdfs:range xsd:string .
 
 <https://knuckles-team.github.io/ontology/connector/erpnext> a owl:Ontology ;

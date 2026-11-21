@@ -24,11 +24,13 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 
 1. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` (default content) is exercised, **Then** `resources/list` includes `skill://` and `ontology://`; `prompts/list` includes each packaged prompt.
 2. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` (resolve the ontology classes for supplier, item, purchase order and customer) is exercised, **Then** resolve the ontology classes for supplier, item, purchase order and customer.
+3. **Given** the connector is configured, **When** the behaviour of row `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011` (pack extends only the core ontology) is exercised, **Then** no core class or property is redeclared and no retired IRI base remains. Test: `tests/test_pack_extends_core.py::test_pack_declares_no_core_term`.
 
 ### Edge Cases
 
 - If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001` is not met, its proving test fails: default content.
 - If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002` is not met, its proving test fails: resolve the ontology classes for supplier, item, purchase order and customer.
+- If `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011` is not met, its proving test fails: pack extends only the core ontology.
 
 ## Requirements
 
@@ -42,11 +44,13 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 - **FR-008**: Each business role has a complete agent-definition prompt. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008`.
 - **FR-010**: The surface is complete. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010`.
 - **FR-009**: The document lifecycle machine is described in the ontology. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.1`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3`.
+- **FR-011**: Pack extends only the core ontology. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011`.
 
 ## Success Criteria
 
 - **SC-001**: `resources/list` includes `skill://` and `ontology://`; `prompts/list` includes each packaged prompt. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R001`.
 - **SC-002**: Resolve the ontology classes for supplier, item, purchase order and customer. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R002`.
+- **SC-011**: No pack term redeclares a core term and no retired IRI base remains. Rows: `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011`.
 
 ## Assumptions
 
@@ -67,3 +71,4 @@ The `erpnext-mcp` server serves its packaged skills, prompts and ontology to any
 | FR-008 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R008` | [plan.md](plan.md) | T-008 | [test-spec.md](test-spec.md) |
 | FR-009 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.1`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2`, `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3` | [plan.md](plan.md) | T-009 | [test-spec.md](test-spec.md) |
 | FR-010 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010` | [plan.md](plan.md) | T-012 | [test-spec.md](test-spec.md) |
+| FR-011 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011` | [plan.md](plan.md) | T-013 | [test-spec.md](test-spec.md) |

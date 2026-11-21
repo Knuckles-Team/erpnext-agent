@@ -16,3 +16,4 @@ Governing spec: [spec.md](spec.md).
 | T-010 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.2` | `tests/test_lifecycle_ontology.py::test_ontology_states_and_transitions_equal_the_code_machine` | The ontology state and transition sets equal the code enum and table. |
 | T-011 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R009.3` | `tests/test_workflow_content.py::test_lifecycle_guidance_names_amend_and_every_refusal_reason` | The surface, three skills and the prompt name the amend tool and the seven reasons; every tool is served. |
 | T-012 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R010` | `tests/test_surface_contracts.py::test_every_served_tool_has_a_tool_use_contract_and_a_prompt_link` | Every served tool has a contract and a link; every prompt is an agent definition; the session skill is linked. |
+| T-013 | `CONN-ERPNEXT-AGENT-CONNECTOR-CONTENT-R011` | `tests/test_pack_extends_core.py` | No core term is redeclared and no retired IRI base remains. |
