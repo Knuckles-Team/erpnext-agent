@@ -23,3 +23,5 @@ Each task line reads `- [ ] T001 [P] [US1] <ID>-R012.4 description`. Order is pr
 - [ ] T017 [US1] CONN-ERPNEXT-AGENT-R011.6 Wiring and hot-path proof: an illegal move never reaches the server.
 - [ ] T018 [US1] CONN-ERPNEXT-AGENT-R011.7 Declare the descriptor and refuse through the SDK writeback guard.
 - [ ] T019 [US1] CONN-ERPNEXT-AGENT-R012 Adopt scion-sdk 0.10.0 import paths. Size: S, 1 PR, 30 minutes.
+- [ ] T020 [US1] CONN-ERPNEXT-AGENT-R013 Access-proxy service token and site host reach every request.
+- [ ] T021 [US1] CONN-ERPNEXT-AGENT-R014 Named ERPNext instances in one process.
