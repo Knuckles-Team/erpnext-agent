@@ -1,37 +1,40 @@
 # Erpnext MCP
+## MCP
 
-[![Status](https://img.shields.io/badge/status-active-success)](https://github.com/genius-agents/erpnext-agent)
-[![Version](https://img.shields.io/badge/version-0.15.0-blue)](pyproject.toml)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+![PyPI - Version](https://img.shields.io/pypi/v/erpnext-agent)
+![MCP Server](https://badge.mcpx.dev?type=server 'MCP Server')
+![PyPI - Downloads](https://img.shields.io/pypi/dd/erpnext-agent)
+![GitHub Repo stars](https://img.shields.io/github/stars/Knuckles-Team/erpnext-agent)
+![GitHub forks](https://img.shields.io/github/forks/Knuckles-Team/erpnext-agent)
+![GitHub contributors](https://img.shields.io/github/contributors/Knuckles-Team/erpnext-agent)
+![PyPI - License](https://img.shields.io/pypi/l/erpnext-agent)
+![GitHub](https://img.shields.io/github/license/Knuckles-Team/erpnext-agent)
+![GitHub last commit (by committer)](https://img.shields.io/github/last-commit/Knuckles-Team/erpnext-agent)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Knuckles-Team/erpnext-agent)
+![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/Knuckles-Team/erpnext-agent)
+![GitHub issues](https://img.shields.io/github/issues/Knuckles-Team/erpnext-agent)
+![GitHub top language](https://img.shields.io/github/languages/top/Knuckles-Team/erpnext-agent)
+![GitHub language count](https://img.shields.io/github/languages/count/Knuckles-Team/erpnext-agent)
+![GitHub repo size](https://img.shields.io/github/repo-size/Knuckles-Team/erpnext-agent)
+![GitHub repo file count (file type)](https://img.shields.io/github/directory-file-count/Knuckles-Team/erpnext-agent)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/erpnext-agent)
+![PyPI - Implementation](https://img.shields.io/pypi/implementation/erpnext-agent)
 
-ERPNext and Frappe Framework enterprise resources planner. Built with the highest architectural standards, incorporating dynamic facades, custom API routing, and FastMCP tool decoration.
-
-> **Documentation** — Installation, deployment, usage across the MCP, API, and CLI
-> interfaces, and guidance for provisioning the ERPNext / Frappe platform are
-> maintained in the [official documentation](https://knuckles-team.github.io/erpnext-agent/).
-
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [MCP Tools](#mcp-tools)
-- [Architecture](#architecture)
-- [Deployment](#deployment)
-- [Documentation](#documentation)
-- [Contributing](#contributing)
-- [License](#license)
+> **Documentation** — Installation, deployment, and usage across the API, CLI, MCP,
+> and A2A agent interfaces are maintained in the
+> [official documentation](https://knuckles-team.github.io/erpnext-agent/).
 
 ---
 
 ## Overview
 
+ERPNext and Frappe Framework enterprise resources planner. Built with the highest architectural standards, incorporating dynamic facades, custom API routing, and FastMCP tool decoration.
+
 Erpnext MCP provides a high-performance, model-optimized interface to Erpnext capabilities. It isolates the model from underlying API transport complexity, ensuring safe, idempotent, and highly traceable system interactions.
 
 ---
 
-## Features
+## Key Features
 
 - **Dynamic Facade Orchestration**: Integrates multi-inheritance clients cleanly under a single facade.
 - **Battle-Tested Resilience**: Out-of-the-box credential authentication, connection polling, and request retry strategies.
@@ -40,7 +43,9 @@ Erpnext MCP provides a high-performance, model-optimized interface to Erpnext ca
 
 ---
 
-## ⚙️ Dynamic Tool Selection & Visibility
+## MCP
+
+### Dynamic Tool Selection & Visibility
 
 This MCP server supports dynamic toolset selection and visibility filtering at runtime. This allows the operator to restrict the set of exposed tools to prevent blowing up the LLM's context window.
 
@@ -59,104 +64,7 @@ The operator can configure tool filtering via multiple input channels:
 
 When query strings or parameters are provided, an LLM-free **Knowledge Graph resolution layer** (using `DynamicToolOrchestrator`) matches query intents against known tool tags, names, or descriptions, with safe fallback and automated 24-hour background cache refreshing.
 
----
-
-## Installation
-
-Pick the extra that matches what the operator want to run:
-
-| Extra | Installs | Use when |
-|-------|----------|----------|
-| `erpnext-agent[mcp]` | Connector-focused MCP server (`scion-sdk` — FastMCP/FastAPI + `medulla`) | The operator only run the **MCP server** (smallest install / image) |
-| `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
-
-```bash
-# Connector-focused MCP server (includes the shared graph engine)
-uv pip install "erpnext-agent[mcp]"
-
-# Agent runtime (adds model orchestration to the shared graph engine)
-
-# Everything (development)
-uv pip install "erpnext-agent[all]"      # or: python -m pip install "erpnext-agent[all]"
-```
-
-### Container images (`:mcp`)
-
-One multi-stage `docker/Dockerfile` builds the MCP-only image (`--target mcp`):
-
-| Image tag | Build target | Contents | Entrypoint |
-|-----------|--------------|----------|------------|
-
-```bash
-```
-
-### Knowledge-graph database (`medulla`)
-
-Scion SDK core dependency (`medulla`). The `[mcp]` extra keeps
-deployments can use the bundled engine. For production or shared state, run
-**medulla as a dedicated database service** and configure the runtime to use it.
-Deployment recipes (single-node + Raft HA), connection configuration, and architecture
-diagrams are documented in the
-[medulla deployment guide](https://knuckles-team.github.io/medulla/deployment/).
-
----
-
-## Usage
-
-The operator can start the FastMCP server in stdio mode via Python module execution:
-
-```python
-import asyncio
-from erpnext_agent.mcp_server import get_mcp_instance
-
-async def main():
-    mcp = get_mcp_instance()
-    # Execute stdio loop or launch server
-    print("MCP Server ready.")
-
-if __name__ == "__main__":
-    asyncio.run(main())
-```
-
-For direct shell start, ran:
-
-```bash
-python -m erpnext_agent.mcp_server
-```
-
----
-
-## Configuration
-
-The package is fully configurable via the environment variables listed below.
-
-### Connection & Credentials
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL | Required |
-| `ERPNEXT_TOKEN` | API token authentication (`api_key:api_secret`) | — |
-| `ERPNEXT_AGENT_USERNAME` | Username for password-based login | — |
-| `ERPNEXT_AGENT_PASSWORD` | Password for password-based login | — |
-| `TLS_PROFILE` | Named `AgentConfig` transport-security profile; verification is mandatory | — |
-| `TLS_PROFILES_REF` | Runtime secret reference for the TLS profile catalog | — |
-
-### MCP server / transport
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `TRANSPORT` | `stdio`, `streamable-http`, or `sse` | `stdio` |
-| `HOST` | Bind host (HTTP transports) | `0.0.0.0` |
-| `PORT` | Bind port (HTTP transports) | `8000` |
-| `MCP_TOOL_MODE` | Tool surface: `condensed`, `verbose`, or `both` | `condensed` |
-
-### Tool toggles
-Each action-routed tool can be disabled individually via its toggle env var (set to `false`):
-`AUTHENTICATIONTOOL`, `RESOURCETOOL` (see the [MCP Tools](#mcp-tools) table above).
-
-A local template is provided inside [.env.example](.env.example). Copy this file as `.env` and fill out the operator's specific service endpoint parameters before starting execution.
-
----
-
-## MCP Tools
+### MCP Tools
 
 _Auto-generated from the live MCP server — do not edit by hand._
 
@@ -254,7 +162,7 @@ _Auto-generated from the live MCP server — do not edit by hand._
 _86 typed tool(s), one per Frappe operation._
 <!-- MCP-TOOLS-TABLE:END -->
 
-### MCP Configuration Examples
+#### MCP Configuration Examples
 
 <!-- MCP-CONFIG-EXAMPLES:START -->
 
@@ -370,58 +278,7 @@ the detailed transport contract.
   `MCP_ALLOWED_HOSTS` in `AgentConfig`.
 <!-- END GENERATED: additional-deployment-options -->
 
-## Documentation
-
-The complete documentation is published as the
-[official documentation site](https://knuckles-team.github.io/erpnext-agent/) and is
-the recommended reference for installation, deployment, and day-to-day operation.
-
-| Page | Contents |
-|---|---|
-| [Installation](https://knuckles-team.github.io/erpnext-agent/installation/) | pip, source, extras, prebuilt Docker image |
-| [Usage](https://knuckles-team.github.io/erpnext-agent/usage/) | the MCP tools, the `Api` client, the CLI |
-| [Backing Platform](https://knuckles-team.github.io/erpnext-agent/platform/) | deploy ERPNext / Frappe with Docker |
-| [Overview](https://knuckles-team.github.io/erpnext-agent/overview/) | the dynamic facade and FastMCP tool layer |
-| [Concepts](https://knuckles-team.github.io/erpnext-agent/concepts/) | concept registry (`CONCEPT:ERPN-*`) |
-
-`AGENTS.md` is the canonical contributor/agent guidance.
-
 ---
-
-## Contributing
-
-Please audit all code changes against the repository's contribution and review requirements, and run:
-
-```bash
-pre-commit run --all-files
-```
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
-
-<!-- BEGIN scion-sdk-deployment (generated; do not edit between markers) -->
-
-## Deploy with `scion-sdk-deployment`
-
-Provision this package with the consolidated **`scion-sdk-deployment`**
-workflow. It selects an installed-package, editable-source, or immutable-container
-path; records only runtime secret and TLS-profile references in `AgentConfig`; and
-runs doctor, registration, policy, observability, and rollback gates. Ask your agent
-to **"deploy `erpnext-agent` with scion-sdk-deployment"**.
-
-| Install mode | Command |
-|------|---------|
-| Installed package | `uv tool install "erpnext-agent[mcp]"`, then run `erpnext-mcp` |
-| Immutable container | deploy `registry.example.invalid/erpnext-agent@sha256:<digest>` through the operator-selected orchestrator |
-
-The repository embeds no deployment profile, credential value, certificate path, or
-environment-specific endpoint. Supply those at runtime through `AgentConfig` and the
-configured secret provider.
-
-<!-- END scion-sdk-deployment -->
 
 ## Environment Variables
 
@@ -473,6 +330,165 @@ configured secret provider.
 
 _15 package + 20 inherited variable(s). Auto-generated from `.env.example` + the shared scion-sdk set — do not edit._
 <!-- ENV-VARS-TABLE:END -->
+
+---
+
+## Installation
+
+Pick the extra that matches what the operator want to run:
+
+| Extra | Installs | Use when |
+|-------|----------|----------|
+| `erpnext-agent[mcp]` | Connector-focused MCP server (`scion-sdk` — FastMCP/FastAPI + `medulla`) | The operator only run the **MCP server** (smallest install / image) |
+| `erpnext-agent[all]` | Everything (`mcp` + `agent` + `logfire`) | Development / both surfaces |
+
+```bash
+# Connector-focused MCP server (includes the shared graph engine)
+uv pip install "erpnext-agent[mcp]"
+
+# Agent runtime (adds model orchestration to the shared graph engine)
+
+# Everything (development)
+uv pip install "erpnext-agent[all]"      # or: python -m pip install "erpnext-agent[all]"
+```
+
+### Container images (`:mcp`)
+
+One multi-stage `docker/Dockerfile` builds the MCP-only image (`--target mcp`):
+
+| Image tag | Build target | Contents | Entrypoint |
+|-----------|--------------|----------|------------|
+
+```bash
+```
+
+### Knowledge-graph database (`medulla`)
+
+Scion SDK core dependency (`medulla`). The `[mcp]` extra keeps
+deployments can use the bundled engine. For production or shared state, run
+**medulla as a dedicated database service** and configure the runtime to use it.
+Deployment recipes (single-node + Raft HA), connection configuration, and architecture
+diagrams are documented in the
+[medulla deployment guide](https://knuckles-team.github.io/medulla/deployment/).
+
+---
+
+## Usage
+
+The operator can start the FastMCP server in stdio mode via Python module execution:
+
+```python
+import asyncio
+from erpnext_agent.mcp_server import get_mcp_instance
+
+async def main():
+    mcp = get_mcp_instance()
+    # Execute stdio loop or launch server
+    print("MCP Server ready.")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+For direct shell start, ran:
+
+```bash
+python -m erpnext_agent.mcp_server
+```
+
+---
+
+## Configuration
+
+The package is fully configurable via the environment variables listed below.
+
+### Connection & Credentials
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `ERPNEXT_URL` | ERPNext / Frappe server endpoint URL | Required |
+| `ERPNEXT_TOKEN` | API token authentication (`api_key:api_secret`) | — |
+| `ERPNEXT_AGENT_USERNAME` | Username for password-based login | — |
+| `ERPNEXT_AGENT_PASSWORD` | Password for password-based login | — |
+| `TLS_PROFILE` | Named `AgentConfig` transport-security profile; verification is mandatory | — |
+| `TLS_PROFILES_REF` | Runtime secret reference for the TLS profile catalog | — |
+
+### MCP server / transport
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `TRANSPORT` | `stdio`, `streamable-http`, or `sse` | `stdio` |
+| `HOST` | Bind host (HTTP transports) | `0.0.0.0` |
+| `PORT` | Bind port (HTTP transports) | `8000` |
+| `MCP_TOOL_MODE` | Tool surface: `condensed`, `verbose`, or `both` | `condensed` |
+
+### Tool toggles
+Each action-routed tool can be disabled individually via its toggle env var (set to `false`):
+`AUTHENTICATIONTOOL`, `RESOURCETOOL` (see the [MCP Tools](#mcp-tools) table above).
+
+A local template is provided inside [.env.example](.env.example). Copy this file as `.env` and fill out the operator's specific service endpoint parameters before starting execution.
+
+---
+
+## Documentation
+
+The complete documentation is published as the
+[official documentation site](https://knuckles-team.github.io/erpnext-agent/) and is
+the recommended reference for installation, deployment, and day-to-day operation.
+
+| Page | Contents |
+|---|---|
+| [Installation](https://knuckles-team.github.io/erpnext-agent/installation/) | pip, source, extras, prebuilt Docker image |
+| [Usage](https://knuckles-team.github.io/erpnext-agent/usage/) | the MCP tools, the `Api` client, the CLI |
+| [Backing Platform](https://knuckles-team.github.io/erpnext-agent/platform/) | deploy ERPNext / Frappe with Docker |
+| [Overview](https://knuckles-team.github.io/erpnext-agent/overview/) | the dynamic facade and FastMCP tool layer |
+| [Concepts](https://knuckles-team.github.io/erpnext-agent/concepts/) | concept registry (`CONCEPT:ERPN-*`) |
+
+`AGENTS.md` is the canonical contributor/agent guidance.
+
+---
+
+## Repository Owners
+
+<img width="100%" height="180em" src="https://github-readme-stats.vercel.app/api?username=example&show_icons=true&hide_border=true&&count_private=true&include_all_commits=true" />
+
+![GitHub followers](https://img.shields.io/github/followers/example)
+![GitHub User's stars](https://img.shields.io/github/stars/example)
+
+---
+
+## Contribute
+
+Please audit all code changes against the repository's contribution and review requirements, and run:
+
+```bash
+pre-commit run --all-files
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for complete details.
+
+<!-- BEGIN scion-sdk-deployment (generated; do not edit between markers) -->
+
+## Deploy with `scion-sdk-deployment`
+
+Provision this package with the consolidated **`scion-sdk-deployment`**
+workflow. It selects an installed-package, editable-source, or immutable-container
+path; records only runtime secret and TLS-profile references in `AgentConfig`; and
+runs doctor, registration, policy, observability, and rollback gates. Ask your agent
+to **"deploy `erpnext-agent` with scion-sdk-deployment"**.
+
+| Install mode | Command |
+|------|---------|
+| Installed package | `uv tool install "erpnext-agent[mcp]"`, then run `erpnext-mcp` |
+| Immutable container | deploy `registry.example.invalid/erpnext-agent@sha256:<digest>` through the operator-selected orchestrator |
+
+The repository embeds no deployment profile, credential value, certificate path, or
+environment-specific endpoint. Supply those at runtime through `AgentConfig` and the
+configured secret provider.
+
+<!-- END scion-sdk-deployment -->
 
 <!-- GOVERNED-CAPABILITY:START -->
 ## Governed capability contract
