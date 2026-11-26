@@ -2,12 +2,7 @@
 name: erpnext-crm-pipeline
 skill_type: skill
 description: >-
-  Work the ERPNext (Frappe) built-in CRM through the erpnext-mcp MCP server:
-  capture a lead, qualify it into an opportunity, move it through the sales stages,
-  and quote it. Use when the agent must record an inbound prospect, track a deal
-  toward a quotation, or convert a won opportunity into a customer and sales order.
-  For day-to-day touches and follow-ups use erpnext-lead-nurturing. Do NOT use for
-  billing or payment (use erpnext-order-to-cash).
+  Work the ERPNext (Frappe) built-in CRM via erpnext-mcp: capture a lead, qualify it into an opportunity, move it through sales stages, and quote it. Use to record an inbound prospect, track a deal toward a quotation, or convert a won opportunity. Do NOT use for billing or day-to-day follow-ups (erpnext-order-to-cash, erpnext-lead-nurturing).
 license: MIT
 tags: [erpnext, frappe, crm, lead, opportunity, sales-pipeline, mcp]
 metadata:
@@ -15,7 +10,27 @@ metadata:
 ---
 # ERPNext CRM pipeline
 
+Scope: Work the ERPNext (Frappe) built-in CRM through the erpnext-mcp MCP server: capture a lead, qualify it into an opportunity, move it through the sales stages, and quote it. Use when the agent must record an inbound prospect, track a deal toward a quotation, or convert a won opportunity into a customer and sales order. For day-to-day touches and follow-ups use erpnext-lead-nurturing. Do NOT use for billing or payment (use erpnext-order-to-cash).
+
 Lead → Opportunity → Quotation (→ erpnext-order-to-cash).
+
+## Steps
+
+1. Check for an existing lead with `erpnext_search_link` `Lead` and verify no record already matches the prospect.
+2. Capture it with `erpnext_create_lead` and verify `erpnext_list_leads` returns the new lead.
+3. Qualify it with `erpnext_qualify_lead` and verify `erpnext_list_leads` shows it as Qualified.
+4. Raise the deal with `erpnext_create_opportunity_from_lead` and verify `erpnext_list_opportunities` shows it with the expected `sales_stage`.
+5. Move it with `erpnext_update_opportunity_stage` and verify `erpnext_list_opportunities` shows the new stage.
+6. Close it with `erpnext_make_customer_from_opportunity` when won or `erpnext_declare_opportunity_lost` when lost, and verify the opportunity status changed.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Duplicate lead | The prospect already exists | Use the lead returned by `erpnext_search_link` `Lead` and skip `erpnext_create_lead` |
+| Unknown sales stage or type | The stage or type does not exist in ERPNext | Read `erpnext_list_sales_stages` or `erpnext_list_opportunity_types` and create the missing one with `erpnext_create_sales_stage` or `erpnext_create_opportunity_type` |
+| `erpnext_declare_opportunity_lost` refused | A `lost_reasons` entry does not exist | Create it with `erpnext_create_opportunity_lost_reason` and declare the loss again |
+| Quotation needs an exchange rate | The opportunity currency differs from the company currency | Pass the company `currency` to `erpnext_create_opportunity_from_lead` |
 
 ## Pipeline set-up
 - Sales stages: `erpnext_list_sales_stages`; add one with
@@ -23,7 +38,7 @@ Lead → Opportunity → Quotation (→ erpnext-order-to-cash).
 - Opportunity types: `erpnext_list_opportunity_types`; add one with
   `erpnext_create_opportunity_type`.
 
-## Steps
+## Procedure
 1. **Lead**: check duplicates with `erpnext_search_link` `Lead`, then
    `erpnext_create_lead` with `first_name`, `company_name` (the prospect's
    organisation), `email_id` if known, and `company` (our company).

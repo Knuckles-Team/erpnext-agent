@@ -2,19 +2,15 @@
 name: erpnext-order-to-cash
 skill_type: skill
 description: >-
-  Run the ERPNext (Frappe) order-to-cash flow end to end through the erpnext-mcp
-  MCP server: customer, quotation, sales order, sales invoice and payment entry,
-  each mapped from the one before and submitted so it posts to the ledger. Use when
-  the agent must quote a customer, turn an accepted quote into an order, bill it, or
-  record the customer's payment against the invoice. Do NOT use for supplier bills
-  (use erpnext-procure-to-pay), stock receipts (use erpnext-inventory) or ledger and
-  ageing reports (use erpnext-accounting).
+  Run the ERPNext (Frappe) order-to-cash flow via erpnext-mcp: customer, quotation, sales order, sales invoice and payment entry, each mapped from the one before and submitted. Use to quote a customer, turn a quote into an order, bill it, or record payment. Do NOT use for supplier bills, stock receipts or ledger reports.
 license: MIT
 tags: [erpnext, frappe, sales, invoice, payment, order-to-cash, mcp]
 metadata:
   version: '1.0.0'
 ---
 # ERPNext order to cash
+
+Scope: Run the ERPNext (Frappe) order-to-cash flow end to end through the erpnext-mcp MCP server: customer, quotation, sales order, sales invoice and payment entry, each mapped from the one before and submitted so it posts to the ledger. Use when the agent must quote a customer, turn an accepted quote into an order, bill it, or record the customer's payment against the invoice. Do NOT use for supplier bills (use erpnext-procure-to-pay), stock receipts (use erpnext-inventory) or ledger and ageing reports (use erpnext-accounting).
 
 Customer → Quotation → Sales Order → Sales Invoice → Payment Entry. Each later
 document is built from the earlier one by `erpnext_make_mapped_document`, so the
@@ -30,6 +26,24 @@ items, prices, taxes and links carry over and the chain stays traceable.
   post to the ledger or can be mapped forward.
 
 ## Steps
+
+1. Look up the customer with `erpnext_search_link` `Customer` and verify an existing match is used before creating one.
+2. Create the quotation with `erpnext_create_document` `Quotation` and submit it with `erpnext_submit_document`, and verify `docstatus` is 1.
+3. Map the order with `erpnext_make_mapped_document` `make_sales_order` and verify the draft has `delivery_date` and a `warehouse` on each stock item before saving it.
+4. Map the invoice with `erpnext_make_mapped_document` `make_sales_invoice` and verify the submitted invoice shows `outstanding_amount` above zero.
+5. Record payment with `erpnext_call_method` `get_payment_entry` and verify `erpnext_get_value` `Sales Invoice` shows `outstanding_amount` 0 and `status` `Paid`.
+6. Check the ledger with `erpnext_run_report` `Accounts Receivable` and verify the invoice is no longer listed.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| `LinkValidationError` | A linked record such as the customer does not exist | Fix the field the error names, creating the master with `erpnext_create_document` if needed, and resubmit |
+| `STATE_TRANSITION_REFUSED` with `HasSubmittedLinks` | Linked documents are still submitted | Cancel the payment, then the invoice, then the order with `erpnext_cancel_document` |
+| `StaleDocument` | The cancel used an old `modified` stamp | Re-read the document with `erpnext_get_document` and pass its current `modified` to `erpnext_cancel_document` |
+| Mapped draft cannot be saved | `delivery_date` or `warehouse` is missing | Set `delivery_date` on the order and each item and `warehouse` on each stock item, then save with `erpnext_create_document` |
+
+## Procedure
 1. **Customer** (if new): `erpnext_create_document` `doctype` `Customer`, `data`
    `{"customer_name", "customer_group": "All Customer Groups", "territory":
    "All Territories", "customer_type": "Company"}`.

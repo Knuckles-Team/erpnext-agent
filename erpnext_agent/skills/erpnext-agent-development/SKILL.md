@@ -25,6 +25,22 @@ durable graph state belong to their owning repositories. Read `AGENTS.md` before
 changing code and keep credentials, private endpoints, tenant data, and customer
 records out of source, logs, fixtures, and skill content.
 
+## Steps
+
+1. Create a real worktree with `git worktree add <path> -b <branch> origin/main` and verify `git -C <path> status --short` prints nothing.
+2. Install the pinned environment with `uv sync --locked` and verify it exits with status 0.
+3. Run the focused test with `uv run --locked --extra test pytest -q tests/test_erpnext_development_skill.py` and verify it passes.
+4. Run the shared gates with `uvx pre-commit run --all-files` and verify every hook passes.
+5. Commit with a `Spec:` trailer and verify `git log -1 --format=%B` shows `Spec:` and `Co-Authored-By:` in the last paragraph.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Environment will not sync | `uv.lock` and `pyproject.toml` disagree | Regenerate `uv.lock` for the current `pyproject.toml` and commit both together |
+| A test needs a live ERPNext site | HTTP responses were not mocked | Mock the ERPNext HTTP responses at the `Api` boundary and keep live credentials out of the gate |
+| Hook fails | The diff breaks a connector-standard, spec or secrets check | Fix the reported cause in the changed file and commit again, without skipping the hook |
+
 ## Rapid delivery: the 5-minute contract
 
 Specs are already designed. Deliver small, reviewable slices and cite the

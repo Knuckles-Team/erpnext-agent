@@ -16,6 +16,20 @@ metadata:
 # ERPNext session
 
 ## Steps
+
+1. Check the acting user with `erpnext_get_logged_user` and verify it returns the user the requester named.
+2. On an unauthenticated refusal with a password deployment, call `erpnext_login` and verify a later `erpnext_get_logged_user` call returns the requested user.
+3. Close a password session with `erpnext_logout` and verify the response confirms the session ended.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Refused as unauthenticated on a token deployment | Token deployments do not use login | Do not call `erpnext_login`, and report the refusal to the requester |
+| Wrong user returned | A different account is logged in | Call `erpnext_logout` and log in again with the account the requester named |
+| Login rejected | The password is wrong | Ask the requester to supply credentials through their secret store, without echoing them, and call `erpnext_login` with the corrected value |
+
+## Procedure
 1. `erpnext_get_logged_user` returns the user the connector acts as. Run it
    first when a write is about to happen and the actor matters.
 2. If the call is refused as unauthenticated and the deployment uses a password
