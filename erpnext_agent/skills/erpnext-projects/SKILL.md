@@ -15,6 +15,22 @@ metadata:
 # ERPNext projects
 
 ## Steps
+
+1. Find an existing project with `erpnext_search_link` `Project` and verify its `name` is the series id such as `PROJ-0001`.
+2. Create it with `erpnext_create_document` `Project` and verify `erpnext_get_value` `Project` returns its `status`.
+3. Add work with `erpnext_create_document` `Task` and verify `erpnext_list_documents` `Task` lists it under the project.
+4. Update progress with `erpnext_set_value` `Task` `fieldname` `status` and verify `erpnext_get_value` shows the new status.
+5. Report with `erpnext_get_value` `Project` `fieldname` `["percent_complete", "status"]` and verify `percent_complete` reflects the closed tasks.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Project not found by name | `name` is the naming series, not `project_name` | Find it with `erpnext_search_link` `Project` and use the returned series id |
+| Task rejected | `project` holds a name that does not exist | Pass the exact project `name` such as `PROJ-0001` from `erpnext_search_link` |
+| Status change rejected | The value is not an allowed status | Use one of `Open`, `Working`, `Pending Review`, `Overdue`, `Completed`, `Cancelled` |
+
+## Procedure
 1. **Project**: `erpnext_create_document` `Project` with `project_name`,
    `company`, and optionally `customer`, `expected_start_date`,
    `expected_end_date`. `percent_complete_method` defaults to task completion.

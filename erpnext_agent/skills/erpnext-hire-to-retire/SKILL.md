@@ -2,13 +2,7 @@
 name: erpnext-hire-to-retire
 skill_type: skill
 description: >-
-  Run an employee's whole life cycle in ERPNext (Frappe) through the erpnext-mcp
-  MCP server: hire (department, designation, holiday list, employee record), first
-  leave allocation and salary assignment, day-to-day attendance, role changes, and
-  the exit (relieving date, status Left). Use when the agent must onboard a new
-  hire, move someone to a new role or department, or process a resignation or
-  retirement. Do NOT use for approving leave (use erpnext-leave-approval) or for a
-  pay run (use erpnext-payroll-run).
+  Run an employee's life cycle in ERPNext (Frappe) via erpnext-mcp: hire, first leave allocation and salary assignment, attendance, role changes, and exit. Use to onboard a hire, move someone to a new role or department, or process a resignation or retirement. Do NOT use for leave decisions (erpnext-leave-approval) or pay runs (erpnext-payroll-run).
 license: MIT
 tags: [erpnext, frappe, hr, onboarding, offboarding, employee, mcp]
 metadata:
@@ -16,8 +10,28 @@ metadata:
 ---
 # ERPNext hire to retire
 
+Scope: Run an employee's whole life cycle in ERPNext (Frappe) through the erpnext-mcp MCP server: hire (department, designation, holiday list, employee record), first leave allocation and salary assignment, day-to-day attendance, role changes, and the exit (relieving date, status Left). Use when the agent must onboard a new hire, move someone to a new role or department, or process a resignation or retirement. Do NOT use for approving leave (use erpnext-leave-approval) or for a pay run (use erpnext-payroll-run).
+
 Hire → set up → work → change → exit. The employee record is kept for life:
 it is never deleted.
+
+## Steps
+
+1. Search for the person with `erpnext_search_link` `Employee` and verify no duplicate record is returned.
+2. Check the HR app with `erpnext_get_version` and verify an `hrms` entry is present.
+3. Create the record with `erpnext_create_employee` and verify `erpnext_get_employee` returns it with status Active.
+4. Allocate leave with `erpnext_allocate_leave` and verify `erpnext_get_leave_balance` shows the allocated days.
+5. Assign pay with `erpnext_assign_salary_structure` from the joining date and verify the assignment is submitted.
+6. Process an exit with `erpnext_relieve_employee` and verify `erpnext_get_employee` shows `status` as `Left`.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Duplicate employee | The person already exists | Use the record found by `erpnext_search_link` and change it with `erpnext_update_employee` |
+| Leave or salary tools unavailable | The HR app is not installed | Stop the leave and salary steps, and report that `erpnext_get_version` lacks `hrms` |
+| Department or designation not found | It was never created for the company | Create it with `erpnext_create_department` (named `<department> - <abbr>`) or `erpnext_create_designation` and repeat the hire |
+| Exit blocked by open leave or pay | Leave applications or the last pay run are not settled | Decide the open requests with erpnext-leave-approval and finish erpnext-payroll-run, then call `erpnext_relieve_employee` |
 
 ## Before you start
 - The company exists and has a default holiday list (`erpnext_get_setup_status`

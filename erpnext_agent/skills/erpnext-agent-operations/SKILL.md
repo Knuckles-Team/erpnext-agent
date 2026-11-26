@@ -9,6 +9,22 @@ description: >-
 
 Use the provider's governed MCP tools through Arbora delegation.
 
+## Steps
+
+1. Discover the current tool surface with `find(intent='erpnext documents')` and verify the returned tool names and schemas before building any call.
+2. Open the catalog with `sed -n 1,40p references/catalog.md` and verify the workflow you need is listed.
+3. Run a read-only call with `act(op='fleet.call', params={'server': 'erpnext-mcp', 'tool': 'erpnext_list_documents', 'arguments': {'doctype': 'Company'}})` and verify a company is returned.
+4. Preview any change by setting the provider dry-run option in the `arguments` of the `fleet.call` and verify the reported impact matches the request before approving it.
+5. Re-read the object with the same `fleet.call` and verify the durable result and its trace evidence before reporting completion.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Tool or schema not found | A stale tool name was used | Repeat `find(intent='...')` and use the name and schema it returns |
+| ACL, tenant or session unknown | The verified GraphSession was not established | Stop and report a hard failure, then establish the session before any retrieval |
+| Destructive call blocked | Explicit approval was not given | Ask the user to approve the exact action before executing it |
+
 ## Workflow
 
 1. Establish the verified GraphSession and tenant before discovery or retrieval.

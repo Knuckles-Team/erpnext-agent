@@ -2,18 +2,15 @@
 name: erpnext-accounting
 skill_type: skill
 description: >-
-  Read the ERPNext (Frappe) books through the erpnext-mcp MCP server: chart of
-  accounts, general ledger, trial balance, receivable and payable ageing, and stock
-  balance, for one company and period. Use when the agent must answer "what do we
-  owe / what are we owed", review postings for a document, or produce period
-  figures. Do NOT use to create sales or purchase documents (use
-  erpnext-order-to-cash / erpnext-procure-to-pay).
+  Read the ERPNext (Frappe) books via erpnext-mcp: chart of accounts, general ledger, trial balance, receivable and payable ageing, stock balance, for one company and period. Use to answer what we owe or are owed, review a document's postings, or produce period figures. Do NOT use to create sales or purchase documents.
 license: MIT
 tags: [erpnext, frappe, accounting, ledger, reports, receivable, payable, mcp]
 metadata:
   version: '1.0.0'
 ---
 # ERPNext accounting and reports
+
+Scope: Read the ERPNext (Frappe) books through the erpnext-mcp MCP server: chart of accounts, general ledger, trial balance, receivable and payable ageing, and stock balance, for one company and period. Use when the agent must answer "what do we owe / what are we owed", review postings for a document, or produce period figures. Do NOT use to create sales or purchase documents (use erpnext-order-to-cash / erpnext-procure-to-pay).
 
 All reports run with `erpnext_run_report` (`report_name`, `filters`) and return
 `message.columns` and `message.result`. Always pass `company`.
@@ -27,6 +24,20 @@ All reports run with `erpnext_run_report` (`report_name`, `filters`) and return
 | Stock value and quantity | `Stock Balance` | `company`, `from_date`, `to_date` |
 | Profit and loss | `Profit and Loss Statement` | `company`, `period_start_date`, `period_end_date`, `periodicity` (`Monthly`), `filter_based_on` (`Date Range`), `from_fiscal_year`, `to_fiscal_year` |
 | Balance sheet | `Balance Sheet` | same as profit and loss |
+
+## Steps
+
+1. Confirm the period exists with `erpnext_list_documents` `Fiscal Year` and verify the fiscal year you need is returned.
+2. Run the report with `erpnext_run_report` (`report_name`, `filters` including `company`) and verify the response holds `message.columns` and `message.result`.
+3. Read one document's postings with `erpnext_list_documents` `GL Entry` and `filters` `{"voucher_no": "<doc>", "is_cancelled": 0}` and verify total debit equals total credit.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Report refused for a filter | A required filter for that report is missing | Read the error, which names the missing filter, and add it to `filters` from the table above |
+| Stock Balance times out | The period is too large for the 120 s server timeout | Narrow `from_date` and `to_date` and call `erpnext_run_report` again |
+| `STATE_TRANSITION_REFUSED` | The document is not in the state the move needs | Read the reason named in the Document lifecycle section, for `HasSubmittedLinks` cancel the linked documents first, or use `erpnext_amend_document` on a cancelled one |
 
 ## Ledger reads
 - Chart of accounts: `erpnext_list_documents` `Account`, `filters`

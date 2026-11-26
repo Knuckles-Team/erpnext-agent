@@ -2,12 +2,7 @@
 name: erpnext-procure-to-pay
 skill_type: skill
 description: >-
-  Book supplier purchases in ERPNext (Frappe) through the erpnext-mcp MCP server:
-  create the supplier, book the supplier's bill as a purchase invoice against the
-  right expense or stock account, submit it to payables, and pay or cancel it. Use
-  when the agent must record a vendor bill, check what is owed to a supplier, or pay
-  it. Do NOT use for customer billing (use erpnext-order-to-cash) or stock counts
-  (use erpnext-inventory).
+  Book supplier purchases in ERPNext (Frappe) via erpnext-mcp: create the supplier, book the bill as a purchase invoice against the right account, submit it to payables, then pay or cancel it. Use to record a vendor bill, check what is owed to a supplier, or pay it. Do NOT use for customer billing or stock counts.
 license: MIT
 tags: [erpnext, frappe, purchase, supplier, payables, procure-to-pay, mcp]
 metadata:
@@ -15,9 +10,28 @@ metadata:
 ---
 # ERPNext procure to pay
 
+Scope: Book supplier purchases in ERPNext (Frappe) through the erpnext-mcp MCP server: create the supplier, book the supplier's bill as a purchase invoice against the right expense or stock account, submit it to payables, and pay or cancel it. Use when the agent must record a vendor bill, check what is owed to a supplier, or pay it. Do NOT use for customer billing (use erpnext-order-to-cash) or stock counts (use erpnext-inventory).
+
 Supplier → (Purchase Order, optional) → Purchase Invoice → Payment Entry.
 
 ## Steps
+
+1. Look up the supplier with `erpnext_search_link` `Supplier` and verify an existing match is used before creating one.
+2. Check for a duplicate bill with `erpnext_get_count` `Purchase Invoice` using `bill_no` and `supplier` and verify the count is 0.
+3. Create the bill with `erpnext_create_document` `Purchase Invoice` and verify the response shows a draft with the intended `items`.
+4. Book it with `erpnext_submit_document` and verify `erpnext_get_value` `Purchase Invoice` shows an `outstanding_amount` above zero.
+5. Pay it with `erpnext_call_method` `get_payment_entry` and verify `erpnext_get_value` shows `outstanding_amount` 0.
+
+## Failure recovery
+
+| Failure | Cause | Recovery |
+|---|---|---|
+| Duplicate bill | The same `bill_no` exists for the supplier | Stop and open the existing invoice with `erpnext_get_document` instead of booking another |
+| Expense account rejected | The account is a group or the wrong root type | List accounts with `erpnext_list_documents` `Account` and filters `root_type` `Expense` and `is_group` 0, and use one of those names |
+| `STATE_TRANSITION_REFUSED` with `HasSubmittedLinks` | A payment is allocated to the bill | Cancel the payment with `erpnext_cancel_document` first, then the invoice, and correct it with `erpnext_amend_document` |
+| Stock not updated | `update_stock` was 0 on the bill | Set `update_stock` to 1, or receive the goods with a Purchase Receipt or Stock Entry |
+
+## Procedure
 1. **Supplier** (if new): `erpnext_search_link` `Supplier` first; otherwise
    `erpnext_create_document` `Supplier` with `supplier_name` and
    `supplier_group` (`All Supplier Groups`).
